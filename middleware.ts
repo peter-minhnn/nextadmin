@@ -1,9 +1,20 @@
-import NextAuth from 'next-auth';
-import { authConfig } from '@/app/auth.config';
+// /pages/middleware.js
+import { NextRequest, NextResponse } from 'next/server';
+import { useLocalStorage } from './lib/hooks/useLocalStorage';
 
-export default NextAuth(authConfig).auth;
+export async function middleware(req: NextRequest) {
+    // Token will exist if user logged in
+    const { getItem } = useLocalStorage('token');
+    const token = getItem();
+    const { pathname } = req.nextUrl;
 
-export const config = {
-  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-  matcher: ['/((?!api|_next/static|_next/image|.png).*)'],
-};
+    // Allow the request if the following is true...
+    if (token || req.nextUrl.pathname.startsWith("/_next")) {
+        return NextResponse.next();
+    }
+
+    // Protected Routes
+    if (!token && pathname !== '/login') {
+        return NextResponse.redirect(new URL('/login', req.nextUrl));
+    }
+}
