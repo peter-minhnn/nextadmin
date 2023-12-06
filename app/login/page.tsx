@@ -1,11 +1,11 @@
 'use client'
-import { LoginRequest } from '@/types/loginType';
+import { LoginRequest } from '@/types/login-type';
 import LoginForm from '@/components/form/LoginForm';
-import { login } from '@/lib/actions/loginAction';
+import { authenticate } from '@/api/auth';
 
 const LoginPage = () => {
     const handleSignIn = async (values: LoginRequest) => {
-        const response = await login({ username: values.email, password: values.password });
+        const response = await authenticate({ username: values.username, password: values.password });
         console.log(response)
     }
 

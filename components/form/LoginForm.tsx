@@ -1,5 +1,5 @@
 'use client'
-import { LoginRequest } from "@/types/loginType"
+import { LoginRequest } from "@/types/login-type"
 import { useState } from "react"
 import FieldMessage from "./FieldInfo";
 
@@ -10,7 +10,7 @@ type LoginFormProsp = {
 const LoginForm = ({ handleSubmit }: LoginFormProsp) => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [loginRequest, setLoginRequest] = useState<LoginRequest>({
-        email: '',
+        username: '',
         password: ''
     })
 
@@ -26,8 +26,8 @@ const LoginForm = ({ handleSubmit }: LoginFormProsp) => {
                     <div className="mt-2">
                         <input
                             name={'email'}
-                            value={loginRequest.email}
-                            onChange={(e) => setLoginRequest({ ...loginRequest, email: e.target.value })}
+                            value={loginRequest.username}
+                            onChange={(e) => setLoginRequest({ ...loginRequest, username: e.target.value })}
                             autoComplete="email"
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
