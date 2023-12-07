@@ -17,7 +17,6 @@ const headerConfigs = (method: string = '', isUseFormData: boolean = false) => {
     if (!getItem()) {
         return { ...headerOptions };
     }
-
     return {
         Authorization: `Bearer ${getItem()}`,
         ...headerOptions

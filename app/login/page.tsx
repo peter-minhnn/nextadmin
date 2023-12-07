@@ -2,10 +2,19 @@
 import { LoginRequest } from '@/types/login-type';
 import LoginForm from '@/components/form/LoginForm';
 import { authenticate } from '@/api/auth';
+import { useLocalStorage } from '@/lib/hooks/useLocalStorage';
+import { useRouter } from 'next/navigation'
 
 const LoginPage = () => {
+    const { setItem } = useLocalStorage('token');
+    const router = useRouter();
+
     const handleSignIn = async (values: LoginRequest) => {
         const response = await authenticate({ username: values.username, password: values.password });
+        if (response.code === 'success') {
+            setItem(response.data.data.token);
+            router.push('/user');
+        }
         console.log(response)
     }
 
