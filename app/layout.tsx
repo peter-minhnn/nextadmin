@@ -1,6 +1,7 @@
 'use client'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import '@/components/layout/ltr.css'
 import Wrapper from '@/components/layout/Wrapper'
 
 const inter = Inter({ subsets: ['latin'] })

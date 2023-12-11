@@ -1,5 +1,4 @@
 import { Fragment, useState } from 'react'
-import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import {
     ArrowPathIcon,
     Bars3Icon,
@@ -11,192 +10,102 @@ import {
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 
-const products = [
-    { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
-    { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
-    { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
-    { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
-    { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
-]
-const callsToAction = [
-    { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-    { name: 'Contact sales', href: '#', icon: PhoneIcon },
-]
-
-function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(' ')
-}
-
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     return (
-        <header className="bg-white">
-            <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-                <div className="flex lg:flex-1">
-                    <a href="#" className="-m-1.5 p-1.5">
-                        <span className="sr-only">Your Company</span>
-                        <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
-                    </a>
-                </div>
-                <div className="flex lg:hidden">
-                    <button
-                        type="button"
-                        className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                        onClick={() => setMobileMenuOpen(true)}
-                    >
-                        <span className="sr-only">Open main menu</span>
-                        <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-                    </button>
-                </div>
-                <Popover.Group className="hidden lg:flex lg:gap-x-12">
-                    <Popover className="relative">
-                        <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900">
-                            Product
-                            <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-                        </Popover.Button>
-
-                        <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-500"
-                            enterFrom="opacity-0 translate-y-1"
-                            enterTo="opacity-100 translate-y-0"
-                            leave="transition ease-in duration-150"
-                            leaveFrom="opacity-100 translate-y-0"
-                            leaveTo="opacity-0 translate-y-1"
-                        >
-                            <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
-                                <div className="p-4">
-                                    {products.map((item) => (
-                                        <div
-                                            key={item.name}
-                                            className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
-                                        >
-                                            <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                                                <item.icon className="h-6 w-6 text-gray-600 group-hover:text-indigo-600" aria-hidden="true" />
-                                            </div>
-                                            <div className="flex-auto">
-                                                <a href={item.href} className="block font-semibold text-gray-900">
-                                                    {item.name}
-                                                    <span className="absolute inset-0" />
-                                                </a>
-                                                <p className="mt-1 text-gray-600">{item.description}</p>
-                                            </div>
+        <header className='main-header mainHeader_temp_2 ' style={{ minHeight: 97 }}>
+            <div className='navigation-header'>
+                <div className='container'>
+                    <div className='flexContainer-header'>
+                        <div className={`col-md-4 header-wrap-menu-mb header-icon ${mobileMenuOpen ? 'show-action' : ''}`}>
+                            <div className="hidden-lg hidden-md">
+                                <button style={{ outline: 'none', border: 'unset', backgroundColor: 'transparent' }} type='button' className="header-action-toggle site-handle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                                    <div className="hamburger-menu">
+                                        <span className="bar"></span>
+                                    </div>
+                                </button>
+                                <div className="header_dropdown_content site_menu_mobile">
+                                    <span className="box-triangle">
+                                        <svg viewBox="0 0 20 9">
+                                            <path d="M.47108938 9c.2694725-.26871321.57077721-.56867841.90388257-.89986354C3.12384116 6.36134886 5.74788116 3.76338565 9.2467995.30653888c.4145057-.4095171 1.0844277-.40860098 1.4977971.00205122L19.4935156 9H.47108938z" fill="#ffffff"></path>
+                                        </svg>
+                                    </span>
+                                    <div className="site-nav-container-menu">
+                                        <div className="menu-mobile-content">
+                                            <nav id="mb-menu" className="navbar-mainmenu">
+                                                <div className="navbar-level" data-level="1">
+                                                    <ul className="menuList-sub vertical-menu-list sub-child">
+                                                        <li className="active">
+                                                            <a className="parent" href="/">MAIN MENU</a>
+                                                        </li>
+                                                        <li className="" data-menu-root="104326217">
+                                                            <a className="parent" href="/collections/all">SHOP
+                                                                <i className="svg-right">
+                                                                    <svg className="icon icon--arrow-right" viewBox="0 0 8 12">
+                                                                        <path stroke="currentColor" strokeWidth="2" d="M2 2l4 4-4 4" fill="none" strokeLinecap="square"></path>
+                                                                    </svg>
+                                                                </i>
+                                                            </a>
+                                                        </li>
+                                                        <li className="">
+                                                            <a className="parent" href="/blogs/news">BLOG</a>
+                                                        </li>
+                                                        <li className="">
+                                                            <a className="parent" href="https://www.instagram.com/ctstussy/">SOCIAL</a>
+                                                        </li>
+                                                        <li className="">
+                                                            <a className="parent" href="/pages/lien-he">CONTACT</a>
+                                                        </li>
+                                                        <li className="main_help">
+                                                            <div className="mobile_menu_section">
+                                                                <p className="mobile_menu_section-title">Bạn cần hỗ trợ</p>
+                                                                <div className="mobile_menu_help">
+                                                                    <svg className="icon icon--bi-phone" viewBox="0 0 24 24">
+                                                                        <g strokeWidth="2" fill="none" fillRule="evenodd" strokeLinecap="square">
+                                                                            <path d="M17 15l-3 3-8-8 3-3-5-5-3 3c0 9.941 8.059 18 18 18l3-3-5-5z" stroke="#333333"></path>
+                                                                            <path d="M14 1c4.971 0 9 4.029 9 9m-9-5c2.761 0 5 2.239 5 5" stroke="#333333"></path>
+                                                                        </g>
+                                                                    </svg>
+                                                                    <a href="tel:0933338913" rel="nofollow">0933338913</a>
+                                                                </div>
+                                                                <div className="mobile_menu_help">
+                                                                    <svg className="icon icon--bi-email" viewBox="0 0 22 22">
+                                                                        <g fill="none" fillRule="evenodd">
+                                                                            <path stroke="#333333" d="M.916667 10.08333367l3.66666667-2.65833334v4.65849997zm20.1666667 0L17.416667 7.42500033v4.65849997z"></path>
+                                                                            <path stroke="#333333" strokeWidth="2" d="M4.58333367 7.42500033L.916667 10.08333367V21.0833337h20.1666667V10.08333367L17.416667 7.42500033"></path>
+                                                                            <path stroke="#333333" strokeWidth="2" d="M4.58333367 12.1000003V.916667H17.416667v11.1833333m-16.5-2.01666663L21.0833337 21.0833337m0-11.00000003L11.0000003 15.5833337"></path>
+                                                                            <path d="M8.25000033 5.50000033h5.49999997M8.25000033 9.166667h5.49999997" stroke="#333333" strokeWidth="2" strokeLinecap="square"></path>
+                                                                        </g>
+                                                                    </svg>
+                                                                    <a href="mailto:ctstussy@gmail.com" rel="nofollow">ctstussy@gmail.com</a>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                    <ul className="menuList-sub sub-child-1" id="104326217">
+                                                        <li><a href="#"><i className="fa fa-angle-left" aria-hidden="true"></i>Quay về</a></li>
+                                                        <li><a href="/collections/all"><b>Xem tất cả "SHOP"</b></a></li>
+                                                        <li className="">
+                                                            <a href="/collections/tee"><span>- </span>T-SHIRT</a>
+                                                        </li>
+                                                        <li className="">
+                                                            <a href="/collections/hoodie"><span>- </span>HOODIE</a>
+                                                        </li>
+                                                        <li className="">
+                                                            <a href="/collections/accessories"><span>- </span>ACCESSORIES</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </nav>
                                         </div>
-                                    ))}
+                                    </div>
                                 </div>
-                                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                                    {callsToAction.map((item) => (
-                                        <a
-                                            key={item.name}
-                                            href={item.href}
-                                            className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
-                                        >
-                                            <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-                                            {item.name}
-                                        </a>
-                                    ))}
-                                </div>
-                            </Popover.Panel>
-                        </Transition>
-                    </Popover>
-
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Features
-                    </a>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Marketplace
-                    </a>
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Company
-                    </a>
-                </Popover.Group>
-                <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                    <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                        Log in <span aria-hidden="true">&rarr;</span>
-                    </a>
-                </div>
-            </nav>
-            <Dialog as="div" className="lg:hidden transition ease duration-300" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-                <div className="fixed inset-0 z-10" />
-                <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-                    <div className="flex items-center justify-between">
-                        <a href="#" className="-m-1.5 p-1.5">
-                            <span className="sr-only">Your Company</span>
-                            <img
-                                className="h-8 w-auto"
-                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                                alt=""
-                            />
-                        </a>
-                        <button
-                            type="button"
-                            className="-m-2.5 rounded-md p-2.5 text-gray-700"
-                            onClick={() => setMobileMenuOpen(false)}
-                        >
-                            <span className="sr-only">Close menu</span>
-                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                        </button>
-                    </div>
-                    <div className="mt-6 flow-root">
-                        <div className="-my-6 divide-y divide-gray-500/10">
-                            <div className="space-y-2 py-6">
-                                <Disclosure as="div" className="-mx-3">
-                                    {({ open }) => (
-                                        <>
-                                            <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                                                Product
-                                                <ChevronDownIcon
-                                                    className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 flex-none')}
-                                                    aria-hidden="true"
-                                                />
-                                            </Disclosure.Button>
-                                            <Disclosure.Panel className="mt-2 space-y-2">
-                                                {[...products, ...callsToAction].map((item) => (
-                                                    <Disclosure.Button
-                                                        key={item.name}
-                                                        as="a"
-                                                        href={item.href}
-                                                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                                    >
-                                                        {item.name}
-                                                    </Disclosure.Button>
-                                                ))}
-                                            </Disclosure.Panel>
-                                        </>
-                                    )}
-                                </Disclosure>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    Features
-                                </a>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    Marketplace
-                                </a>
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    Company
-                                </a>
-                            </div>
-                            <div className="py-6">
-                                <a
-                                    href="#"
-                                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                >
-                                    Log in
-                                </a>
                             </div>
                         </div>
                     </div>
-                </Dialog.Panel>
-            </Dialog>
+                </div>
+            </div>
         </header>
     )
 }
