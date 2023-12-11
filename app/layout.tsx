@@ -1,8 +1,7 @@
 'use client'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { useLocalStorage } from '@/lib/hooks/useLocalStorage'
-import LoginPage from './login/page'
+import Wrapper from '@/components/layout/Wrapper'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,15 +15,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode,
 }) {
-  // const { getItem } = useLocalStorage('token');
-  // const token = getItem();
-  // console.log(token)
-  // if (!token) return <LoginPage />
-
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
+        <Wrapper>
+          {children}
+        </Wrapper>
       </body>
     </html>
   )
