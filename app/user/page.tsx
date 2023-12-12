@@ -7,10 +7,9 @@ const UserPage = () => {
 
     const getUser = async () => {
         const usersResponse = await getUsers();
-        if (usersResponse.code === 'success') {
-            setUsers(usersResponse.data.data.list);
-        }
-        console.log(usersResponse)
+        if (usersResponse.code === 'error') return;
+        if (!Array.isArray(usersResponse.data.data.list)) return;
+        setUsers(usersResponse.data.data.list);
         return usersResponse;
     }
 

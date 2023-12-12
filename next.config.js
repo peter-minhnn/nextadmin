@@ -1,8 +1,4 @@
 /** @type {import('next').NextConfig} */
-
-const { NEXT_PUBLIC_ENV } = process.env;
-const CONFIG = require(`./api/configs/${NEXT_PUBLIC_ENV}`);
-
 const nextConfig = {
     reactStrictMode: false,
     eslint: {
@@ -14,14 +10,6 @@ const nextConfig = {
         serverActions: {
             bodySizeLimit: '2mb',
         },
-    },
-    async rewrites() {
-        return [
-            {
-                source: '/api/:path*',
-                destination: `${CONFIG.NEXT_PUBLIC_API_URL_BASE}/api/:path*`,
-            }
-        ];
     }
 }
 
