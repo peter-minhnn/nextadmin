@@ -1,11 +1,12 @@
 // 'use client'
-import { Inter } from 'next/font/google'
+import { Quicksand } from 'next/font/google'
 import './globals.css'
+import '@/styles/applications.scss'
 import '@/components/layout/ltr.css'
 import Wrapper from '@/components/layout/Wrapper'
 import { Metadata } from 'next'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Quicksand({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'HomePage',
@@ -19,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`main-body  ${inter.className}`}>
         <Wrapper>
           {children}
         </Wrapper>

@@ -947,7 +947,7 @@ HEADER
   }
 
   .navigation-header.hSticky-down .header_dropdown_content {
-    top: calc(100% + 10px);
+    top: calc(100% + 23px);
   }
 
   .main-header .header-wrap-logo {
@@ -1824,8 +1824,8 @@ HEADER
 
 @media screen and (min-width: 992px) {
   .header_dropdown_content {
-    top: calc(100% + 17px);
-    right: 0;
+    top: calc(100% + 23px);
+    right: -40px;
     left: auto;
     border-radius: 3px;
     -webkit-box-shadow: 0 1px 5px 2px rgba(0, 0, 0, 0.1);
