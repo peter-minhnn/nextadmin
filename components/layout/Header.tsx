@@ -3,6 +3,8 @@ import useOutsideAlerter from '@/lib/hooks/useOutsideAlerter'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import the FontAwesomeIcon component
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 type Inputs = {
     email: string
@@ -11,9 +13,12 @@ type Inputs = {
 
 export default function Header() {
     const clickOutSideRef = useRef<any>(null);
+    const accountPanelRef = useRef<any>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
     const [showSearchPopup, setShowSearchPopup] = useState<boolean>(false)
     const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
+    const [showRecoverPopup, setShowRecoverPopup] = useState<boolean>(false)
+    const [showCartPopup, setShowCartPopup] = useState<boolean>(false)
     const { isOutSide } = useOutsideAlerter(clickOutSideRef)
     const {
         register,
@@ -24,12 +29,12 @@ export default function Header() {
 
     const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
-    console.log(watch("email")) // watch input value by passing the name of it
-
     useEffect(() => {
         if (isOutSide) {
             setShowSearchPopup(false);
             setShowLoginPopup(false);
+            setShowRecoverPopup(false);
+            setShowCartPopup(false);
         }
     }, [isOutSide])
 
@@ -40,7 +45,7 @@ export default function Header() {
                     <div className='container'>
                         <div className='flexContainer-header'>
                             <div className={`col-md-4 header-wrap-menu-mb header-icon ${mobileMenuOpen ? 'show-action' : ''}`}>
-                                <div className="hidden-lg hidden-md">
+                                <div className="d-lg-none">
                                     <button style={{ outline: 'none', border: 'unset', backgroundColor: 'transparent' }} type='button' className="header-action-toggle site-handle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                                         <div className="hamburger-menu">
                                             <span className="bar"></span>
@@ -138,6 +143,7 @@ export default function Header() {
                                         onClick={() => {
                                             setShowSearchPopup(!showSearchPopup)
                                             setShowLoginPopup(false)
+                                            setShowCartPopup(false)
                                         }}
                                     >
                                         <span className="box-action-icon">
@@ -178,11 +184,12 @@ export default function Header() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={`header-icon header-action-search ${showLoginPopup ? 'show-action' : ''}`}>
+                                <div className={`header-icon header-action-account ${showLoginPopup ? 'show-action' : ''}`}>
                                     <Link
                                         onClick={() => {
                                             setShowLoginPopup(!showLoginPopup)
                                             setShowSearchPopup(false)
+                                            setShowCartPopup(false)
                                         }}
                                         id="site-account-handle" href="#" title="Tài khoản" className="header-action-toggle" arial-label="Tài khoản">
                                         <span className="box-action-icon">
@@ -201,8 +208,8 @@ export default function Header() {
                                             </svg>
                                         </span>
                                         <div className="site-nav-container text-center">
-                                            <div className="site_account_panel_list">
-                                                <div id="header-login-panel" className="site_account_panel site_account_default is-selected">
+                                            <div className="site_account_panel_list" style={{ height: `${accountPanelRef && accountPanelRef.current && showRecoverPopup ? accountPanelRef.current.clientHeight : 265}px` }}>
+                                                <div id="header-login-panel" className={`site_account_panel site_account_default ${!showRecoverPopup ? 'is-selected' : ''}`}>
                                                     <div className="site-account-list">
                                                         <form id="customer_login" onSubmit={handleSubmit(onSubmit)}>
                                                             <input name="form_type" type="hidden" value="customer_login" />
@@ -238,18 +245,18 @@ export default function Header() {
 
                                                             <div className="site_account_secondary-action">
                                                                 <p>Khách hàng mới?
-                                                                    <Link href="/account/register" className="link">Tạo tài khoản</Link>
-                                                                    <button aria-controls="header-register-panel" className="js-link link" >Tạo tài khoản</button>
+                                                                    <Link href="/account/register" className="link"> Tạo tài khoản</Link>
+                                                                    {/* <button aria-controls="header-register-panel" className="js-link link" >Tạo tài khoản</button> */}
                                                                 </p>
                                                                 <p>Quên mật khẩu?
-                                                                    <button aria-controls="header-recover-panel" className="js-link link">Khôi phục mật khẩu</button>
+                                                                    <button type='button' aria-controls="header-recover-panel" className="js-link link" onClick={() => setShowRecoverPopup(true)}>Khôi phục mật khẩu</button>
                                                                 </p>
                                                             </div>
                                                         </form>
                                                     </div>
                                                 </div>
-                                                <div id="header-recover-panel" className="site_account_panel site_account_sliding">
-                                                    <div className="site-account-list">
+                                                <div id="header-recover-panel" className={`site_account_panel site_account_sliding ${showRecoverPopup ? 'is-selected' : ''}`}>
+                                                    <div className="site-account-list" ref={accountPanelRef} >
                                                         <input name="form_type" type="hidden" value="recover_customer_password" />
                                                         <input name="utf8" type="hidden" value="✓" />
                                                         <div className="site_account_header">
@@ -264,7 +271,7 @@ export default function Header() {
 
                                                         <div className="site_account_secondary-action">
                                                             <p>Bạn đã nhớ mật khẩu?
-                                                                <button aria-controls="header-login-panel" className="js-link link">Trở về đăng nhập</button>
+                                                                <button aria-controls="header-login-panel" className="js-link link" onClick={() => setShowRecoverPopup(false)}>Trở về đăng nhập</button>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -273,7 +280,156 @@ export default function Header() {
                                         </div>
                                     </div>
                                 </div>
+                                <div className={`header-icon header-action-cart ${showCartPopup ? 'show-action' : ''}`}>
+                                    <Link
+                                        onClick={() => {
+                                            setShowCartPopup(!showCartPopup)
+                                            setShowSearchPopup(false)
+                                            setShowLoginPopup(false)
+                                            setShowRecoverPopup(false)
+                                        }}
+                                        id="site-cart-handle" href="#" title="Giỏ hàng" className="header-action-toggle" arial-label="Giỏ hàng"
+                                    >
+                                        <span className="box-action-icon">
+                                            <svg className="icon-svg svg-icon-cart" version="1.1" xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24">
+                                                <path d="M19 5h-14l1.5-2h11zM21.794 5.392l-2.994-3.992c-0.196-0.261-0.494-0.399-0.8-0.4h-12c-0.326 0-0.616 0.156-0.8 0.4l-2.994 3.992c-0.043 0.056-0.081 0.118-0.111 0.183-0.065 0.136-0.096 0.282-0.095 0.425v14c0 0.828 0.337 1.58 0.879 2.121s1.293 0.879 2.121 0.879h14c0.828 0 1.58-0.337 2.121-0.879s0.879-1.293 0.879-2.121v-14c0-0.219-0.071-0.422-0.189-0.585-0.004-0.005-0.007-0.010-0.011-0.015zM4 7h16v13c0 0.276-0.111 0.525-0.293 0.707s-0.431 0.293-0.707 0.293h-14c-0.276 0-0.525-0.111-0.707-0.293s-0.293-0.431-0.293-0.707zM15 10c0 0.829-0.335 1.577-0.879 2.121s-1.292 0.879-2.121 0.879-1.577-0.335-2.121-0.879-0.879-1.292-0.879-2.121c0-0.552-0.448-1-1-1s-1 0.448-1 1c0 1.38 0.561 2.632 1.464 3.536s2.156 1.464 3.536 1.464 2.632-0.561 3.536-1.464 1.464-2.156 1.464-3.536c0-0.552-0.448-1-1-1s-1 0.448-1 1z"></path>
+                                            </svg>
+                                            <span className="count-holder"><span className="count">0</span></span>
+                                            <span className="box-icon--close">
+                                                <svg viewBox="0 0 19 19"><path d="M9.1923882 8.39339828l7.7781745-7.7781746 1.4142136 1.41421357-7.7781746 7.77817459 7.7781746 7.77817456L16.9705627 19l-7.7781745-7.7781746L1.41421356 19 0 17.5857864l7.7781746-7.77817456L0 2.02943725 1.41421356.61522369 9.1923882 8.39339828z" fill="currentColor" fillRule="evenodd"></path></svg>
+                                            </span>
+                                        </span>
+                                    </Link>
+                                    <div className="header_dropdown_content site_cart">
+                                        <span className="box-triangle">
+                                            <svg viewBox="0 0 20 9">
+                                                <path d="M.47108938 9c.2694725-.26871321.57077721-.56867841.90388257-.89986354C3.12384116 6.36134886 5.74788116 3.76338565 9.2467995.30653888c.4145057-.4095171 1.0844277-.40860098 1.4977971.00205122L19.4935156 9H.47108938z" fill="#ffffff"></path>
+                                            </svg>
+                                        </span>
+                                        <div className="site-nav-container">
+                                            <p className="titlebox">Giỏ hàng</p>
+                                            <div className="cart-view clearfix">
+                                                <table id="clone-item-cart" className="table-clone-cart">
+                                                    <tbody><tr className="list-item hidden">
+                                                        <td className="img"><a href="" title=""><img src="" alt="" /></a></td>
+                                                        <td className="item">
+                                                            <a className="pro-title-view" href="" title=""></a>
+                                                            <span className="variant"></span>
+                                                            <span className="pro-quantity-view"> </span>
+                                                            <span className="pro-price-view"> </span>
+                                                            <span className="remove_link remove-cart"> </span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody></table>
+                                                <div className="cart-scroll">
+                                                    <table id="cart-view">
+                                                        <tbody><tr>
+                                                            <td className="mini_cart_header">
+                                                                <svg width="81" height="70" viewBox="0 0 81 70">
+                                                                    <g transform="translate(0 2)" strokeWidth="4" stroke="#333333" fill="none" fillRule="evenodd">
+                                                                        <circle strokeLinecap="square" cx="34" cy="60" r="6"></circle>
+                                                                        <circle strokeLinecap="square" cx="67" cy="60" r="6"></circle>
+                                                                        <path d="M22.9360352 15h54.8070373l-4.3391876 30H30.3387146L19.6676025 0H.99560547"></path>
+                                                                    </g>
+                                                                </svg>
+                                                                <p>Hiện chưa có sản phẩm</p>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody></table>
+                                                </div>
+                                                <span className="line"></span>
+                                                <table className="table-total">
+                                                    <tbody><tr>
+                                                        <td className="text-left">TỔNG TIỀN:</td>
+                                                        <td className="text-right" id="total-view-cart">0₫</td>
+                                                    </tr>
+                                                        <tr className="btn-linktocart">
+                                                            <td><a href="/cart" className="linktocart button dark">Xem giỏ hàng</a></td>
+                                                            <td><a href="/checkout" className="linktocheckout button drakpay">Thanh toán</a></td>
+                                                        </tr>
+                                                    </tbody></table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="header-menu-desktop d-none d-lg-block d-xl-block">
+                    <div className="container">
+                        <div className="header-navbar-menu">
+                            <div className="wrap-logo wrap-logo-sticky">
+                                <a href="/">
+                                    <img data-src="//theme.hstatic.net/200000518745/1000870107/14/logo.png?v=99" alt="BETI" className="img-responsive logoimg lazyload" />
+                                </a>
+                            </div>
+                            <div className="menu-desktop-sticky">
+                                <div id="nav-main-menu">
+                                    <nav className="main-nav text-center">
+                                        <ul className="clearfix">
+                                            <li className="active">
+                                                <a href="/" title="MAIN MENU">
+                                                    MAIN MENU
+                                                </a>
+                                            </li>
+                                            <li className="">
+                                                <a href="/collections/all" title="SHOP">
+                                                    SHOP <FontAwesomeIcon style={{ fontSize: "9px" }} icon={faChevronDown}></FontAwesomeIcon>
+                                                </a>
+                                                <ul className="sub_menu">
+                                                    <li className="">
+                                                        <a href="/collections/tee" title="T-SHIRT">
+                                                            T-SHIRT
+                                                        </a>
+                                                    </li>
+                                                    <li className="">
+                                                        <a href="/collections/hoodie" title="HOODIE">
+                                                            HOODIE
+                                                        </a>
+                                                    </li>
+                                                    <li className="">
+                                                        <a href="/collections/accessories" title="ACCESSORIES">
+                                                            ACCESSORIES
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li className="">
+                                                <a href="/blogs/news" title="BLOG">
+                                                    BLOG
+                                                </a>
+                                            </li>
+                                            <li className="">
+                                                <a href="https://www.instagram.com/ctstussy/" title="SOCIAL">
+                                                    SOCIAL
+                                                </a>
+                                            </li>
+                                            <li className="">
+                                                <a href="/pages/lien-he" title="CONTACT">
+                                                    CONTACT
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>					</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="header-search-mobile search-bar-mobile">
+                    <div className="search-box wpo-wrapper-search">
+                        <form action="/search" className="searchform searchform-categoris ultimate-search">
+                            <div className="wpo-search-inner">
+                                <input type="hidden" name="type" value="product" />
+                                <input required id="inputSearchAuto-mb" name="q" maxLength={40} autoComplete="off" className="searchinput input-search search-input" type="text" placeholder="Tìm kiếm sản phẩm..." />
+                            </div>
+                            <button type="submit" className="btn-search">
+                                <svg className="svg-search" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 27" style={{ background: 'new 0 0 24 27' }} xmlSpace="preserve"><path d="M10,2C4.5,2,0,6.5,0,12s4.5,10,10,10s10-4.5,10-10S15.5,2,10,2z M10,19c-3.9,0-7-3.1-7-7s3.1-7,7-7s7,3.1,7,7S13.9,19,10,19z"></path><rect x="17" y="17" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -9.2844 19.5856)" width="4" height="8"></rect></svg>
+                                <svg className="svg-search-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+                            </button>
+                        </form>
+                        <div id="ajaxSearchResults-mb" className="smart-search-wrapper ajaxSearchResults" style={{ display: 'none' }}>
+                            <div className="resultsContent"></div>
                         </div>
                     </div>
                 </div>
