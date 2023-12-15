@@ -5,8 +5,8 @@ import '@/styles/applications.scss'
 import '@/styles/ltr.css'
 import "@fortawesome/fontawesome-svg-core/styles.css" // import Font Awesome CSS
 import { config } from "@fortawesome/fontawesome-svg-core"
-import Wrapper from '@/components/layout/Wrapper'
 import { Metadata } from 'next'
+import { WrapperProvider } from '@/lib/context/WrapperContext'
 
 // const inter = Noticia_Text({ weight: '400', subsets: ['latin'] })
 const inter = Quicksand({ subsets: ['latin', 'vietnamese'] })
@@ -27,10 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`main-body ${inter.className}`}>
-        <Wrapper>
+      <body className={`main-body ${inter.className}`} suppressHydrationWarning>
+        <WrapperProvider>
           {children}
-        </Wrapper>
+        </WrapperProvider>
       </body>
     </html>
   )

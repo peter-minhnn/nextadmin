@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import the FontAwesomeIcon component
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { useWindowSize } from "@uidotdev/usehooks";
+import useWindowResize from '@/lib/hooks/useWindowResize'
 
 type Inputs = {
     email: string
@@ -14,13 +16,17 @@ type Inputs = {
 export default function Header() {
     const clickOutSideRef = useRef<any>(null);
     const accountPanelRef = useRef<any>(null);
+    const headerRef = useRef<any>(null);
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
     const [showSearchPopup, setShowSearchPopup] = useState<boolean>(false)
     const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
     const [showRecoverPopup, setShowRecoverPopup] = useState<boolean>(false)
     const [showCartPopup, setShowCartPopup] = useState<boolean>(false)
+    const [navChildOpen, setNavChildOpen] = useState<boolean>(false)
     const [navbar, setNavbar] = useState(false);
     const { isOutSide } = useOutsideAlerter(clickOutSideRef)
+    const { width, height } = useWindowResize(headerRef);
+
     const {
         register,
         handleSubmit,
@@ -53,8 +59,8 @@ export default function Header() {
     })
 
     return (
-        <header className={`main-header mainHeader_temp_2 ${(mobileMenuOpen || showLoginPopup || showRecoverPopup || showCartPopup) ? 'locked-scroll' : ''}`} style={{ minHeight: 120 }}>
-            <div className={`navigation-header ${navbar && 'hSticky hSticky-up'}`}>
+        <header className={`main-header mainHeader_temp_2 ${(mobileMenuOpen || showLoginPopup || showRecoverPopup || showCartPopup) ? 'locked-scroll' : ''}`} style={{ minHeight: `${height > 0 ? height : 120}px` }}>
+            <div ref={headerRef} className={`navigation-header ${navbar && 'hSticky hSticky-up'}`}>
                 <div className='header-middle'>
                     <div className='container'>
                         <div className='flexContainer-header'>
@@ -75,12 +81,12 @@ export default function Header() {
                                             <div className="menu-mobile-content">
                                                 <nav id="mb-menu" className="navbar-mainmenu">
                                                     <div className="navbar-level" data-level="1">
-                                                        <ul className="menuList-sub vertical-menu-list sub-child">
+                                                        <ul className={`menuList-sub vertical-menu-list sub-child ${navChildOpen && 'mm-subopened'}`}>
                                                             <li className="active">
                                                                 <Link className="parent" href="/">MAIN MENU</Link>
                                                             </li>
                                                             <li className="" data-menu-root="104326217">
-                                                                <Link className="parent" href="/collections/all">SHOP
+                                                                <Link href={'#'} className="parent" onClick={() => setNavChildOpen(true)}>SHOP
                                                                     <i className="svg-right">
                                                                         <svg className="icon icon--arrow-right" viewBox="0 0 8 12">
                                                                             <path stroke="currentColor" strokeWidth="2" d="M2 2l4 4-4 4" fill="none" strokeLinecap="square"></path>
@@ -123,8 +129,8 @@ export default function Header() {
                                                                 </div>
                                                             </li>
                                                         </ul>
-                                                        <ul className="menuList-sub sub-child-1" id="104326217">
-                                                            <li><Link href="#"><i className="fa fa-angle-left" aria-hidden="true"></i>Quay về</Link></li>
+                                                        <ul className={`menuList-sub sub-child-1 ${navChildOpen && 'mm-opened'}`} id="104326217">
+                                                            <li><Link href={'#'} onClick={() => setNavChildOpen(false)}><i className="fa fa-angle-left" aria-hidden="true"></i>Quay về</Link></li>
                                                             <li><Link href="/collections/all"><b>Xem tất cả "SHOP"</b></Link></li>
                                                             <li className="">
                                                                 <Link href="/collections/tee"><span>- </span>T-SHIRT</Link>
