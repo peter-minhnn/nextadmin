@@ -19,6 +19,7 @@ export default function Header() {
     const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
     const [showRecoverPopup, setShowRecoverPopup] = useState<boolean>(false)
     const [showCartPopup, setShowCartPopup] = useState<boolean>(false)
+    const [navbar, setNavbar] = useState(false);
     const { isOutSide } = useOutsideAlerter(clickOutSideRef)
     const {
         register,
@@ -29,6 +30,11 @@ export default function Header() {
 
     const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
+    const handleScrollEvent = () => {
+        if (window.scrollY >= 70) setNavbar(true);
+        else setNavbar(false);
+    }
+
     useEffect(() => {
         if (isOutSide) {
             setShowSearchPopup(false);
@@ -38,13 +44,21 @@ export default function Header() {
         }
     }, [isOutSide])
 
+    useEffect(() => {
+        window.addEventListener('scroll', handleScrollEvent);
+
+        return () => {
+            window.removeEventListener('scroll', handleScrollEvent);
+        }
+    })
+
     return (
-        <header className='main-header mainHeader_temp_2 ' style={{ minHeight: 120 }}>
-            <div className='navigation-header'>
+        <header className={`main-header mainHeader_temp_2 ${(mobileMenuOpen || showLoginPopup || showRecoverPopup || showCartPopup) ? 'locked-scroll' : ''}`} style={{ minHeight: 120 }}>
+            <div className={`navigation-header ${navbar && 'hSticky hSticky-up'}`}>
                 <div className='header-middle'>
                     <div className='container'>
                         <div className='flexContainer-header'>
-                            <div className={`col-md-4 header-wrap-menu-mb header-icon ${mobileMenuOpen ? 'show-action' : ''}`}>
+                            <div className={`col-md-4 header-wrap-menu-mb header-icon ${mobileMenuOpen && 'show-action'}`}>
                                 <div className="d-lg-none">
                                     <button style={{ outline: 'none', border: 'unset', backgroundColor: 'transparent' }} type='button' className="header-action-toggle site-handle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
                                         <div className="hamburger-menu">
@@ -138,7 +152,7 @@ export default function Header() {
                                 </div>
                             </div>
                             <div ref={clickOutSideRef} className='col-md-4 header-wrap-icon'>
-                                <div className={`header-icon header-action-search ${showSearchPopup ? 'show-action' : ''}`}>
+                                <div className={`header-icon header-action-search ${showSearchPopup && 'show-action'}`}>
                                     <Link id="site-search-handle" href="#" title="Search" className="header-action-toggle" arial-label="Search header"
                                         onClick={() => {
                                             setShowSearchPopup(!showSearchPopup)
@@ -184,7 +198,7 @@ export default function Header() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={`header-icon header-action-account ${showLoginPopup ? 'show-action' : ''}`}>
+                                <div className={`header-icon header-action-account ${showLoginPopup && 'show-action'}`}>
                                     <Link
                                         onClick={() => {
                                             setShowLoginPopup(!showLoginPopup)
@@ -280,7 +294,7 @@ export default function Header() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={`header-icon header-action-cart ${showCartPopup ? 'show-action' : ''}`}>
+                                <div className={`header-icon header-action-cart ${showCartPopup && 'show-action'}`}>
                                     <Link
                                         onClick={() => {
                                             setShowCartPopup(!showCartPopup)

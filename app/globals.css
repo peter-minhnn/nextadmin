@@ -1713,6 +1713,7 @@ HEADER
   font-size: 14px;
   font-weight: 700;
   color: #333;
+  text-decoration: none;
 }
 
 #mb-menu .menuList-sub li a i.svg-right {
@@ -5253,6 +5254,14 @@ ABOUT - CONTACT
   padding-bottom: 30px;
 }
 
+.wrapbox-content-page p {
+  font-size: 1.5rem;
+}
+
+.wrapbox-content-page ul li {
+  font-size: 1.5rem;
+}
+
 .sidebar-page .group-menu {
   margin: 0 0 30px;
   position: relative;
@@ -6286,7 +6295,7 @@ FOOTER
 }
 
 .footer h4 {
-  font-size: 20px;
+  font-size: 2rem;
   letter-spacing: 0.02em;
   margin: 0 0 20px;
   position: relative;
@@ -6294,8 +6303,13 @@ FOOTER
   color: #ffffff;
 }
 
+.footer-content p {
+  font-size: 1.5rem;
+}
+
 .footer-content ul {
   margin-bottom: 15px;
+  padding-left: 0;
 }
 
 .footer-content ul li {
@@ -6309,6 +6323,8 @@ FOOTER
   position: relative;
   overflow: hidden;
   color: #9f9f9f;
+  text-decoration: none;
+  font-size: 1.5rem;
 }
 
 .footer-contact ul li {
@@ -6489,9 +6505,10 @@ FOOTER
   margin-left: 5px;
 }
 
-.mainFooter .collapse {
-  display: block;
-  visibility: visible;
+.mainFooter {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 
 .mainFooter .title-expand {
@@ -9190,10 +9207,10 @@ RESPONSIVE
   .main-footer {
     padding: 20px 0;
   }
-
+/* 
   .main-footer .footer-content {
     display: none;
-  }
+  } */
 
   .main-footer .footer-col {
     border-bottom: 1px solid;
@@ -9204,13 +9221,11 @@ RESPONSIVE
   .main-footer .footer-title {
     position: relative;
     padding: 12px 0;
-    font-size: 14px;
-    color: #9f9f9f;
     text-transform: uppercase;
     margin: 0px;
   }
 
-  .main-footer h4.footer-title:before {
+  /* .main-footer h4.footer-title:before {
     content: "\f107";
     font-family: "FontAwesome";
     font-size: 14px;
@@ -9219,7 +9234,7 @@ RESPONSIVE
     top: 0px;
     right: 5px;
     text-align: center;
-  }
+  } */
 
   .main-footer h4.footer-title.active {
     color: #fff;

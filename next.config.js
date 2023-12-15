@@ -10,6 +10,14 @@ const nextConfig = {
         serverActions: {
             bodySizeLimit: '2mb',
         },
+    },
+    async rewrites() {
+        return [
+            {
+              source: '/return-policy',
+              destination: 'http://localhost:3000/chinh-sach-doi-tra',
+            },
+          ]
     }
 }
 
