@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import the FontAwesomeIcon component
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { useWindowSize } from "@uidotdev/usehooks";
 import useWindowResize from '@/lib/hooks/useWindowResize'
 
 type Inputs = {
@@ -60,7 +59,7 @@ export default function Header() {
 
     return (
         <header className={`main-header mainHeader_temp_2 ${(mobileMenuOpen || showLoginPopup || showRecoverPopup || showCartPopup) ? 'locked-scroll' : ''}`} style={{ minHeight: `${height > 0 ? height : 120}px` }}>
-            <div ref={headerRef} className={`navigation-header ${navbar && 'hSticky hSticky-up'}`}>
+            <div ref={headerRef} className={`navigation-header ${navbar && 'hSticky hSticky-down'}`}>
                 <div className='header-middle'>
                     <div className='container'>
                         <div className='flexContainer-header'>

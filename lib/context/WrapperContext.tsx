@@ -52,7 +52,7 @@ export function WrapperProvider({ children }: ProviderProps) {
         >
             <Header />
             <main className="mainContainer_theme">
-                <Breadcrumb breadcrumbArr={['Trang Chủ', 'Danh mục', 'Tất cả sản phẩm']}/>
+                {breadcrumb.length ? <Breadcrumb breadcrumbArr={['Trang Chủ', 'Danh mục', 'Tất cả sản phẩm']}/> : null}
                 {children}
             </main>
             <LoadingBar color={'#2998ff'} ref={ref} />

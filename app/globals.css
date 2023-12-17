@@ -2446,7 +2446,7 @@ INDEX
   font-size: 13px;
 }
 
-.product-horizontal .pro-loop .product-detail p.pro-price spanpro-price-del {
+.product-horizontal .pro-loop .product-detail p.pro-price span.pro-price-del {
   font-size: 11px;
 }
 
@@ -2547,11 +2547,16 @@ INDEX
 }
 
 /*------------------------- PRODUCT ITEM-------------------------*/
+.content-product-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .pro-loop {
   display: block;
   position: relative;
   overflow: hidden;
-  height: 100%;
+  /* height: 100%; */
   background: #fff;
   margin-bottom: 20px;
 }
@@ -2562,6 +2567,10 @@ INDEX
 
 .pro-loop .product-detail {
   padding: 10px 0 0 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 .pro-loop .product-img {
@@ -2611,7 +2620,7 @@ INDEX
   line-height: 16px;
   overflow: hidden;
   -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
+  /* -webkit-box-orient: vertical; */
   display: -webkit-box;
   color: #666666;
 }
@@ -2629,13 +2638,14 @@ p.pro-price {
 
 p.pro-price.highlight {
   color: #f94c43;
+  text-align: left;
 }
 
-p.pro-price spancontact {
+p.pro-price span.contact {
   color: #f94c43;
 }
 
-p.pro-price spanpro-price-del {
+p.pro-price span.pro-price-del {
   color: #939393;
   font-size: 13px;
   margin-left: 5px;
@@ -3111,14 +3121,14 @@ PRODUCT DETAIL
   padding: 10px 0;
 }
 
-.product-price spanpro-price {
+.product-price span.pro-price {
   font-size: 18px;
   opacity: .92;
   font-weight: bold;
   color: red;
 }
 
-.product-price spanpro-sale {
+.product-price span.pro-sale {
   display: inline-block;
   padding: 5px 15px;
   margin-right: 10px;
@@ -3750,154 +3760,154 @@ label[for="product-select-option-2"] {
 
 
 
-.color.swatch-element labelnau span {
+.color.swatch-element label .nau span {
   background: #8b572a;
 }
 
-.variantColor spannau {
+.variantColor span .nau {
   background: #8b572a;
 }
 
 
 
 
-.color.swatch-element labelkem span {
+.color.swatch-element label .kem span {
   background: #e0d5b6;
 }
 
-.variantColor spankem {
+.variantColor span .kem {
   background: #e0d5b6;
 }
 
 
 
 
-.color.swatch-element labelxam span {
+.color.swatch-element label .xam span {
   background: #d2dae2;
 }
 
-.variantColor spanxam {
+.variantColor span .xam {
   background: #d2dae2;
 }
 
 
 
 
-.color.swatch-element labelxanh span {
+.color.swatch-element label .xanh span {
   background: #3c40c6;
 }
 
-.variantColor spanxanh {
+.variantColor span .xanh {
   background: #3c40c6;
 }
 
 
 
 
-.color.swatch-element labelxanh-la span {
+.color.swatch-element label .xanh-la span {
   background: #0be881;
 }
 
-.variantColor spanxanh-la {
+.variantColor span .xanh-la {
   background: #0be881;
 }
 
 
 
 
-.color.swatch-element labelsen span {
+.color.swatch-element label .sen span {
   background: #f53b57;
 }
 
-.variantColor spansen {
+.variantColor span .sen {
   background: #f53b57;
 }
 
 
 
 
-.color.swatch-element labelxanh-bien span {
+.color.swatch-element label .xanh-bien span {
   background: #0fbcf9;
 }
 
-.variantColor spanxanh-bien {
+.variantColor span .xanh-bien {
   background: #0fbcf9;
 }
 
 
 
 
-.color.swatch-element labelden span {
+.color.swatch-element label .den span {
   background: #000000;
 }
 
-.variantColor spanden {
+.variantColor span .den {
   background: #000000;
 }
 
 
 
 
-.color.swatch-element labeltrang span {
+.color.swatch-element label .trang span {
   background: #ffffff;
 }
 
-.variantColor spantrang {
+.variantColor span .trang {
   background: #ffffff;
 }
 
 
 
 
-.color.swatch-element labeldo span {
+.color.swatch-element label .do span {
   background: #ff3f34;
 }
 
-.variantColor spando {
+.variantColor span .do {
   background: #ff3f34;
 }
 
 
 
 
-.color.swatch-element labeltim span {
+.color.swatch-element label .tim span {
   background: #a55eea;
 }
 
-.variantColor spantim {
+.variantColor span .tim {
   background: #a55eea;
 }
 
 
 
 
-.color.swatch-element labelxanh-la span {
+.color.swatch-element label .xanh-la span {
   background: #4f9235;
 }
 
-.variantColor spanxanh-la {
+.variantColor span .xanh-la {
   background: #4f9235;
 }
 
 
 
 
-.color.swatch-element labelblue span {
+.color.swatch-element label .blue span {
   background: #0c2461;
 }
 
-.variantColor spanblue {
+.variantColor span .blue {
   background: #0c2461;
 }
 
 
 
 
-.color.swatch-element labelcam span {
+.color.swatch-element label .cam span {
   background: #fa8231;
 }
 
-.variantColor spancam {
+.variantColor span .cam {
   background: #fa8231;
 }
 
@@ -4473,7 +4483,7 @@ COLLECTION
   padding-right: 30px
 }
 
-.menuList-links>li.has-submenu spanicon-plus-submenu {
+.menuList-links>li.has-submenu span .icon-plus-submenu {
   width: 25px;
   height: 25px;
   cursor: pointer;
@@ -4580,7 +4590,7 @@ li.has-submenu.level2>ul.submenu-links li a {
   font-size: 14px;
 }
 
-.layered spanicon-control {
+.layered span .icon-control {
   position: relative;
   top: -2px;
   left: 5px;
@@ -5141,7 +5151,7 @@ ul.article-info-more li i {
   overflow: hidden;
 }
 
-.list-news-latest .item-article .post-content spanauthor {
+.list-news-latest .item-article .post-content span .author {
   font-size: 12px;
 }
 
@@ -5394,7 +5404,7 @@ table.table-cart tr td.item .price {
   float: right;
 }
 
-table.table-cart tr td.item .price spantext {
+table.table-cart tr td.item .price span .text {
   display: none;
 }
 
@@ -6110,7 +6120,7 @@ a#view_address {
   background-color: #fbfbfb;
 }
 
-spanvariant_acc {
+span.variant_acc {
   font-size: 13px;
   opacity: 0.8;
 }
@@ -6163,7 +6173,7 @@ p.address_actions.text-right {
   font-size: 15px;
 }
 
-spanaction_link {
+span .action_link {
   padding: 5px;
 }
 
@@ -6895,7 +6905,7 @@ form.searchform input:focus {
   text-rendering: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  content: '\f00e';
+  /* content: '\f00e'; */
 }
 
 .btnProductQuickview {
@@ -6907,7 +6917,7 @@ form.searchform input:focus {
   margin: auto;
   width: 45px;
   height: 45px;
-  line-height: 43px;
+  line-height: 50px;
   padding: 0;
   z-index: 9;
   border-radius: 50%;
@@ -7234,7 +7244,7 @@ body.open-filter #site-overlay {
   padding: 0;
 }
 
-.pagination>li>spancurrent {
+.pagination>li>span .current {
   background-color: #000;
   border-color: #000;
   color: #fff;
@@ -9144,7 +9154,7 @@ RESPONSIVE
     margin-top: 2px;
   }
 
-  table.table-cart tr td.item .price spantext {
+  table.table-cart tr td.item .price span .text {
     display: inline-block;
     font-size: 12px;
   }
@@ -9207,7 +9217,8 @@ RESPONSIVE
   .main-footer {
     padding: 20px 0;
   }
-/* 
+
+  /* 
   .main-footer .footer-content {
     display: none;
   } */
@@ -9345,6 +9356,12 @@ RESPONSIVE
 
 .sitebox-recaptcha a {
   color: #2962ff;
+}
+
+@media screen and (max-width: 480px) {
+  .content-product-list .pro-loop {
+    width: 100%;
+  }
 }
 
 /*  */
