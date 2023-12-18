@@ -6,7 +6,7 @@ const BreadcrumbLayout = ({ breadcrumbArr }: { breadcrumbArr: string[] }) => {
         <>
             <div className="breadcrumb-shop clearfix">
                 <div className="container">
-                    <div className="">
+                    <div>
                         <Breadcrumb className='breadcrumb breadcrumb-arrows'>
                             {breadcrumbArr.length ?
                                 breadcrumbArr.map((el, i) => (

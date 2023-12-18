@@ -3,12 +3,11 @@ import useOutsideAlerter from '@/lib/hooks/useOutsideAlerter'
 import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import the FontAwesomeIcon component
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import useWindowResize from '@/lib/hooks/useWindowResize'
 import useTrans from '@/lib/hooks/useTrans'
 import useLanguage from '@/lib/hooks/useLanguages'
-import { useRouter, usePathname } from 'next/navigation'
 import { useLocalStorage } from '@/lib/hooks/useLocalStorage'
 import { useWrapperContext } from '@/lib/context/WrapperContext'
 
@@ -34,7 +33,7 @@ export default function Header() {
     const { currentLang } = useLanguage()
     const { getItem, setItem: setLangLocalStorage } = useLocalStorage('lang')
     const context = useWrapperContext();
-    
+
     const {
         register,
         handleSubmit,
@@ -91,7 +90,7 @@ export default function Header() {
         if (!lang) return;
         setLangLocalStorage(lang);
         setShowLoginPopup(false);
-        context.contextValue({ language: lang});
+        context.contextValue({ language: lang });
     }, [currentLang, showLoginPopup])
 
     // useEffect(() => {console.log(showLoginPopup)}, [currentLang, language, showLoginPopup])

@@ -1,6 +1,6 @@
 'use client'
 import Banner from '@/components/home/Banner';
-import Collection from '@/components/home/Collection';
+import Collection from '@/components/home/FilterCollection';
 import { useWrapperContext } from '@/lib/context/WrapperContext';
 import useLanguage from '@/lib/hooks/useLanguages';
 import useTrans from '@/lib/hooks/useTrans';
@@ -14,7 +14,7 @@ const HomePage = () => {
   const { currentLang } = useLanguage()
 
   useEffect(() => {
-    context.contextValue({ breadcrumb: [], path: '', pageTitle: trans.home.title })
+    context.contextValue({ breadcrumb: [], path: '', pageTitle: trans.seoTitle.home })
   }, [currentLang])
 
   return (
@@ -24,7 +24,7 @@ const HomePage = () => {
           <div className="owl-stage-outer"><div className="owl-stage" style={{ width: `${size}px`, transform: 'translate3d(0px, 0px, 0px)', transition: 'all 0s ease 0s' }}>
             <div className="owl-item active" style={{ width: `${size}px` }}>
               <div className="item">
-                <a href="/collections/all" aria-label="TẤT CẢ SẢN PHẨM">
+                <a href="/collections" aria-label="TẤT CẢ SẢN PHẨM">
                   <img title="TẤT CẢ SẢN PHẨM" alt="TẤT CẢ SẢN PHẨM" src="//theme.hstatic.net/200000518745/1000870107/14/slideshow_1.jpg?v=99" />
                 </a>
               </div>

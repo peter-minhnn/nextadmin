@@ -9,7 +9,7 @@ const Seo = ({ pageTitle }: SeoProps) => {
         <>
             <title>
                 {pageTitle &&
-                    `${pageTitle} | BeTi Store`}
+                    `${pageTitle} - BETI STORE`}
             </title>
         </>
     )

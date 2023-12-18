@@ -21,11 +21,9 @@ export default function RootLayout({
 
   return (
     <html lang={currentLang}>
-      <body className={`main-body ${inter.className}`} suppressHydrationWarning>
-        <WrapperProvider>
+      <WrapperProvider>
           {children}
         </WrapperProvider>
-      </body>
     </html>
   )
 }

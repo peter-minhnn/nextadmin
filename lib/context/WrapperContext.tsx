@@ -5,15 +5,14 @@ import Header from "@/components/layout/Header";
 import Seo from "@/components/layout/Seo";
 import { ReactNode, createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
-import useLanguage from "../hooks/useLanguages";
-import { useRouter, usePathname } from "next/navigation";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { Quicksand } from 'next/font/google'
 
 export interface ContextProps {
     path?: string;
     breadcrumb?: string[];
     pageTitle?: string;
     language?: string;
+    bodyClass?: string;
 }
 
 type ProviderProps = {
@@ -24,8 +23,10 @@ type ContextTypes = {
     contextValue: (value: ContextProps) => void;
     setLoading: (loading: boolean) => void;
     breadcrumb: string[];
-    language: string;
+    language?: string;
 }
+
+const inter = Quicksand({ subsets: ['latin', 'vietnamese'] })
 
 export const WrapperContext = createContext<ContextTypes | null>(null);
 
@@ -40,6 +41,7 @@ export function WrapperProvider({ children }: ProviderProps) {
     const [path, setPath] = useState<string>('/');
     const [pageTitle, setPageTitle] = useState<string>('');
     const [language, setLanguage] = useState<string>('');
+    const [bodyClass, setBodyClass] = useState<string>('');
     const [breadcrumb, setBreadcrumb] = useState<string[]>([]);
 
     const contextValue = useCallback((params: ContextProps) => {
@@ -47,12 +49,15 @@ export function WrapperProvider({ children }: ProviderProps) {
         params.breadcrumb && setBreadcrumb(params.breadcrumb)
         params.pageTitle && setPageTitle(params.pageTitle)
         params.language && setLanguage(params.language)
-    }, [path, breadcrumb, pageTitle, language]);
+        setBodyClass(params.bodyClass ?? '')
+    }, [path, breadcrumb, pageTitle, language, bodyClass]);
 
     const setLoading = useCallback((loading: boolean = false) => {
         loading && ref.current && ref.current.continuousStart();
         !loading && ref.current && ref.current.complete();
     }, []);
+
+    useEffect(() => { }, [bodyClass])
 
     return (
         <WrapperContext.Provider
@@ -63,14 +68,16 @@ export function WrapperProvider({ children }: ProviderProps) {
                 language
             }}
         >
-            <Seo pageTitle={pageTitle} />
-            <Header />
-            <main className="mainContainer_theme">
-                {breadcrumb.length ? <Breadcrumb breadcrumbArr={['Trang Chủ', 'Danh mục', 'Tất cả sản phẩm']} /> : null}
-                {children}
-            </main>
-            <Footer />
-            <LoadingBar color={'#2998ff'} ref={ref} />
+            <body className={`main-body ${inter.className} ${bodyClass}`} suppressHydrationWarning>
+                <Seo pageTitle={pageTitle} />
+                <Header />
+                <main className="mainContainer_theme">
+                    {breadcrumb.length ? <Breadcrumb breadcrumbArr={['Trang Chủ', 'Danh mục', 'Tất cả sản phẩm']} /> : null}
+                    {children}
+                </main>
+                <Footer />
+                <LoadingBar color={'#2998ff'} ref={ref} />
+            </body>
         </WrapperContext.Provider>
     )
 }

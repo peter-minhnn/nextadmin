@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import the FontAwesomeIcon component
 import { faSearchPlus } from "@fortawesome/free-solid-svg-icons";
 
-export default function Collection() {
+export default function FilterCollection() {
     return (
         <section id="section-collection-home" className="section section-collection">
             <div className="wrapper-heading-home  text-center">

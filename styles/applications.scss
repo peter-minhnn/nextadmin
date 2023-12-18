@@ -1,4 +1,10 @@
 @import '~bootstrap/scss/bootstrap';
+
+
+ol {
+    margin-bottom: 0 !important;
+}
+
 $color-primary: #3498DB;
 $color-dark: #313436;
 
@@ -128,10 +134,10 @@ $color-dark: #313436;
             transform: translateX(0);
             opacity: 1;
         }
-        
+
         & span {
             padding-left: .5rem;
-            font-size: 1.5rem;
+            // font-size: 1.5rem;
         }
     }
 }
@@ -163,4 +169,8 @@ $color-dark: #313436;
     transform: scale(9);
     // transition: all .3s ease-out;
     // opacity: 1;
+}
+
+.layered-content ul {
+    padding-left: 0;
 }
