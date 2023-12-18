@@ -1806,7 +1806,8 @@ HEADER
 }
 
 .header_dropdown_content.site_search .box-triangle {
-  right: 95px;
+  /* right: 95px; */
+  right: 16px;
 }
 
 @media screen and (min-width: 992px) {
@@ -6302,6 +6303,7 @@ FOOTER
 .bottom-footer a {
   margin-bottom: 0;
   color: #9f9f9f;
+  font-size: 1.5rem;
 }
 
 .footer h4 {
@@ -6516,9 +6518,10 @@ FOOTER
 }
 
 .mainFooter {
-  position: fixed;
-  bottom: 0;
+  /* position: fixed; */
+  /* bottom: 0; */
   width: 100%;
+  /* z-index: 99; */
 }
 
 .mainFooter .title-expand {

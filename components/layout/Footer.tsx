@@ -35,12 +35,6 @@ const Footer = () => {
                                                 <a href="/return-policy" title="Chính sách đổi trả">Chính sách đổi trả</a>
                                             </li>
                                             <li className="item">
-                                                <a href="/pages/chinh-sach-bao-mat" title="Chính sách bảo mật">Chính sách bảo mật</a>
-                                            </li>
-                                            <li className="item">
-                                                <a href="/pages/dieu-khoan-dich-vu" title="Điều khoản dịch vụ">Điều khoản dịch vụ</a>
-                                            </li>
-                                            <li className="item">
                                                 <a href="/pages/lien-he" title="Liên hệ">Liên hệ</a>
                                             </li>
 

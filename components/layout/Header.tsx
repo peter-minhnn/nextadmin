@@ -1,11 +1,16 @@
 'use client'
 import useOutsideAlerter from '@/lib/hooks/useOutsideAlerter'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import the FontAwesomeIcon component
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import useWindowResize from '@/lib/hooks/useWindowResize'
+import useTrans from '@/lib/hooks/useTrans'
+import useLanguage from '@/lib/hooks/useLanguages'
+import { useRouter, usePathname } from 'next/navigation'
+import { useLocalStorage } from '@/lib/hooks/useLocalStorage'
+import { useWrapperContext } from '@/lib/context/WrapperContext'
 
 type Inputs = {
     email: string
@@ -13,19 +18,23 @@ type Inputs = {
 }
 
 export default function Header() {
-    const clickOutSideRef = useRef<any>(null);
-    const accountPanelRef = useRef<any>(null);
-    const headerRef = useRef<any>(null);
+    const clickOutSideRef = useRef<any>(null)
+    // const accountPanelRef = useRef<any>(null)
+    const headerRef = useRef<any>(null)
     const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false)
     const [showSearchPopup, setShowSearchPopup] = useState<boolean>(false)
     const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false)
     const [showRecoverPopup, setShowRecoverPopup] = useState<boolean>(false)
     const [showCartPopup, setShowCartPopup] = useState<boolean>(false)
     const [navChildOpen, setNavChildOpen] = useState<boolean>(false)
-    const [navbar, setNavbar] = useState(false);
+    const [navbar, setNavbar] = useState(false)
     const { isOutSide } = useOutsideAlerter(clickOutSideRef)
-    const { width, height } = useWindowResize(headerRef);
-
+    const { width, height } = useWindowResize(headerRef)
+    const trans = useTrans()
+    const { currentLang } = useLanguage()
+    const { getItem, setItem: setLangLocalStorage } = useLocalStorage('lang')
+    const context = useWrapperContext();
+    
     const {
         register,
         handleSubmit,
@@ -39,6 +48,53 @@ export default function Header() {
         if (window.scrollY >= 70) setNavbar(true);
         else setNavbar(false);
     }
+
+    const renderSelectLanguage = useMemo(() => {
+        if (!currentLang) return;
+        return (
+            <>
+                {currentLang === 'en' && (
+                    <div className='d-flex justify-content-center align-items-center column-gap-2'>
+                        <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-us" viewBox="0 0 512 512" width={25} height={20}>
+                            <g fillRule="evenodd">
+                                <g strokeWidth="1pt">
+                                    <path fill="#bd3d44" d="M0 0h972.8v39.4H0zm0 78.8h972.8v39.4H0zm0 78.7h972.8V197H0zm0 78.8h972.8v39.4H0zm0 78.8h972.8v39.4H0zm0 78.7h972.8v39.4H0zm0 78.8h972.8V512H0z" />
+                                    <path fill="#fff" d="M0 39.4h972.8v39.4H0zm0 78.8h972.8v39.3H0zm0 78.7h972.8v39.4H0zm0 78.8h972.8V315H0zm0 78.8h972.8v39.3H0zm0 78.7h972.8v39.4H0z" />
+                                </g>
+                                <path fill="#192f5d" d="M0 0h389.1v275.7H0z" />
+                                <path fill="#fff" d="m32.3 11.8 4 11h11l-9.1 6.7 3.5 10.7-9.4-6.7-8.7 6.7 3.6-10.7-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9.4 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.7-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9.4 6.7 3.9 10.7-9.9-6.7-9 6.7 3.5-10.7-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.7-9.5-6.7-9.4 6.7 4-10.7-9.5-6.7h11.4zm-292 27.6 3.6 11H80l-9.5 6.7 4 10.6L65 61l-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.7 0 4 11h11l-9.1 6.7 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9.4 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7H191zm65 0 3.5 11h11.4l-9.4 6.7 3.9 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.8zM32.7 67l3.1 11h11.9l-9.5 6.7 3.5 10.6-9.4-6.7-8.7 6.7 3.6-10.6-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.6-9.4-6.7-9.1 6.7 3.5-10.6L212 78h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6L277 78h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7h11.4zm-292 27.5 3.6 11H80l-9.5 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.6h11.4zm64.7 0 4 11h11l-9.1 6.7L139 123l-9.4-6.7-9 6.7 3.5-10.7-9.5-6.6h11.8zm65 0 3.5 11h11.4l-9 6.7L204 123l-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.6H191zm65 0 3.5 11h11.4l-9.4 6.7L269 123l-9.5-6.7-9.4 6.7 4-10.7-9.5-6.6H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.7-9.5-6.7-9 6.7 3.5-10.7-9.4-6.6h11.8zM32.7 122.1l3.1 11h11.9l-9.5 6.7 3.5 10.7-9.4-6.7-8.7 6.7 3.6-10.7-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.7 3.5 10.7-9.4-6.7-9 6.7 3.5-10.7-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.7-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.7-9.5-6.7-9 6.7 3.5-10.7-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.7-9.5-6.7-9.4 6.7 4-10.7-9.5-6.7h11.4zm-292 27.6 3.6 11H80l-9.5 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.7 0 4 11h11l-9.1 6.7L139 178l-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7L204 178l-9.4-6.7-9.1 6.7 3.5-10.6-9.4-6.7H191zm65 0 3.5 11h11.4l-9.4 6.7L269 178l-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.8zM32.7 177.2l3.1 11h11.9l-9.5 6.8 3.5 10.6-9.4-6.7-8.7 6.7 3.6-10.6-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.8 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.8 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.8 3.5 10.6-9.4-6.7-9.1 6.7 3.5-10.6-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9 6.8 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.8 4 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7h11.4zm-292 27.6 3.6 11H80l-9.5 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm64.7 0 4 11h11l-9.1 6.7 3.5 10.7-9.4-6.7-9 6.7 3.5-10.7-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.7-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.7H191zm65 0 3.5 11h11.4l-9.4 6.7 3.9 10.7-9.5-6.7-9.4 6.7 4-10.7-9.5-6.7H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.7-9.5-6.7-9 6.7 3.5-10.7-9.4-6.7h11.8zM32.7 232.4l3.1 11h11.9l-9.5 6.7 3.5 10.6-9.4-6.7-8.7 6.7 3.6-10.6-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.6-9.4-6.7-9.1 6.7 3.5-10.6-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7h11.4z" />
+                            </g>
+                        </svg>
+                    </div>
+                )}
+
+                {currentLang === 'vi' && (
+                    <div className='d-flex justify-content-center align-items-center column-gap-2'>
+                        <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-vn" viewBox="0 0 512 512" width={25} height={20}>
+                            <defs>
+                                <clipPath id="a">
+                                    <path fillOpacity=".7" d="M177.2 0h708.6v708.7H177.2z" />
+                                </clipPath>
+                            </defs>
+                            <g fillRule="evenodd" clipPath="url(#a)" transform="translate(-128) scale(.72249)">
+                                <path fill="#da251d" d="M0 0h1063v708.7H0z" />
+                                <path fill="#ff0" d="m661 527.5-124-92.6-123.3 93.5 45.9-152-123.2-93.8 152.4-1.3L536 129.8 584.3 281l152.4.2-122.5 94.7L661 527.5z" />
+                            </g>
+                        </svg>
+                    </div>
+                )}
+            </>
+        )
+    }, [currentLang, showLoginPopup])
+
+    const handleChangeLanguage = useCallback((lang: string) => {
+        if (!lang) return;
+        setLangLocalStorage(lang);
+        setShowLoginPopup(false);
+        context.contextValue({ language: lang});
+    }, [currentLang, showLoginPopup])
+
+    // useEffect(() => {console.log(showLoginPopup)}, [currentLang, language, showLoginPopup])
 
     useEffect(() => {
         if (isOutSide) {
@@ -82,10 +138,10 @@ export default function Header() {
                                                     <div className="navbar-level" data-level="1">
                                                         <ul className={`menuList-sub vertical-menu-list sub-child ${navChildOpen && 'mm-subopened'}`}>
                                                             <li className="active">
-                                                                <Link className="parent" href="/">MAIN MENU</Link>
+                                                                <Link className="parent" href="/">{trans.menu.mainMenu}</Link>
                                                             </li>
                                                             <li className="" data-menu-root="104326217">
-                                                                <Link href={'#'} className="parent" onClick={() => setNavChildOpen(true)}>SHOP
+                                                                <Link href={'#'} className="parent" onClick={() => setNavChildOpen(true)}>{trans.menu.shop}
                                                                     <i className="svg-right">
                                                                         <svg className="icon icon--arrow-right" viewBox="0 0 8 12">
                                                                             <path stroke="currentColor" strokeWidth="2" d="M2 2l4 4-4 4" fill="none" strokeLinecap="square"></path>
@@ -94,15 +150,9 @@ export default function Header() {
                                                                 </Link>
                                                             </li>
                                                             <li className="">
-                                                                <Link className="parent" href="/blogs/news">BLOG</Link>
+                                                                <Link className="parent" href="/pages/lien-he">{trans.menu.contact}</Link>
                                                             </li>
-                                                            <li className="">
-                                                                <Link className="parent" href="https://www.instagram.com/ctstussy/">SOCIAL</Link>
-                                                            </li>
-                                                            <li className="">
-                                                                <Link className="parent" href="/pages/lien-he">CONTACT</Link>
-                                                            </li>
-                                                            <li className="main_help">
+                                                            {/* <li className="main_help">
                                                                 <div className="mobile_menu_section">
                                                                     <p className="mobile_menu_section-title">Bạn cần hỗ trợ</p>
                                                                     <div className="mobile_menu_help">
@@ -126,11 +176,11 @@ export default function Header() {
                                                                         <Link href="mailto:ctstussy@gmail.com" rel="nofollow">ctstussy@gmail.com</Link>
                                                                     </div>
                                                                 </div>
-                                                            </li>
+                                                            </li> */}
                                                         </ul>
                                                         <ul className={`menuList-sub sub-child-1 ${navChildOpen && 'mm-opened'}`} id="104326217">
-                                                            <li><Link href={'#'} onClick={() => setNavChildOpen(false)}><i className="fa fa-angle-left" aria-hidden="true"></i>Quay về</Link></li>
-                                                            <li><Link href="/collections/all"><b>Xem tất cả "SHOP"</b></Link></li>
+                                                            <li><Link href={'#'} onClick={() => setNavChildOpen(false)}><i className="fa fa-angle-left" aria-hidden="true"></i>{trans.back}</Link></li>
+                                                            <li><Link href="/collections/all"><b>{trans.menu.showAll}</b></Link></li>
                                                             <li className="">
                                                                 <Link href="/collections/tee"><span>- </span>T-SHIRT</Link>
                                                             </li>
@@ -184,12 +234,12 @@ export default function Header() {
                                             </svg>
                                         </span>
                                         <div className="site-nav-container">
-                                            <p className="titlebox">Tìm kiếm</p>
+                                            <p className="titlebox">{trans.menu.search}</p>
                                             <div className="search-box wpo-wrapper-search">
                                                 <form action="/search" className="searchform searchform-categoris ultimate-search">
                                                     <div className="wpo-search-inner">
                                                         <input type="hidden" name="type" value="product" />
-                                                        <input required id="inputSearchAuto" name="q" autoComplete="off" className="searchinput input-search search-input" type="text" placeholder="Tìm kiếm sản phẩm..." />
+                                                        <input required id="inputSearchAuto" name="q" autoComplete="off" className="searchinput input-search search-input" type="text" placeholder={trans.menu.searchPlaceHolder} />
                                                     </div>
                                                     <button type="submit" className="btn-search">
                                                         <svg version="1.1" className="svg search" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 27" style={{ background: 'new 0 0 24 27' }} xmlSpace
@@ -203,7 +253,60 @@ export default function Header() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={`header-icon header-action-account ${showLoginPopup && 'show-action'}`}>
+                                <div className={`header-icon header-action-search`}>
+                                    <div className={`switch ${showLoginPopup ? 'show-options anim-options show-shadow' : ''}`} onClick={() => {
+                                        setShowSearchPopup(false);
+                                        setShowLoginPopup(!showLoginPopup);
+                                    }}>
+                                        <div className="current">
+                                            {renderSelectLanguage}
+                                            <em className="arrow"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><title>ic_arrow_drop_down_18px</title>
+                                                <g fill="#FFFFFF">
+                                                    <path d="M5 8l4 4 4-4z"></path>
+                                                </g>
+                                            </svg></em>
+                                        </div>
+                                        <div className="options">
+                                            <ul className="options-list">
+                                                <li data-lang="en" onClick={() => handleChangeLanguage('en')}>
+                                                    <div className='d-flex justify-center items-center'>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-us" viewBox="0 0 512 512" width={20} height={20}>
+                                                            <g fillRule="evenodd">
+                                                                <g strokeWidth="1pt">
+                                                                    <path fill="#bd3d44" d="M0 0h972.8v39.4H0zm0 78.8h972.8v39.4H0zm0 78.7h972.8V197H0zm0 78.8h972.8v39.4H0zm0 78.8h972.8v39.4H0zm0 78.7h972.8v39.4H0zm0 78.8h972.8V512H0z" />
+                                                                    <path fill="#fff" d="M0 39.4h972.8v39.4H0zm0 78.8h972.8v39.3H0zm0 78.7h972.8v39.4H0zm0 78.8h972.8V315H0zm0 78.8h972.8v39.3H0zm0 78.7h972.8v39.4H0z" />
+                                                                </g>
+                                                                <path fill="#192f5d" d="M0 0h389.1v275.7H0z" />
+                                                                <path fill="#fff" d="m32.3 11.8 4 11h11l-9.1 6.7 3.5 10.7-9.4-6.7-8.7 6.7 3.6-10.7-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9.4 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.7-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9.4 6.7 3.9 10.7-9.9-6.7-9 6.7 3.5-10.7-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.7-9.5-6.7-9.4 6.7 4-10.7-9.5-6.7h11.4zm-292 27.6 3.6 11H80l-9.5 6.7 4 10.6L65 61l-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.7 0 4 11h11l-9.1 6.7 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9.4 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7H191zm65 0 3.5 11h11.4l-9.4 6.7 3.9 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.8zM32.7 67l3.1 11h11.9l-9.5 6.7 3.5 10.6-9.4-6.7-8.7 6.7 3.6-10.6-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.6-9.4-6.7-9.1 6.7 3.5-10.6L212 78h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6L277 78h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7h11.4zm-292 27.5 3.6 11H80l-9.5 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.6h11.4zm64.7 0 4 11h11l-9.1 6.7L139 123l-9.4-6.7-9 6.7 3.5-10.7-9.5-6.6h11.8zm65 0 3.5 11h11.4l-9 6.7L204 123l-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.6H191zm65 0 3.5 11h11.4l-9.4 6.7L269 123l-9.5-6.7-9.4 6.7 4-10.7-9.5-6.6H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.7-9.5-6.7-9 6.7 3.5-10.7-9.4-6.6h11.8zM32.7 122.1l3.1 11h11.9l-9.5 6.7 3.5 10.7-9.4-6.7-8.7 6.7 3.6-10.7-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.7 3.5 10.7-9.4-6.7-9 6.7 3.5-10.7-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.7-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.7-9.5-6.7-9 6.7 3.5-10.7-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.7-9.5-6.7-9.4 6.7 4-10.7-9.5-6.7h11.4zm-292 27.6 3.6 11H80l-9.5 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.7 0 4 11h11l-9.1 6.7L139 178l-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7L204 178l-9.4-6.7-9.1 6.7 3.5-10.6-9.4-6.7H191zm65 0 3.5 11h11.4l-9.4 6.7L269 178l-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.8zM32.7 177.2l3.1 11h11.9l-9.5 6.8 3.5 10.6-9.4-6.7-8.7 6.7 3.6-10.6-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.8 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.8 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.8 3.5 10.6-9.4-6.7-9.1 6.7 3.5-10.6-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9 6.8 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.8 4 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7h11.4zm-292 27.6 3.6 11H80l-9.5 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm64.7 0 4 11h11l-9.1 6.7 3.5 10.7-9.4-6.7-9 6.7 3.5-10.7-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.7-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.7H191zm65 0 3.5 11h11.4l-9.4 6.7 3.9 10.7-9.5-6.7-9.4 6.7 4-10.7-9.5-6.7H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.7-9.5-6.7-9 6.7 3.5-10.7-9.4-6.7h11.8zM32.7 232.4l3.1 11h11.9l-9.5 6.7 3.5 10.6-9.4-6.7-8.7 6.7 3.6-10.6-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.6-9.4-6.7-9.1 6.7 3.5-10.6-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7h11.4z" />
+                                                            </g>
+                                                        </svg>
+                                                        <span>English</span>
+                                                    </div>
+                                                </li>
+                                                <li data-lang="no" onClick={() => handleChangeLanguage('vi')}>
+                                                    <div className='d-flex justify-center items-center'>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-vn" viewBox="0 0 512 512" width={20} height={20}>
+                                                            <defs>
+                                                                <clipPath id="a">
+                                                                    <path fillOpacity=".7" d="M177.2 0h708.6v708.7H177.2z" />
+                                                                </clipPath>
+                                                            </defs>
+                                                            <g fillRule="evenodd" clipPath="url(#a)" transform="translate(-128) scale(.72249)">
+                                                                <path fill="#da251d" d="M0 0h1063v708.7H0z" />
+                                                                <path fill="#ff0" d="m661 527.5-124-92.6-123.3 93.5 45.9-152-123.2-93.8 152.4-1.3L536 129.8 584.3 281l152.4.2-122.5 94.7L661 527.5z" />
+                                                            </g>
+                                                        </svg>
+                                                        <span>Việt Nam</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <div id="trans-circle">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"> <g id="circle" fill="none" fillRule="evenodd"> <circle id="bg" cx="60" cy="60" r="60" fill="#FFFFFF" /> </g> </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* <div className={`header-icon header-action-account ${showLoginPopup && 'show-action'}`}>
                                     <Link
                                         onClick={() => {
                                             setShowLoginPopup(!showLoginPopup)
@@ -265,7 +368,6 @@ export default function Header() {
                                                             <div className="site_account_secondary-action">
                                                                 <p>Khách hàng mới?
                                                                     <Link href="/account/register" className="link"> Tạo tài khoản</Link>
-                                                                    {/* <button aria-controls="header-register-panel" className="js-link link" >Tạo tài khoản</button> */}
                                                                 </p>
                                                                 <p>Quên mật khẩu?
                                                                     <button type='button' aria-controls="header-recover-panel" className="js-link link" onClick={() => setShowRecoverPopup(true)}>Khôi phục mật khẩu</button>
@@ -370,7 +472,7 @@ export default function Header() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
@@ -389,12 +491,12 @@ export default function Header() {
                                         <ul className="clearfix">
                                             <li className="active">
                                                 <a href="/" title="MAIN MENU">
-                                                    MAIN MENU
+                                                    {trans.menu.mainMenu}
                                                 </a>
                                             </li>
                                             <li className="">
                                                 <a href="/collections/all" title="SHOP">
-                                                    SHOP <FontAwesomeIcon style={{ fontSize: "9px" }} icon={faChevronDown}></FontAwesomeIcon>
+                                                    {trans.menu.shop} <FontAwesomeIcon style={{ fontSize: "9px" }} icon={faChevronDown}></FontAwesomeIcon>
                                                 </a>
                                                 <ul className="sub_menu">
                                                     <li className="">
@@ -415,23 +517,14 @@ export default function Header() {
                                                 </ul>
                                             </li>
                                             <li className="">
-                                                <a href="/blogs/news" title="BLOG">
-                                                    BLOG
-                                                </a>
-                                            </li>
-                                            <li className="">
-                                                <a href="https://www.instagram.com/ctstussy/" title="SOCIAL">
-                                                    SOCIAL
-                                                </a>
-                                            </li>
-                                            <li className="">
                                                 <a href="/pages/lien-he" title="CONTACT">
-                                                    CONTACT
+                                                    {trans.menu.contact}
                                                 </a>
                                             </li>
                                         </ul>
                                     </nav>
-                                </div>					</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -440,7 +533,7 @@ export default function Header() {
                         <form action="/search" className="searchform searchform-categoris ultimate-search">
                             <div className="wpo-search-inner">
                                 <input type="hidden" name="type" value="product" />
-                                <input required id="inputSearchAuto-mb" name="q" maxLength={40} autoComplete="off" className="searchinput input-search search-input" type="text" placeholder="Tìm kiếm sản phẩm..." />
+                                <input required id="inputSearchAuto-mb" name="q" maxLength={40} autoComplete="off" className="searchinput input-search search-input" type="text" placeholder={trans.menu.searchPlaceHolder} />
                             </div>
                             <button type="submit" className="btn-search">
                                 <svg className="svg-search" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 27" style={{ background: 'new 0 0 24 27' }} xmlSpace="preserve"><path d="M10,2C4.5,2,0,6.5,0,12s4.5,10,10,10s10-4.5,10-10S15.5,2,10,2z M10,19c-3.9,0-7-3.1-7-7s3.1-7,7-7s7,3.1,7,7S13.9,19,10,19z"></path><rect x="17" y="17" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -9.2844 19.5856)" width="4" height="8"></rect></svg>

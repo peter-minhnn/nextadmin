@@ -11,13 +11,17 @@ const nextConfig = {
             bodySizeLimit: '2mb',
         },
     },
+    // i18n: {
+    //     locales: ['en', 'vi'],
+    //     defaultLocale: 'en'
+    // },
     async rewrites() {
         return [
             {
-              source: '/return-policy',
-              destination: 'http://localhost:3000/chinh-sach-doi-tra',
+                source: '/return-policy',
+                destination: 'http://localhost:3000/chinh-sach-doi-tra',
             },
-          ]
+        ]
     }
 }
 

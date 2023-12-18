@@ -1,1 +1,166 @@
 @import '~bootstrap/scss/bootstrap';
+$color-primary: #3498DB;
+$color-dark: #313436;
+
+.switch {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: $color-dark;
+    font-weight: 500;
+}
+
+
+.current {
+    $size: 33px;
+    text-transform: uppercase;
+    height: $size;
+    position: relative;
+    z-index: 1;
+    font-size: 1rem;
+    text-align: center;
+    line-height: $size;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0);
+    transition: all .2s ease-out;
+    border-radius: 3px;
+    padding: 0 .2em 0 .7em;
+
+    span {
+        display: inline-block;
+        font-size: 1.5rem;
+    }
+
+    .arrow {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, .1);
+        color: #000;
+    }
+}
+
+.options {
+    // background: #FFFFFF;
+    position: absolute;
+    right: 0;
+    top: .6em;
+    // z-index: 5;
+    z-index: 0;
+    opacity: 0;
+    // transform: scale(.8);
+    // transform-origin: 100% 0;
+    transition: all .36s ease-out;
+    display: none;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+
+    .switch.show-options & {
+        display: block;
+        z-index: 5;
+    }
+
+    .switch.anim-options & {
+        // transform: scale(1);
+        opacity: 1;
+    }
+
+    .switch.show-shadow & {
+        box-shadow: 0 2px 12px -4px rgba(0, 0, 0, .4);
+    }
+}
+
+.options-list {
+    color: $color-dark;
+    margin: 0;
+    padding: .4rem 0.8em;
+    position: relative;
+    z-index: 5;
+
+    li {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        padding: 0.75em;
+        border-bottom: 1px solid #E1E4E6;
+        transform: translateX(10px);
+        transition: all .24s ease-out;
+        transition-delay: .1s;
+        opacity: 0;
+        font-size: 1rem;
+        line-height: 1.3;
+        white-space: nowrap;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:nth-child(1) {
+            transition-delay: .1s;
+        }
+
+        &:nth-child(2) {
+            transition-delay: .15s;
+        }
+
+        &:nth-child(3) {
+            transition-delay: .2s;
+        }
+
+        &:nth-child(4) {
+            transition-delay: .25s;
+        }
+
+        &:nth-child(5) {
+            transition-delay: .3s;
+        }
+
+        &.selected {
+            color: $color-primary;
+        }
+
+        .switch.anim-options & {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        & span {
+            padding-left: .5rem;
+            font-size: 1.5rem;
+        }
+    }
+}
+
+#trans-circle {
+    $size: 80px;
+
+    width: $size;
+    height: $size;
+    position: absolute;
+    top: -$size;
+    right: -$size;
+    padding: 0;
+    margin: 0;
+    border: none;
+    // opacity: 0; 
+    z-index: 1;
+    transition: all .4s ease-out;
+    transform: scale(.5);
+    overflow: hidden;
+
+    svg {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+
+.switch.anim-options #trans-circle {
+    transform: scale(9);
+    // transition: all .3s ease-out;
+    // opacity: 1;
+}

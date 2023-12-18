@@ -2,16 +2,20 @@
 import Banner from '@/components/home/Banner';
 import Collection from '@/components/home/Collection';
 import { useWrapperContext } from '@/lib/context/WrapperContext';
+import useLanguage from '@/lib/hooks/useLanguages';
+import useTrans from '@/lib/hooks/useTrans';
 import { useWindowSize } from '@uidotdev/usehooks'
 import { useEffect } from 'react';
 
-export default function Home() {
-  const size = useWindowSize();
-  const context = useWrapperContext();
+const HomePage = () => {
+  const size = useWindowSize()
+  const context = useWrapperContext()
+  const trans = useTrans()
+  const { currentLang } = useLanguage()
 
   useEffect(() => {
-    context.contextValue({ breadcrumb: [], path: 'Trang Chủ' })
-  }, [])
+    context.contextValue({ breadcrumb: [], path: '', pageTitle: trans.home.title })
+  }, [currentLang])
 
   return (
     <>
@@ -34,3 +38,4 @@ export default function Home() {
     </>
   )
 }
+export default HomePage

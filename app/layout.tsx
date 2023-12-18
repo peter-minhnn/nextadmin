@@ -1,32 +1,26 @@
-// 'use client'
+'use client'
 import { Noticia_Text, Quicksand } from 'next/font/google'
 import './globals.css'
 import '@/styles/applications.scss'
 import '@/styles/ltr.css'
 import "@fortawesome/fontawesome-svg-core/styles.css" // import Font Awesome CSS
 import { config } from "@fortawesome/fontawesome-svg-core"
-import { Metadata } from 'next'
 import { WrapperProvider } from '@/lib/context/WrapperContext'
+import useLanguage from '@/lib/hooks/useLanguages'
 
 // const inter = Noticia_Text({ weight: '400', subsets: ['latin'] })
 const inter = Quicksand({ subsets: ['latin', 'vietnamese'] })
 config.autoAddCss = false // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
-
-export const metadata: Metadata = {
-  title: {
-    template: '%s | BETI Store',
-    default: 'BETI Store',
-  },
-  description: '',
-}
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode,
 }) {
+  const { currentLang } = useLanguage();
+
   return (
-    <html lang="en">
+    <html lang={currentLang}>
       <body className={`main-body ${inter.className}`} suppressHydrationWarning>
         <WrapperProvider>
           {children}
