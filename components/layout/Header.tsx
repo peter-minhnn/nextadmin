@@ -479,7 +479,7 @@ export default function Header() {
                         <div className="header-navbar-menu">
                             <div className="wrap-logo wrap-logo-sticky">
                                 <a href="/">
-                                    <img data-src="//theme.hstatic.net/200000518745/1000870107/14/logo.png?v=99" alt="BETI" className="img-responsive logoimg lazyload" />
+                                    <img src="//theme.hstatic.net/200000518745/1000870107/14/logo.png?v=99" alt="BETI" className="img-responsive logoimg lazyload" />
                                 </a>
                             </div>
                             <div className="menu-desktop-sticky">

@@ -8,8 +8,8 @@ export default function useLanguage() {
 
     useEffect(() => {
         if (!lang) {
-            setLangLocalStorage('en');
-            setCurrentLang('en');
+            setLangLocalStorage('vi');
+            setCurrentLang('vi');
         }
         lang && setCurrentLang(lang);
     }, [lang])

@@ -14,7 +14,7 @@ const HomePage = () => {
   const { currentLang } = useLanguage()
 
   useEffect(() => {
-    context.contextValue({ breadcrumb: [], path: '', pageTitle: trans.seoTitle.home })
+    context.contextValue({ path: '', pageTitle: trans.seoTitle.home })
   }, [currentLang])
 
   return (

@@ -5,7 +5,7 @@ import useLanguage from './useLanguages';
 
 const useTrans = () => {
     const { currentLang } = useLanguage();
-    const trans = typeof currentLang === 'undefined' ? vi : currentLang === 'en' ? en : vi
+    const trans = currentLang === 'en' ? en : vi
     return trans
 }
 

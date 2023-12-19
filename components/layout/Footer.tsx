@@ -1,7 +1,10 @@
 'use client'
+import useTrans from '@/lib/hooks/useTrans';
 import moment from 'moment';
 
 const Footer = () => {
+    const trans = useTrans();
+
     return (
         <>
             <footer className="mainFooter footer">
@@ -11,33 +14,29 @@ const Footer = () => {
                             <div className="col-xs-12 col-sm-6 col-md-6 col-lg">
                                 <div className="footer-col footer-content1">
                                     <h4 className="footer-title in">
-                                        Giới thiệu
+                                        {trans.footer.about}
                                     </h4>
                                     <div className="footer-content">
-                                        <p>BETI trang mua sắm trực tuyến của thương hiệu thời trang Stussy giúp bạn tiếp cận xu hướng thời trang mới nhất.</p>
+                                        <p>{trans.footer.aboutContent}</p>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-xs-12 col-sm-6 col-md-6 col-lg">
                                 <div className="footer-col footer-block">
                                     <h4 className="footer-title in">
-                                        Liên kết
+                                        {trans.footer.linked}
                                     </h4>
                                     <div className="footer-content toggle-footer">
                                         <ul>
                                             <li className="item">
-                                                <a href="/search" title="Tìm kiếm">Tìm kiếm</a>
+                                                <a href="/search" title="Tìm kiếm">{trans.footer.search}</a>
                                             </li>
                                             <li className="item">
-                                                <a href="/pages/about-us" title="Giới thiệu">Giới thiệu</a>
+                                                <a href="/return-policy" title="Chính sách đổi trả">{trans.footer.returnPolicy}</a>
                                             </li>
                                             <li className="item">
-                                                <a href="/return-policy" title="Chính sách đổi trả">Chính sách đổi trả</a>
+                                                <a href="/pages/lien-he" title="Liên hệ">{trans.footer.contact}</a>
                                             </li>
-                                            <li className="item">
-                                                <a href="/pages/lien-he" title="Liên hệ">Liên hệ</a>
-                                            </li>
-
                                         </ul>
                                     </div>
                                 </div>

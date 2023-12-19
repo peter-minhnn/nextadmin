@@ -53,7 +53,7 @@ export function WrapperProvider({ children }: ProviderProps) {
 
     const updateBreadcrumbContext = useCallback((data: string[] = []) => {
         setBreadcrumb([...data])
-    }, [breadcrumb]) 
+    }, [breadcrumb])
 
     const setLoading = useCallback((loading: boolean = false) => {
         loading && ref.current && ref.current.continuousStart();
@@ -72,6 +72,23 @@ export function WrapperProvider({ children }: ProviderProps) {
                 language
             }}
         >
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=0" />
+                <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+                <link rel="shortcut icon" href="./favicon.co" type="image/png" />
+                <meta name="keywords" content="BETI" />
+                <meta name="robots" content="index,follow,noodp" />
+                <meta httpEquiv="x-dns-prefetch-control" content="on" />
+                <meta property="og:type" content="product" />
+                <meta property="og:title" content="8BALL CORP. HOODIE" />
+                <meta property="og:image" content="http://product.hstatic.net/200000518745/product/z4458353944460_a3a32e53db88f893113f6833fc75be65_e28d5f1418c242efa7c5fa3348499238_grande.jpg" />
+                <meta property="og:image:secure_url" content="https://product.hstatic.net/200000518745/product/z4458353944460_a3a32e53db88f893113f6833fc75be65_e28d5f1418c242efa7c5fa3348499238_grande.jpg" />
+                <meta property="og:price:amount" content="1550000" />
+                <meta property="og:price:currency" content="VND" />
+                <meta property="og:url" content="https://www.betistore.vn/products/8-ball-corp-hoodie" />
+                <meta property="og:site_name" content="BETI" />
+                <meta name="description" content="8BALL CORP TEE. 850,000₫. Mua ngay – Xem nhanh" />
+            </head>
             <body className={`main-body ${inter.className} ${bodyClass}`} suppressHydrationWarning>
                 <Seo pageTitle={pageTitle} />
                 <Header />
