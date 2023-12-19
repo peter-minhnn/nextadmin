@@ -93,8 +93,6 @@ export default function Header() {
         context.contextValue({ language: lang });
     }, [currentLang, showLoginPopup])
 
-    // useEffect(() => {console.log(showLoginPopup)}, [currentLang, language, showLoginPopup])
-
     useEffect(() => {
         if (isOutSide) {
             setShowSearchPopup(false);
@@ -114,7 +112,7 @@ export default function Header() {
 
     return (
         <header className={`main-header mainHeader_temp_2 ${(mobileMenuOpen || showLoginPopup || showRecoverPopup || showCartPopup) ? 'locked-scroll' : ''}`} style={{ minHeight: `${height > 0 ? height : 120}px` }}>
-            <div ref={headerRef} className={`navigation-header ${navbar && 'hSticky hSticky-down'}`}>
+            <div ref={headerRef} className={`navigation-header ${navbar && 'hSticky hSticky-up hSticky-down'}`}>
                 <div className='header-middle'>
                     <div className='container'>
                         <div className='flexContainer-header'>

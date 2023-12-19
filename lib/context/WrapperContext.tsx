@@ -9,7 +9,6 @@ import { Quicksand } from 'next/font/google'
 
 export interface ContextProps {
     path?: string;
-    breadcrumb?: string[];
     pageTitle?: string;
     language?: string;
     bodyClass?: string;
@@ -21,6 +20,7 @@ type ProviderProps = {
 
 type ContextTypes = {
     contextValue: (value: ContextProps) => void;
+    updateBreadcrumbContext: (value: string[]) => void;
     setLoading: (loading: boolean) => void;
     breadcrumb: string[];
     language?: string;
@@ -46,11 +46,14 @@ export function WrapperProvider({ children }: ProviderProps) {
 
     const contextValue = useCallback((params: ContextProps) => {
         params.path && setPath(params.path)
-        params.breadcrumb && setBreadcrumb(params.breadcrumb)
         params.pageTitle && setPageTitle(params.pageTitle)
         params.language && setLanguage(params.language)
         setBodyClass(params.bodyClass ?? '')
-    }, [path, breadcrumb, pageTitle, language, bodyClass]);
+    }, [path, pageTitle, language, bodyClass]);
+
+    const updateBreadcrumbContext = useCallback((data: string[] = []) => {
+        setBreadcrumb([...data])
+    }, [breadcrumb]) 
 
     const setLoading = useCallback((loading: boolean = false) => {
         loading && ref.current && ref.current.continuousStart();
@@ -63,6 +66,7 @@ export function WrapperProvider({ children }: ProviderProps) {
         <WrapperContext.Provider
             value={{
                 contextValue,
+                updateBreadcrumbContext,
                 setLoading,
                 breadcrumb,
                 language
@@ -72,7 +76,7 @@ export function WrapperProvider({ children }: ProviderProps) {
                 <Seo pageTitle={pageTitle} />
                 <Header />
                 <main className="mainContainer_theme">
-                    {breadcrumb.length ? <Breadcrumb breadcrumbArr={['Trang Chủ', 'Danh mục', 'Tất cả sản phẩm']} /> : null}
+                    {breadcrumb.length ? <Breadcrumb breadcrumbArr={breadcrumb} /> : null}
                     {children}
                 </main>
                 <Footer />

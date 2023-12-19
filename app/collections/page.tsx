@@ -1,11 +1,12 @@
 'use client'
-import { useWrapperContext } from '@/lib/context/WrapperContext';
-import useLanguage from '@/lib/hooks/useLanguages';
-import useTrans from '@/lib/hooks/useTrans';
-import { useEffect, useRef, useState } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import the FontAwesomeIcon component
-import { faSortAlphaAsc, faSliders, faMinus } from "@fortawesome/free-solid-svg-icons";
-import useOutsideAlerter from '@/lib/hooks/useOutsideAlerter';
+import { useWrapperContext } from '@/lib/context/WrapperContext'
+import useLanguage from '@/lib/hooks/useLanguages'
+import useTrans from '@/lib/hooks/useTrans'
+import { useEffect, useRef, useState } from 'react'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSortAlphaAsc, faSliders, faMinus } from "@fortawesome/free-solid-svg-icons"
+import useOutsideAlerter from '@/lib/hooks/useOutsideAlerter'
+import Products from '@/components/products/Product'
 
 const Collections = () => {
     const clickOutSideRef = useRef<any>(null)
@@ -17,20 +18,20 @@ const Collections = () => {
 
     useEffect(() => {
         context.contextValue({
-            breadcrumb: [
-                trans.breadcrumbs.collection.home,
-                trans.breadcrumbs.collection.category,
-                trans.breadcrumbs.collection.home
-            ],
             path: '',
             pageTitle: trans.seoTitle.collection,
             bodyClass: 'collection'
         })
-    }, [currentLang])
+        context.updateBreadcrumbContext([
+            trans.breadcrumbs.collection.home,
+            trans.breadcrumbs.collection.category,
+            trans.breadcrumbs.collection.all
+        ])
+    }, [currentLang, context.language])
 
     useEffect(() => {
         context.contextValue({ bodyClass: `${openFilterSidebar ? 'collection open-filter' : ''}` })
-    }, [openFilterSidebar])
+    }, [openFilterSidebar, context.language])
 
     useEffect(() => {
         if (isOutSide) {
@@ -82,7 +83,7 @@ const Collections = () => {
                                                     <div className="layered_subtitle dropdown-filter">
                                                         <span>{trans.collections.brand}</span>
                                                         <span className="icon-control">
-                                                            <FontAwesomeIcon icon={faMinus} />
+                                                            <FontAwesomeIcon icon={faMinus} onClick={() => setOpenFilterSidebar(false)} />
                                                         </span>
                                                     </div>
                                                     <div className="layered-content bl-filter filter-brand">
@@ -222,6 +223,39 @@ const Collections = () => {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="group_filter_tags">
+                                <div className="filter_tags">
+                                    Thương hiệu: <b>Khác</b>
+                                    <span className="filter_tags_remove">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 50 50" xmlSpace="preserve">
+                                            <path fill="#333" d="M9.016 40.837a1.001 1.001 0 0 0 1.415-.001l14.292-14.309 14.292 14.309a1 1 0 1 0 1.416-1.413L26.153 25.129 40.43 10.836a1 1 0 1 0-1.415-1.413L24.722 23.732 10.43 9.423a1 1 0 1 0-1.415 1.413l14.276 14.293L9.015 39.423a1 1 0 0 0 .001 1.414z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                <div className="filter_tags">
+                                    Màu sắc: <b>NÂU</b>
+                                    <span className="filter_tags_remove">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 50 50" xmlSpace="preserve">
+                                            <path fill="#333" d="M9.016 40.837a1.001 1.001 0 0 0 1.415-.001l14.292-14.309 14.292 14.309a1 1 0 1 0 1.416-1.413L26.153 25.129 40.43 10.836a1 1 0 1 0-1.415-1.413L24.722 23.732 10.43 9.423a1 1 0 1 0-1.415 1.413l14.276 14.293L9.015 39.423a1 1 0 0 0 .001 1.414z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                <div className="filter_tags">
+                                    Kích thước: <b></b>
+                                    <span className="filter_tags_remove">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 50 50" xmlSpace="preserve">
+                                            <path fill="#333" d="M9.016 40.837a1.001 1.001 0 0 0 1.415-.001l14.292-14.309 14.292 14.309a1 1 0 1 0 1.416-1.413L26.153 25.129 40.43 10.836a1 1 0 1 0-1.415-1.413L24.722 23.732 10.43 9.423a1 1 0 1 0-1.415 1.413l14.276 14.293L9.015 39.423a1 1 0 0 0 .001 1.414z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+
+                                <div className="filter_tags filter_tags_remove_all"><span>Xóa hết </span></div>
+                            </div>
+                            <div className='row filter-here'>
+                                <Products />
                             </div>
                         </div>
                     </div>

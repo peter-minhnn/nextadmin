@@ -549,10 +549,10 @@ HEADER
   -moz-transition: all 400ms ease;
   transition: all 400ms ease;
 }
-
+/* 
 .navigation-header.hSticky-down #topbar {
   display: none;
-}
+} */
 
 .navigation-header.hSticky-down #nav-main-menu .main-nav>ul>li>a {
   padding: 20px 0;
@@ -2625,6 +2625,7 @@ INDEX
   /* -webkit-box-orient: vertical; */
   display: -webkit-box;
   color: #666666;
+  text-decoration: none;
 }
 
 .pro-price-mb {
