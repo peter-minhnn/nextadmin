@@ -34,12 +34,12 @@ export default function Header() {
     const { getItem, setItem: setLangLocalStorage } = useLocalStorage('lang')
     const context = useWrapperContext();
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm<Inputs>()
+    // const {
+    //     register,
+    //     handleSubmit,
+    //     watch,
+    //     formState: { errors },
+    // } = useForm<Inputs>()
 
     const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
@@ -112,7 +112,7 @@ export default function Header() {
 
     return (
         <header className={`main-header mainHeader_temp_2 ${(mobileMenuOpen || showLoginPopup || showRecoverPopup || showCartPopup) ? 'locked-scroll' : ''}`} style={{ minHeight: `${height > 0 ? height : 120}px` }}>
-            <div ref={headerRef} className={`navigation-header ${navbar && 'hSticky hSticky-up hSticky-down'}`}>
+            <div ref={headerRef} className={`navigation-header ${navbar ? 'hSticky hSticky-down' : ''}`}>
                 <div className='header-middle'>
                     <div className='container'>
                         <div className='flexContainer-header'>

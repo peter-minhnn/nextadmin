@@ -533,12 +533,12 @@ HEADER
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  -webkit-transform: translateY(0);
-  transform: translateY(0);
   opacity: 1;
   -webkit-transition: all 400ms ease;
   -moz-transition: all 400ms ease;
   transition: all 400ms ease;
+  animation: slideDown 0.35s ease-in;
+  visibility: visible;
 }
 
 .navigation-header.hSticky.hSticky-down.hSticky-up {
@@ -549,7 +549,7 @@ HEADER
   -webkit-transition: all 400ms ease;
   -moz-transition: all 400ms ease;
   transition: all 400ms ease;
-  animation: slideDown 0.35s ease-out;
+  /* animation: slideUp 0.35s ease-out; */
 }
 
 /* 
@@ -3582,7 +3582,7 @@ button.add-cart-bottom[disabled] {
 
 .swatch .swatch-element {
   display: inline-block;
-  margin-right: 8px;
+  margin-right: 12px;
   position: relative;
   vertical-align: bottom;
 }
@@ -3605,20 +3605,25 @@ button.add-cart-bottom[disabled] {
   text-transform: uppercase;
 }
 
-/*.swatch .swatch-element.color.soldout label span {overflow: hidden;position: relative;}
+.swatch .swatch-element.color.soldout label span {
+  overflow: hidden;
+  position: relative;
+}
+
 .swatch .swatch-element.color.soldout label span:before {
-content:"";
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-margin: auto;
-width: 50%;
-height:50%;
-background: url(//theme.hstatic.net/200000518745/1000870107/14/sold_out.png?v=99) no-repeat;
-background-size: contain;
-}*/
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 50%;
+  height: 50%;
+  background: url(//theme.hstatic.net/200000518745/1000870107/14/sold_out.png?v=99) no-repeat;
+  background-size: contain;
+}
+
 .swatch .swatch-element.soldout label {
   opacity: 0.5
 }
@@ -3643,7 +3648,7 @@ background-size: contain;
   font-size: 0;
 }
 
-.swatch .swatch-element.color labelsd {
+.swatch .swatch-element.color label .sd {
   box-shadow: 0px 0px 0px 1px #d3d3d3, 0 0 0 4px #ffffff, 0 0 0 5px #333e48;
   -webkit-box-shadow: 0px 0px 0px 1px #d3d3d3, 0 0 0 4px #ffffff, 0 0 0 5px #333e48;
   -moz-box-shadow: 0px 0px 0px 1px #d3d3d3, 0 0 0 4px #ffffff, 0 0 0 5px #333e48;
@@ -3655,17 +3660,87 @@ background-size: contain;
 }
 
 .swatch .swatch-element.soldout:not(.color) label:before {
-  /*content:"";
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	margin: auto;
-	width: 50%;
-	height:50%;
-	background: url(//theme.hstatic.net/200000518745/1000870107/14/sold_out.png?v=99) no-repeat;
-	background-size: contain;*/
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 50%;
+  height: 50%;
+  background: url(//theme.hstatic.net/200000518745/1000870107/14/sold_out.png?v=99) no-repeat;
+  background-size: contain;
+}
+
+.swatch .swatch-element:not(.color) label:before {
+  width: 17px;
+  height: 17px;
+  border: 1px solid #ccc;
+  display: none;
+  margin-right: 5px;
+  content: "";
+  border-radius: 50%;
+  margin-bottom: -4px;
+}
+
+.swatch .swatch-element:not(.color) label:after {
+  content: "\f00c";
+  font-family: 'FontAwesome' !important;
+  position: absolute;
+  top: 0;
+  left: 3px;
+  font-size: 10px;
+  color: #fff;
+  display: none;
+  z-index: 2;
+  -webkit-transition: all 0.45s ease;
+  -o-transition: all 0.45s ease;
+  transition: all 0.45s ease;
+}
+
+.swatch .swatch-element:not(.color) label.sd:before {
+  background: #000;
+  border-color: #000;
+}
+
+.swatch .swatch-element:not(.color) label.sd:after {
+  display: block;
+}
+
+.crossed-out {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.swatch .swatch-element:not(.color).soldout label {
+  cursor: not-allowed;
+  opacity: 0.4;
+  filter: alpha(opacity=40);
+  pointer-events: none;
+}
+
+.swatch .swatch-element:not(.color).soldout img {
+  display: block;
+}
+
+.swatch .swatch-element.color span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin-top: 0;
+  font-size: 0;
+}
+
+.swatch .swatch-element.color label.sd {
+  box-shadow: 0px 0px 0px 1px #d3d3d3, 0 0 0 4px #ffffff, 0 0 0 5px #333e48;
+  -webkit-box-shadow: 0px 0px 0px 1px #d3d3d3, 0 0 0 4px #ffffff, 0 0 0 5px #333e48;
+  -moz-box-shadow: 0px 0px 0px 1px #d3d3d3, 0 0 0 4px #ffffff, 0 0 0 5px #333e48;
+  -o-box-shadow: 0px 0px 0px 1px #d3d3d3, 0 0 0 4px #ffffff, 0 0 0 5px #333e48;
 }
 
 label[for="product-select-option-0"] {
@@ -3706,7 +3781,7 @@ label[for="product-select-option-2"] {
 
 @media (max-width:767px) {
   .swatch .swatch-element.color {
-    margin: 5px 8px 5px 0;
+    margin: 5px 20px 5px 0;
   }
 }
 
@@ -3714,7 +3789,8 @@ label[for="product-select-option-2"] {
   width: 17px;
   height: 17px;
   border: 1px solid #ccc;
-  display: inline-block;
+  /* display: inline-block; */
+  display: none;
   margin-right: 5px;
   content: "";
   border-radius: 50%;
@@ -3736,12 +3812,12 @@ label[for="product-select-option-2"] {
   transition: all 0.45s ease;
 }
 
-.swatch .swatch-element:not(.color) labelsd:before {
+.swatch .swatch-element:not(.color) label .sd:before {
   background: #000;
   border-color: #000;
 }
 
-.swatch .swatch-element:not(.color) labelsd:after {
+.swatch .swatch-element:not(.color) label .sd:after {
   display: block;
 }
 
@@ -3766,163 +3842,153 @@ label[for="product-select-option-2"] {
 }
 
 /* ------------------- Setting varian màu sắc -------------------- */
-
-
-
-
-.color.swatch-element label .nau span {
+.color.swatch-element label .nau span,
+.color.swatch-element label .nau svg {
   background: #8b572a;
+  color: #8b572a;
 }
 
 .variantColor span .nau {
   background: #8b572a;
 }
 
-
-
-
-.color.swatch-element label .kem span {
+.color.swatch-element label.kem span,
+.color.swatch-element label.kem svg {
   background: #e0d5b6;
+  color: #e0d5b6;
 }
 
 .variantColor span .kem {
   background: #e0d5b6;
 }
 
-
-
-
-.color.swatch-element label .xam span {
+.color.swatch-element label.xam span,
+.color.swatch-element label.xam svg {
   background: #d2dae2;
+  color: #d2dae2;
 }
 
 .variantColor span .xam {
   background: #d2dae2;
 }
 
-
-
-
-.color.swatch-element label .xanh span {
+.color.swatch-element label.xanh span,
+.color.swatch-element label.xanh svg {
   background: #3c40c6;
+  color: #3c40c6;
 }
 
 .variantColor span .xanh {
   background: #3c40c6;
 }
 
-
-
-
-.color.swatch-element label .xanh-la span {
+.color.swatch-element label.xanh-la span,
+.color.swatch-element label.xanh-la svg {
   background: #0be881;
+  color: #0be881;
 }
 
 .variantColor span .xanh-la {
   background: #0be881;
 }
 
-
-
-
-.color.swatch-element label .sen span {
+.color.swatch-element label.sen span,
+.color.swatch-element label.sen svg {
   background: #f53b57;
+  color: #f53b57;
 }
 
 .variantColor span .sen {
   background: #f53b57;
 }
 
-
-
-
-.color.swatch-element label .xanh-bien span {
+.color.swatch-element label.xanh-bien span,
+.color.swatch-element label.xanh-bien svg {
   background: #0fbcf9;
+  color: #0fbcf9;
 }
 
 .variantColor span .xanh-bien {
   background: #0fbcf9;
 }
 
+.color.swatch-element label.den span,
+.color.swatch-element label.den svg {
+  background: #000000;
+  color: #000;
+}
 
-
-
-.color.swatch-element label .den span {
+.variantColor span.den {
   background: #000000;
 }
 
-.variantColor span .den {
-  background: #000000;
+.color.swatch-element label.trang span,
+.color.swatch-element label.trang svg {
+  background: #FFF;
+  color: #FFF;
 }
 
-
-
-
-.color.swatch-element label .trang span {
+.variantColor span.trang {
   background: #ffffff;
 }
 
-.variantColor span .trang {
-  background: #ffffff;
+.color.swatch-element label.do span,
+.color.swatch-element label.do svg {
+  background: #ff3f34;
+  color: #ff3f34;
 }
 
-
-
-
-.color.swatch-element label .do span {
+.variantColor span.do {
   background: #ff3f34;
 }
 
-.variantColor span .do {
-  background: #ff3f34;
-}
-
-
-
-
-.color.swatch-element label .tim span {
+.color.swatch-element label .tim span,
+.color.swatch-element label .tim svg {
   background: #a55eea;
+  color: #a55eea;
 }
 
 .variantColor span .tim {
   background: #a55eea;
 }
 
-
-
-
-.color.swatch-element label .xanh-la span {
+.color.swatch-element label .xanh-la span,
+.color.swatch-element label .xanh-la svg {
   background: #4f9235;
+  color: #4f9235;
 }
 
 .variantColor span .xanh-la {
   background: #4f9235;
 }
 
-
-
-
-.color.swatch-element label .blue span {
+.color.swatch-element label .blue span,
+.color.swatch-element label .blue svg {
   background: #0c2461;
+  color: #0c2461;
 }
 
 .variantColor span .blue {
   background: #0c2461;
 }
 
-
-
-
-.color.swatch-element label .cam span {
+.color.swatch-element label .cam span,
+.color.swatch-element label .cam svg {
   background: #fa8231;
+  color: #fa8231;
 }
 
 .variantColor span .cam {
   background: #fa8231;
 }
 
+.color.swatch-element label span {
+  background: #ffffff;
+}
 
-
+.variantColor span {
+  background: #ffffff;
+}
 
 .color.swatch-element label span {
   background: #ffffff;
@@ -3932,8 +3998,13 @@ label[for="product-select-option-2"] {
   background: #ffffff;
 }
 
+.color.swatch-element label span {
+  background: #ffffff;
+}
 
-
+.variantColor span {
+  background: #ffffff;
+}
 
 .color.swatch-element label span {
   background: #ffffff;
@@ -3943,8 +4014,13 @@ label[for="product-select-option-2"] {
   background: #ffffff;
 }
 
+.color.swatch-element label span {
+  background: #ffffff;
+}
 
-
+.variantColor span {
+  background: #ffffff;
+}
 
 .color.swatch-element label span {
   background: #ffffff;
@@ -3954,8 +4030,13 @@ label[for="product-select-option-2"] {
   background: #ffffff;
 }
 
+.color.swatch-element label span {
+  background: #ffffff;
+}
 
-
+.variantColor span {
+  background: #ffffff;
+}
 
 .color.swatch-element label span {
   background: #ffffff;
@@ -3965,8 +4046,13 @@ label[for="product-select-option-2"] {
   background: #ffffff;
 }
 
+.color.swatch-element label span {
+  background: #ffffff;
+}
 
-
+.variantColor span {
+  background: #ffffff;
+}
 
 .color.swatch-element label span {
   background: #ffffff;
@@ -3976,8 +4062,13 @@ label[for="product-select-option-2"] {
   background: #ffffff;
 }
 
+.color.swatch-element label span {
+  background: #ffffff;
+}
 
-
+.variantColor span {
+  background: #ffffff;
+}
 
 .color.swatch-element label span {
   background: #ffffff;
@@ -3987,8 +4078,13 @@ label[for="product-select-option-2"] {
   background: #ffffff;
 }
 
+.color.swatch-element label span {
+  background: #ffffff;
+}
 
-
+.variantColor span {
+  background: #ffffff;
+}
 
 .color.swatch-element label span {
   background: #ffffff;
@@ -3998,9 +4094,6 @@ label[for="product-select-option-2"] {
   background: #ffffff;
 }
 
-
-
-
 .color.swatch-element label span {
   background: #ffffff;
 }
@@ -4008,86 +4101,6 @@ label[for="product-select-option-2"] {
 .variantColor span {
   background: #ffffff;
 }
-
-
-
-
-.color.swatch-element label span {
-  background: #ffffff;
-}
-
-.variantColor span {
-  background: #ffffff;
-}
-
-
-
-
-.color.swatch-element label span {
-  background: #ffffff;
-}
-
-.variantColor span {
-  background: #ffffff;
-}
-
-
-
-
-.color.swatch-element label span {
-  background: #ffffff;
-}
-
-.variantColor span {
-  background: #ffffff;
-}
-
-
-
-
-.color.swatch-element label span {
-  background: #ffffff;
-}
-
-.variantColor span {
-  background: #ffffff;
-}
-
-
-
-
-.color.swatch-element label span {
-  background: #ffffff;
-}
-
-.variantColor span {
-  background: #ffffff;
-}
-
-
-
-
-.color.swatch-element label span {
-  background: #ffffff;
-}
-
-.variantColor span {
-  background: #ffffff;
-}
-
-
-
-
-.color.swatch-element label span {
-  background: #ffffff;
-}
-
-.variantColor span {
-  background: #ffffff;
-}
-
-
-
 
 .color.swatch-element label span {
   background: #ffffff;
@@ -7295,6 +7308,7 @@ body.open-filter #site-overlay {
   border: 0;
   font-weight: 600;
   text-transform: uppercase;
+  text-decoration: none;
 }
 
 .proDetailInfo .velaProductNavTabs li.active a {
@@ -9399,6 +9413,16 @@ RESPONSIVE
 
   to {
     transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-100%);
   }
 }
 
