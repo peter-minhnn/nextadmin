@@ -10,6 +10,8 @@ import useTrans from '@/lib/hooks/useTrans'
 import useLanguage from '@/lib/hooks/useLanguages'
 import { useLocalStorage } from '@/lib/hooks/useLocalStorage'
 import { useWrapperContext } from '@/lib/context/WrapperContext'
+import Logo from '@/public/assets/images/logo.jpg';
+import Image from 'next/image'
 
 type Inputs = {
     email: string
@@ -198,7 +200,7 @@ export default function Header() {
                             <div className="col-md-4 header-wrap-logo header-mid">
                                 <div className="wrap-logo text-center" itemType="http://schema.org/Organization">
                                     <Link href="https://www.betistore.com" itemProp="url">
-                                        <img itemProp="logo" data-src="//theme.hstatic.net/200000518745/1000870107/14/logo.png?v=99" alt="BETI" className="img-responsive logoimg lazyloaded" src="//theme.hstatic.net/200000518745/1000870107/14/logo.png?v=99" />
+                                        <Image itemProp="logo"  alt="BETI" className="img-responsive logoimg lazyloaded" src={Logo} layout='responsive'/>
                                     </Link>
                                     <h1 style={{ display: 'none' }}><Link href="https://www.betistore.vn" itemProp="url">BETI</Link></h1>
                                 </div>

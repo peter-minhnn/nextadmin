@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "clean": "rimraf -g \"{.next,.cache}\"",
+    "clean": "rimraf -g \"{node_modules,.next,.cache}\"",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -25,6 +25,7 @@
     "cross-env": "^7.0.3",
     "env-cmd": "^10.1.0",
     "i": "^0.3.7",
+    "jotai": "^2.6.1",
     "lucide-react": "^0.292.0",
     "moment": "^2.29.4",
     "next": "^14.0.4",

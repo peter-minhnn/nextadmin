@@ -500,10 +500,10 @@ HEADER
   -ms-align-items: center;
   align-items: center;
 }
-
+/* 
 .main-header .header-middle {
   padding: 15px 0;
-}
+} */
 
 .main-header .flexContainer-header>div[class*='header-wrap-'] {
   padding: 0 15px;
@@ -2575,7 +2575,7 @@ INDEX
 }
 
 .pro-loop .product-detail {
-  padding: 10px 0 0 0;
+  padding: 10px 2px 0 2px;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
