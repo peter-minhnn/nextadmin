@@ -1,5 +1,5 @@
 'use client'
-import { getUsers } from "@/lib/actions/user-action";
+import { getUsers } from "@/lib/actions/user.action";
 import { useEffect, useState } from "react";
 
 const UserPage = () => {

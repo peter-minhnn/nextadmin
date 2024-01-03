@@ -14,7 +14,7 @@ class CustomError extends Error {
 }
 
 const globalAxiosInstance = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_API_URL_BASE}/api`
+    baseURL: `${process.env.NEXT_PUBLIC_API_URL_BASE}/ecommerce`
 });
 
 globalAxiosInstance.interceptors.response.use(function (response: AxiosResponse) {

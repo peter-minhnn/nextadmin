@@ -1,30 +1,26 @@
 'use client'
 import { useWrapperContext } from "@/lib/context/WrapperContext";
-import useTrans from "@/lib/hooks/useTrans";
+import useTrans from "@/lib/hooks/use-translation";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ImageGallery from "react-image-gallery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle, faCircle } from "@fortawesome/free-solid-svg-icons";
-
-const images: any[] = [
-    {
-        original: "https://product.hstatic.net/200000518745/product/z4458353941168_c3cd13891952b8dea1da9179a9bed9ce_a663b71b4f7846d698bd90bdbfa8895d_master.jpg",
-        thumbnail: "https://product.hstatic.net/200000518745/product/z4458353941168_c3cd13891952b8dea1da9179a9bed9ce_a663b71b4f7846d698bd90bdbfa8895d_master.jpg",
-    },
-    {
-        original: "https://product.hstatic.net/200000518745/product/z4458353944163_575e504f13da4eb9d12f4bea7cac55cb_f22c70069a84479e8845bae333ec3ecd_master.jpg",
-        thumbnail: "https://product.hstatic.net/200000518745/product/z4458353944163_575e504f13da4eb9d12f4bea7cac55cb_f22c70069a84479e8845bae333ec3ecd_master.jpg",
-    }
-];
+import { getProductItem } from "@/lib/actions/product.action";
+import { Colors, ProductItemType, ProductStatus, ProductStatusClass } from "@/types/product-type";
+import { arrayBufferToBase64 } from "@/lib/utils";
+import { routes } from "@/routes";
 
 class Inputs {
     size: string = 'M';
     color: string = 'den';
-
 }
 
-const ProductDetail = () => {
+type ProductDetailType = {
+    params: { slug: string }
+}
+
+const ProductDetail = ({ params }: ProductDetailType) => {
     const context = useWrapperContext()
     const trans = useTrans()
     const {
@@ -37,6 +33,11 @@ const ProductDetail = () => {
 
     const [tabActive, setTabActive] = useState<string>('tab1')
     const [selectedColor, setSelectedColor] = useState<string>(trans.colors.den)
+    const [selectedSize, setSelectedSize] = useState<string>('')
+    const [colors, setColors] = useState<string[]>([]);
+    const [productDetail, setProductDetail] = useState<ProductItemType[]>([]);
+    const [product, setProduct] = useState<ProductItemType | null>(null);
+    const [images, setImages] = useState<any[]>([]);
 
     const handleSelectedColor = useCallback(() => {
         watch('color') === 'den' && setSelectedColor(trans.colors.den)
@@ -44,20 +45,67 @@ const ProductDetail = () => {
         watch('color') === 'xam' && setSelectedColor(trans.colors.xam)
     }, [watch('color'), selectedColor])
 
-    useEffect(() => {
-        context.contextValue({ pageTitle: 'Product Detail' })
-        context.updateBreadcrumbContext([
-            trans.breadcrumbs.products.category,
-            trans.breadcrumbs.products.product,
-            ''
+    const getDetail = async () => {
+        const response = await getProductItem({ slug: params.slug });
+        if (response.code === 'error' || (response.code === 'success' && response.data.code === (-1))
+            || (response.code === 'success' && !response.data.data)) {
+            return;
+        }
+        const data = !Array.isArray(response.data.data) ? [response.data.data] : [...response.data.data];
+        setProductDetail(data);
+        setProduct(handleGenerateProductItem(data) as ProductItemType)
+    }
+
+    const handleGenerateProductItem = (data: ProductItemType[] = []) => {
+        if (!data.length) return;
+        let sizes: string[] = [];
+        data.filter(el => sizes.push(el.sizes));
+        sizes.sort((a, b) => (a > b ? -1 : 1));
+        setSelectedSize(sizes[0]);
+        setImages([
+            {
+                original: arrayBufferToBase64(data[0].frontImage.data, data[0].frontImageMimeType),
+                thumbnail: arrayBufferToBase64(data[0].frontImage.data, data[0].frontImageMimeType),
+            },
+
+            {
+                original: arrayBufferToBase64(data[0].backImage.data, data[0].backImageMimeType),
+                thumbnail: arrayBufferToBase64(data[0].backImage.data, data[0].backImageMimeType),
+            }
         ])
-        setValue('color', 'den')
-        setValue('size', 'M')
-    }, [])
+        context.contextValue({ pageTitle: data[0].productName })
+        context.updateBreadcrumbContext([
+            { title: trans.breadcrumbs.products.category, path: routes.ecommerce.collections },
+            { title: trans.breadcrumbs.products.product, path: routes.ecommerce.collections },
+            { title: data[0].productName, path: '' },
+        ])
+        return {
+            ...data[0],
+            sizeArr: sizes
+        } as ProductItemType
+    }
+
+    const getColors = useCallback(() => {
+        const data = productDetail.find(x => x.sizes === selectedSize)?.colors.split(',');
+        if (data?.length) {
+            setColors(data);
+            setValue('color', data[0]);
+        }
+    }, [selectedSize])
 
     useEffect(() => {
         handleSelectedColor();
     }, [watch('color')])
+
+    useEffect(() => {
+        params.slug && getDetail();
+    }, [params])
+
+    useEffect(() => {
+        getColors();
+    }, [selectedSize])
+
+    if (!product) return <>Loading...</>;
 
     return (
         <div id='product' className="productDetail-page">
@@ -70,50 +118,73 @@ const ProductDetail = () => {
                             </div>
                             <div className="col-md-6 col-sm-12 col-xs-12 product-content-desc">
                                 <div className="product-title">
-                                    <h1>8BALL CORP TEE</h1>
+                                    <h1>{product.productName}</h1>
                                     <span className="pro-soldold hidden"></span>
                                 </div>
                                 <div className="product-price" id="price-preview">
-                                    <span className="pro-sale">-32%</span>
-                                    <span className="pro-price">850,000₫</span>
-                                    <del>1,250,000₫</del>
+                                    <span className={`pro-sale`} style={{ display: `${(product.discountPercentage === 0 || product.status === '1') ? 'none' : 'inline-block'}` }}>-{product.discountPercentage}%</span>
+                                    <div className={`pro-sale product-sale-status ${!product.status && 'hidden'} ${ProductStatusClass[Number(product.status)]}`}>
+                                        <span>{ProductStatus[Number(product.status)]}</span>
+                                    </div>
+                                    <span className="pro-price">{product.salePrice.toLocaleString('en-US')}₫</span>
+                                    <del className={`${(product.costPrice === 0 || !product.costPrice) && 'hidden'}`}>{product.costPrice.toLocaleString('en-US')}₫</del>
                                 </div>
-                                <form id="add-item-form" action="/cart/add" method="post" className="variants clearfix">
+                                <form id="add-item-form" className="variants clearfix">
                                     <div className="select clearfix">
                                         <div className="selector-wrapper">
                                             <label htmlFor="product-select-option-0">{trans.collections.size}</label>
                                             <span className="custom-dropdown custom-dropdown--white">
-                                                <select className="single-option-selector custom-dropdown__select custom-dropdown__select--white" data-option="option1" id="product-select-option-0">
-                                                    <option value="M">M</option><option value="L">L</option>
-                                                    <option value="XL">XL</option>
-                                                </select></span>
+                                                <select
+                                                    className="single-option-selector custom-dropdown__select custom-dropdown__select--white"
+                                                    id="product-select-option-0"
+                                                    onChange={(e) => setSelectedSize(e.currentTarget.value)}
+                                                >
+                                                    {product.sizeArr.map((size, index) => (
+                                                        <option value={size} key={index}>{size}</option>
+                                                    ))}
+                                                </select>
+                                            </span>
                                         </div>
                                         <div className="selector-wrapper">
                                             <label htmlFor="product-select-option-1">{trans.collections.color}</label>
                                             <span className="custom-dropdown custom-dropdown--white">
-                                                <select className="single-option-selector custom-dropdown__select custom-dropdown__select--white" data-option="option2" id="product-select-option-1">
-                                                    <option value="ĐEN">ĐEN</option>
+                                                <select className="single-option-selector custom-dropdown__select custom-dropdown__select--white" id="product-select-option-1">
+                                                    {productDetail.filter(el => el.sizes === selectedSize).map((item, idx) => {
+                                                        return item.colors.split(',').map((color, colorIdx) => (
+                                                            <option value={color} key={colorIdx}>ĐEN</option>
+                                                        ))
+                                                    })}
                                                 </select>
                                             </span>
                                         </div>
-                                        <select id="product-select" name="id" style={{ display: 'none' }}>
+                                        {/* <select id="product-select" name="id" style={{ display: 'none' }}>
                                             <option value="1105376883">M / ĐEN - 850,000₫</option>
                                             <option value="1105376884">L / ĐEN - 850,000₫</option>
                                             <option value="1105376885">XL / ĐEN - 850,000₫</option>
-                                        </select>
+                                        </select> */}
                                     </div>
                                     <div className="select-swatch clearfix ">
                                         <div id="variant-swatch-0" className="swatch clearfix" data-option="option1" data-option-index="0">
                                             <div className="header-swatch">{trans.collections.size}:
                                             </div>
                                             <div className="select-swap clearfix">
-                                                <div className="n-sd swatch-element m">
-                                                    <input className="variant-0" id="swatch-0-m" type="radio" value='M' {...register('size')} defaultValue={undefined} />
-                                                    <label htmlFor="swatch-0-m">
-                                                        <FontAwesomeIcon icon={faCheckCircle} width={17} height={17} size='lg' />
-                                                        <span style={{ marginLeft: 2 }}>M</span>
-                                                    </label>
-                                                </div>
+                                                {product.sizeArr.map((size, index) => (
+                                                    <div className="n-sd swatch-element m" key={index}>
+                                                        <input className="variant-0" id={size} type="radio"
+                                                            value={size}
+                                                            checked={selectedSize === size}
+                                                            onChange={(e) => {
+                                                                getColors();
+                                                                setSelectedSize(e.currentTarget.value)
+                                                            }}
+                                                            defaultValue={undefined}
+                                                        />
+                                                        <label htmlFor={size}>
+                                                            <FontAwesomeIcon icon={selectedSize === size ? faCheckCircle : faCircle} className={`${selectedSize !== size && 'unchecked'}`} width={17} height={17} size='lg' />
+                                                            <span style={{ marginLeft: 5 }}>{size}</span>
+                                                        </label>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
                                         <div id="variant-swatch-1" className="swatch clearfix" data-option="option2" data-option-index="1">
@@ -121,22 +192,24 @@ const ProductDetail = () => {
                                                 <span className="">{selectedColor}</span>
                                             </div>
                                             <div className="select-swap clearfix">
-                                                <div className="n-sd swatch-element color den">
-                                                    <div className="tooltip">ĐEN</div>
-                                                    <input className="variant-1" id="swatch-1-den" type="radio" value="den" {...register('color')} defaultValue={undefined} />
-                                                    <label className={`den ${watch('color') === 'den' && 'sd'}`} htmlFor="swatch-1-den">
-                                                        <FontAwesomeIcon icon={faCircle} width={30} height={30} style={{ fontSize: '2.3em' }} className="den" />
-                                                        <span>ĐEN</span>
-                                                    </label>
-                                                </div>
-                                                <div className="n-sd swatch-element color trang">
-                                                    <div className="tooltip">TRẮNG</div>
-                                                    <input className="variant-1" id="swatch-1-trang" type="radio" value="trang" {...register('color')} defaultValue={undefined} />
-                                                    <label className={`trang ${watch('color') === 'trang' && 'sd'}`}  htmlFor="swatch-1-trang">
-                                                        <FontAwesomeIcon icon={faCircle} width={30} height={30} style={{ fontSize: '2.3em' }} />
-                                                        <span>TRẮNG</span>
-                                                    </label>
-                                                </div>
+                                                {colors.map((color, idx) => (
+                                                    <div className={`n-sd swatch-element color ${color}`} key={idx}>
+                                                        <div className="tooltip">{Colors[color]}</div>
+                                                        <input
+                                                            className="variant-1"
+                                                            id={`swatch-1-${color}`}
+                                                            type="radio"
+                                                            value={color}
+                                                            checked={watch('color') === color}
+                                                            {...register('color')}
+                                                            defaultValue={undefined}
+                                                        />
+                                                        <label className={`${color} ${watch('color') === color && 'sd'}`} htmlFor={`swatch-1-${color}`}>
+                                                            <FontAwesomeIcon icon={faCircle} width={30} height={30} style={{ fontSize: '2.3em' }} className="den" />
+                                                            <span>{Colors[color]}</span>
+                                                        </label>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>
@@ -166,7 +239,7 @@ const ProductDetail = () => {
                                                     e.preventDefault();
                                                     setTabActive('tab1')
                                                 }}>
-                                                <a id="proTabs1" href="#">Mô tả</a>
+                                                <span id="proTabs1">{trans.collections.description}</span>
                                             </li>
                                             <li
                                                 className={`${tabActive === 'tab2' ? 'active' : ''}`}
@@ -174,12 +247,14 @@ const ProductDetail = () => {
                                                     e.preventDefault();
                                                     setTabActive('tab2')
                                                 }}>
-                                                <a id="proTabs3" href="#">Chính sách đổi trả</a>
+                                                <span id="proTabs3">{trans.footer.returnPolicy}</span>
                                             </li>
                                         </ul>
                                         <div className="tab-content">
                                             <div className={`tab-pane ${tabActive === 'tab1' ? 'active' : ''}`} id="proTabs1">
                                                 <div className="description-productdetail">
+                                                    <p dangerouslySetInnerHTML={{ __html: product.description }}></p>
+                                                    <h2>{trans.collections.sizeChart}:</h2>
                                                     <p className="text-center">
                                                         <img src="//file.hstatic.net/200000518745/file/screen_shot_2022-05-27_at_01.42.35_bed92801869c4550aad16307fc44fe73_grande.png" />
                                                     </p>

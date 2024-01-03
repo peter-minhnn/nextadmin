@@ -1,51 +1,93 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSearchPlus } from "@fortawesome/free-solid-svg-icons"
+import { ProductItemType, ProductStatus, ProductStatusClass } from "@/types/product-type"
+import Link from "next/link";
+import { arrayBufferToBase64 } from "@/lib/utils";
+import { routes } from "@/routes";
 
-const ProductItem = () => {
+type ProductItemProps = {
+    product: ProductItemType;
+}
+
+const ProductItem = ({ product }: ProductItemProps) => {
+
     return (
-        <div className="col-md-3 col-sm-6 col-xs-6 pro-loop">
+        <div className="col-md-3 col-sm-6 col-xs-6 pro-loop animated zoomIn" key={`${product.id}${product.rowNumber}`}>
             <div className="product-block product-resize site-animation fixheight" style={{ height: '355px' }}>
                 <div className="product-img">
-                    <div className="product-sale"><span>-32%</span></div>
-                    <a href="/products/8ball-corp-tee-1" title="8BALL CORP TEE" className="image-resize fade-box" style={{ height: '268px' }}>
+                    <div className={`product-sale ${(product.discountPercentage === 0 || product.status === '1') && 'hidden'}`}>
+                        <span>-{product.discountPercentage}%</span>
+                    </div>
+                    <div className={`product-sale-status ${!product.status && 'hidden'} ${ProductStatusClass[Number(product.status)]}`}>
+                        <span>{ProductStatus[Number(product.status)]}</span>
+                    </div>
+                    <Link href={routes.ecommerce.productDetail(product.productCode)} title={product.productName} className="image-resize fade-box" style={{ height: '268px' }}>
                         <picture>
-                            <source media="(max-width: 480px)" src="//product.hstatic.net/200000518745/product/z4322777998666_5929518e0f66d67a608b21a77e4f206d_dd92451391e843c7bebf08e74c872759_medium.jpg" srcSet="//product.hstatic.net/200000518745/product/z4322777998666_5929518e0f66d67a608b21a77e4f206d_dd92451391e843c7bebf08e74c872759_medium.jpg" />
-                            <source media="(min-width: 481px) and (max-width: 767px)" src="//product.hstatic.net/200000518745/product/z4322777998666_5929518e0f66d67a608b21a77e4f206d_dd92451391e843c7bebf08e74c872759_large.jpg" srcSet="//product.hstatic.net/200000518745/product/z4322777998666_5929518e0f66d67a608b21a77e4f206d_dd92451391e843c7bebf08e74c872759_large.jpg" />
-                            <source media="(min-width: 768px)" src="//product.hstatic.net/200000518745/product/z4322777998666_5929518e0f66d67a608b21a77e4f206d_dd92451391e843c7bebf08e74c872759_large.jpg" srcSet="//product.hstatic.net/200000518745/product/z4322777998666_5929518e0f66d67a608b21a77e4f206d_dd92451391e843c7bebf08e74c872759_large.jpg" />
-                            <img className="img-loop ls-is-cached lazyloaded" alt=" 8BALL CORP TEE " data-src="//product.hstatic.net/200000518745/product/z4322777998666_5929518e0f66d67a608b21a77e4f206d_dd92451391e843c7bebf08e74c872759_large.jpg" src="//product.hstatic.net/200000518745/product/z4322777998666_5929518e0f66d67a608b21a77e4f206d_dd92451391e843c7bebf08e74c872759_large.jpg" />
+                            <source
+                                media="(max-width: 480px)"
+                                src={arrayBufferToBase64(product.frontImage.data, product.frontImageMimeType)}
+                            />
+                            <source
+                                media="(min-width: 481px) and (max-width: 767px)"
+                                src={arrayBufferToBase64(product.frontImage.data, product.frontImageMimeType)}
+                            />
+                            <source
+                                media="(min-width: 768px)"
+                                src={arrayBufferToBase64(product.frontImage, product.frontImageMimeType)}
+                            />
+                            <img
+                                className="img-loop ls-is-cached lazyloaded"
+                                alt={product.productName}
+                                src={arrayBufferToBase64(product.frontImage.data, product.frontImageMimeType)}
+                            />
                         </picture>
                         <picture>
-                            <source media="(max-width: 480px)" src="//product.hstatic.net/200000518745/product/z4322777991437_4aa95dab222bed77d214f3bd2eedf441_31023ec3f8464d14ac79abdaefa8ee0f_medium.jpg" srcSet="//product.hstatic.net/200000518745/product/z4322777991437_4aa95dab222bed77d214f3bd2eedf441_31023ec3f8464d14ac79abdaefa8ee0f_medium.jpg" />
-                            <source media="(min-width: 481px) and (max-width: 767px)" src="//product.hstatic.net/200000518745/product/z4322777991437_4aa95dab222bed77d214f3bd2eedf441_31023ec3f8464d14ac79abdaefa8ee0f_large.jpg" srcSet="//product.hstatic.net/200000518745/product/z4322777991437_4aa95dab222bed77d214f3bd2eedf441_31023ec3f8464d14ac79abdaefa8ee0f_large.jpg" />
-                            <source media="(min-width: 768px)" src="//product.hstatic.net/200000518745/product/z4322777991437_4aa95dab222bed77d214f3bd2eedf441_31023ec3f8464d14ac79abdaefa8ee0f_large.jpg" srcSet="//product.hstatic.net/200000518745/product/z4322777991437_4aa95dab222bed77d214f3bd2eedf441_31023ec3f8464d14ac79abdaefa8ee0f_large.jpg" />
-                            <img className="img-loop img-hover ls-is-cached lazyloaded" alt=" 8BALL CORP TEE " data-src="//product.hstatic.net/200000518745/product/z4322777991437_4aa95dab222bed77d214f3bd2eedf441_31023ec3f8464d14ac79abdaefa8ee0f_large.jpg" src="//product.hstatic.net/200000518745/product/z4322777991437_4aa95dab222bed77d214f3bd2eedf441_31023ec3f8464d14ac79abdaefa8ee0f_large.jpg" />
+                            <source
+                                media="(max-width: 480px)"
+                                src={arrayBufferToBase64(product.backImage.data, product.backImageMimeType)}
+                            />
+                            <source
+                                media="(min-width: 481px) and (max-width: 767px)"
+                                src={arrayBufferToBase64(product.backImage.data, product.backImageMimeType)}
+                            />
+                            <source
+                                media="(min-width: 768px)"
+                                src={arrayBufferToBase64(product.backImage.data, product.backImageMimeType)}
+                            />
+                            <img
+                                className="img-loop img-hover ls-is-cached lazyloaded"
+                                alt={product.productName}
+                                src={arrayBufferToBase64(product.backImage.data, product.backImageMimeType)}
+                            />
                         </picture>
-                    </a>
+                    </Link>
                     <div className="productQuickView">
-                        <a className="btnProductQuickview" href="#" data-handle="8ball-corp-tee-1" title="Xem nhanh">
+                        <Link className="btnProductQuickview" href="#" title="Xem nhanh">
                             <FontAwesomeIcon style={{ fontSize: "22px" }} icon={faSearchPlus}></FontAwesomeIcon>
-                        </a>
+                        </Link>
                     </div>
                     <div className="pro-price-mb">
-                        <span className="pro-price">850,000₫</span>
+                        <span className="pro-price">{product.salePrice.toLocaleString("en-US")}₫</span>
                         <span className="pro-price-del">
-                            <del className="compare-price">1,250,000₫</del>
+                            <del className={`compare-price ${(!product.costPrice || product.costPrice === 0) && 'hidden'}`}>
+                                {product.costPrice.toLocaleString("en-US")}₫
+                            </del>
                         </span>
                     </div>
                 </div>
                 <div className="product-detail clearfix">
                     <div className="box-pro-detail">
                         <h3 className="pro-name">
-                            <a href="/products/8ball-corp-tee-1" title="8BALL CORP TEE">
-                                8BALL CORP TEE
-                            </a>
+                            <Link href="/products/8ball-corp-tee-1" title={product.productName}>
+                                {product.productName}
+                            </Link>
                         </h3>
                         <div className="box-pro-prices">
                             <p className="pro-price highlight">
-                                <span>850,000₫</span>
+                                <span>{product.salePrice.toLocaleString("en-US")}₫</span>
                                 <span className="pro-price-del">
-                                    <del className="compare-price">
-                                        1,250,000₫
+                                    <del className={`compare-price ${(!product.costPrice || product.costPrice === 0) && 'hidden'}`}>
+                                        {product.costPrice.toLocaleString("en-US")}₫
                                     </del>
                                 </span>
                             </p>
@@ -53,9 +95,11 @@ const ProductItem = () => {
                     </div>
                     <div className="variantColor">
                         <ul>
-                            <li data-src="//hstatic.net/0/0/global/noDefaultImage6_large.gif" className="not-hover fade-box">
-                                <span className="trang"></span>
-                            </li>
+                            {product.colors.split(',').map((color: string, colorIdx: number) => (
+                                <li key={colorIdx} data-src="//hstatic.net/0/0/global/noDefaultImage6_large.gif" className="not-hover fade-box">
+                                    <span className={`${color}`}></span>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>

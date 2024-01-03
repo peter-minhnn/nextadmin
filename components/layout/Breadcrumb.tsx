@@ -1,7 +1,10 @@
 'use client'
+import { BreadcrumbProps } from '@/lib/context/WrapperContext';
+import { useRouter } from 'next/navigation';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 
-const BreadcrumbLayout = ({ breadcrumbArr }: { breadcrumbArr: string[] }) => {
+const BreadcrumbLayout = ({ breadcrumbArr }: { breadcrumbArr: BreadcrumbProps[] }) => {
+    const router = useRouter();
     return (
         <>
             <div className="breadcrumb-shop clearfix">
@@ -10,7 +13,12 @@ const BreadcrumbLayout = ({ breadcrumbArr }: { breadcrumbArr: string[] }) => {
                         <Breadcrumb className='breadcrumb breadcrumb-arrows'>
                             {breadcrumbArr.length ?
                                 breadcrumbArr.map((el, i) => (
-                                    <Breadcrumb.Item key={i} active={i === (breadcrumbArr.length - 1)}>{el}</Breadcrumb.Item>
+                                    <Breadcrumb.Item
+                                        key={i}
+                                        active={i === (breadcrumbArr.length - 1)}
+                                        onClick={() => router.push(el.path)}>
+                                        {el.title}
+                                    </Breadcrumb.Item>
                                 ))
                                 : <Breadcrumb.Item active>Trang Chủ</Breadcrumb.Item>
                             }

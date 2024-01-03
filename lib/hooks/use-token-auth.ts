@@ -1,7 +1,7 @@
 'use client'
 import { useCallback, useEffect, useState } from "react";
-import { isValidToken } from "../actions/auth-action";
-import { useLocalStorage } from "./useLocalStorage";
+import { isValidToken } from "../actions/auth.action";
+import { useLocalStorage } from "./use-local-storage";
 
 export default function useTokenAuth() {
     const { getItem: getToken } = useLocalStorage('token');

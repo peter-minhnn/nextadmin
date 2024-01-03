@@ -1,8 +1,8 @@
 'use client'
 import { LoginRequest } from '@/types/login-type';
 import LoginForm from '@/components/form/LoginForm';
-import { authenticate } from '@/lib/actions/auth-action';
-import { useLocalStorage } from '@/lib/hooks/useLocalStorage';
+import { authenticate } from '@/lib/actions/auth.action';
+import { useLocalStorage } from '@/lib/hooks/use-local-storage';
 import { useRouter } from 'next/navigation'
 
 const LoginPage = () => {

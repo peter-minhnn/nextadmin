@@ -1,12 +1,18 @@
 'use client'
 import { useWrapperContext } from '@/lib/context/WrapperContext'
-import useLanguage from '@/lib/hooks/useLanguages'
-import useTrans from '@/lib/hooks/useTrans'
+import useLanguage from '@/lib/hooks/use-languages'
+import useTrans from '@/lib/hooks/use-translation'
 import { useEffect, useRef, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSortAlphaAsc, faSliders, faMinus } from "@fortawesome/free-solid-svg-icons"
-import useOutsideAlerter from '@/lib/hooks/useOutsideAlerter'
-import Products from '@/components/products/Product'
+import useOutsideAlerter from '@/lib/hooks/use-outside-alerter'
+import Products from '@/components/products/Products'
+import useCategories from '@/lib/hooks/use-categories'
+import Link from 'next/link'
+import { routes } from '@/routes'
+import { useAtom } from 'jotai'
+import { formSearchStoreAtom } from '@/lib/stores/products'
+import { useSearchParams } from 'next/navigation'
 
 const Collections = () => {
     const clickOutSideRef = useRef<any>(null)
@@ -15,6 +21,35 @@ const Collections = () => {
     const { currentLang } = useLanguage()
     const [openFilterSidebar, setOpenFilterSidebar] = useState<boolean>(false)
     const { isOutSide } = useOutsideAlerter(clickOutSideRef)
+    const [categories] = useCategories();
+    const [formData, setFormData] = useAtom(formSearchStoreAtom);
+    const searchParams = useSearchParams();
+
+    const addSizeFilter = (e: any) => {
+        if (!formData.sizes) formData.sizes = [];
+        const findIdx = formData.sizes?.findIndex(x => x === e.currentTarget.value);
+        if (findIdx === (-1)) formData.sizes?.push(e.currentTarget.value);
+        else formData.sizes?.splice(Number(findIdx), 1);
+        setFormData((prev) => {
+            return {
+                ...prev,
+                sizes: formData.sizes?.length ? [...formData.sizes] : []
+            }
+        })
+    }
+
+    const addColorFilter = (e: any) => {
+        if (!formData.colors) formData.colors = [];
+        const findIdx = formData.colors?.findIndex(x => x === e.currentTarget.value);
+        if (findIdx === (-1)) formData.colors?.push(e.currentTarget.value);
+        else formData.colors?.splice(Number(findIdx), 1);
+        setFormData((prev) => {
+            return {
+                ...prev,
+                sizes: formData.colors?.length ? [...formData.colors] : []
+            }
+        })
+    }
 
     useEffect(() => {
         context.contextValue({
@@ -22,20 +57,21 @@ const Collections = () => {
             pageTitle: trans.seoTitle.collection,
             bodyClass: 'collection'
         })
+
         context.updateBreadcrumbContext([
-            trans.breadcrumbs.collection.home,
-            trans.breadcrumbs.collection.category,
-            trans.breadcrumbs.collection.all
+            { title: trans.breadcrumbs.collection.home, path: routes.home },
+            { title: trans.breadcrumbs.collection.category, path: routes.ecommerce.collections },
+            { title: trans.breadcrumbs.collection.all, path: routes.ecommerce.collections },
         ])
     }, [currentLang, context.language])
 
     useEffect(() => {
-        context.contextValue({ bodyClass: `${openFilterSidebar ? 'collection open-filter' : ''}` })
+        context.contextValue({ bodyClass: `collection ${openFilterSidebar ? 'open-filter' : ''}` })
     }, [openFilterSidebar, context.language])
 
     useEffect(() => {
         if (isOutSide) {
-            context.contextValue({ bodyClass: '' })
+            context.contextValue({ bodyClass: 'collection' })
             setOpenFilterSidebar(false)
         }
     }, [isOutSide])
@@ -46,7 +82,7 @@ const Collections = () => {
                 <div className='row'>
                     <div id='collection-body' className='wrap-collection-body clearfix'>
                         <div className="wrap-filter" ref={clickOutSideRef}>
-                            <div className="filterTagFullwidthClose"></div>
+                            <div className="filterTagFullwidthClose" onClick={() => setOpenFilterSidebar(false)}></div>
                             <div className="box_sidebar">
                                 <div className="block left-module">
                                     <div className="filter_xs">
@@ -55,31 +91,23 @@ const Collections = () => {
                                                 <div className="title_block layered_subtitle dropdown-filter">
                                                     <span>{trans.collections.category}</span>
                                                     <span className="icon-control">
-                                                        <i className="fa fa-minus"></i>
+                                                        <FontAwesomeIcon icon={faMinus} onClick={() => setOpenFilterSidebar(false)} />
                                                     </span>
                                                 </div>
                                                 <div className="layered-content">
                                                     <ul className="menuList-links">
-                                                        <li className="">
-                                                            <a href="/collections/tee" title="T-SHIRT">
-                                                                <span>T-SHIRT</span>
-                                                            </a>
-                                                        </li>
-                                                        <li className="">
-                                                            <a href="/collections/hoodie" title="HOODIE">
-                                                                <span>HOODIE</span>
-                                                            </a>
-                                                        </li>
-                                                        <li className="">
-                                                            <a href="/collections/accessories" title="ACCESSORIES">
-                                                                <span>ACCESSORIES</span>
-                                                            </a>
-                                                        </li>
+                                                        {categories.map((item, idx) => (
+                                                            <li className="" key={idx}>
+                                                                <Link href={routes.ecommerce.searchCollections(item.categoryCode)} title={item.categoryName}>
+                                                                    {item.categoryName}
+                                                                </Link>
+                                                            </li>
+                                                        ))}
                                                     </ul>
                                                 </div>
                                             </div>
                                             <div className="block_content">
-                                                <div className="group-filter" aria-expanded="true">
+                                                {/* <div className="group-filter" aria-expanded="true">
                                                     <div className="layered_subtitle dropdown-filter">
                                                         <span>{trans.collections.brand}</span>
                                                         <span className="icon-control">
@@ -98,7 +126,7 @@ const Collections = () => {
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                </div>
+                                                </div> */}
 
                                                 <div className="group-filter" aria-expanded="true">
                                                     <div className="layered_subtitle dropdown-filter">
@@ -110,11 +138,15 @@ const Collections = () => {
                                                     <div className="layered-content filter-color s-filter">
                                                         <ul className="check-box-list">
                                                             <li>
-                                                                <input type="checkbox" id="data-color-p8" value="ĐEN" name="color-filter" data-color="(variant:product contains ĐEN)" />
+                                                                <input type="checkbox" id="data-color-p8" value="den" name="color-filter" data-color="(variant:product contains ĐEN)"
+                                                                    onChange={(e) => addColorFilter(e)}
+                                                                />
                                                                 <label title="den" htmlFor="data-color-p8" style={{ backgroundColor: '#000' }}>{trans.collections.black}</label>
                                                             </li>
                                                             <li>
-                                                                <input type="checkbox" id="data-color-p9" value="TRẮNG" name="color-filter" data-color="(variant:product contains TRẮNG)" />
+                                                                <input type="checkbox" id="data-color-p9" value="trang" name="color-filter" data-color="(variant:product contains TRẮNG)"
+                                                                    onChange={(e) => addColorFilter(e)}
+                                                                />
                                                                 <label title="trang" htmlFor="data-color-p9" style={{ backgroundColor: '#FFF' }}>{trans.collections.white}</label>
                                                             </li>
                                                             {/* <li>
@@ -151,24 +183,34 @@ const Collections = () => {
                                                     <div className="layered-content filter-size bl-filter">
                                                         <ul className="check-box-list clearfix">
                                                             <li>
-                                                                <input type="checkbox" id="data-size-p1" value="S" name="size-filter" data-size="(variant:product=S)" />
+                                                                <input type="checkbox" id="data-size-p1" value="S" name="size-filter" data-size="(variant:product=S)"
+                                                                    onChange={(e) => addSizeFilter(e)}
+                                                                />
                                                                 <label htmlFor="data-size-p1">S</label>
                                                             </li>
                                                             <li>
-                                                                <input type="checkbox" id="data-size-p2" value="M" name="size-filter" data-size="(variant:product=M)" />
+                                                                <input type="checkbox" id="data-size-p2" value="M" name="size-filter" data-size="(variant:product=M)"
+                                                                    onChange={(e) => addSizeFilter(e)}
+                                                                />
                                                                 <label htmlFor="data-size-p2">M</label>
                                                             </li>
                                                             <li>
-                                                                <input type="checkbox" id="data-size-p3" value="L" name="size-filter" data-size="(variant:product=L)" />
+                                                                <input type="checkbox" id="data-size-p3" value="L" name="size-filter" data-size="(variant:product=L)"
+                                                                    onChange={(e) => addSizeFilter(e)}
+                                                                />
                                                                 <label htmlFor="data-size-p3">L</label>
                                                             </li>
                                                             <li>
-                                                                <input type="checkbox" id="data-size-p4" value="XL" name="size-filter" data-size="(variant:product=XL)" />
+                                                                <input type="checkbox" id="data-size-p4" value="XL" name="size-filter" data-size="(variant:product=XL)"
+                                                                    onChange={(e) => addSizeFilter(e)}
+                                                                />
                                                                 <label htmlFor="data-size-p4">XL</label>
                                                             </li>
                                                             <li>
-                                                                <input type="checkbox" id="data-size-p4" value="XXL" name="size-filter" data-size="(variant:product=XXL)" />
-                                                                <label htmlFor="data-size-p4">XXL</label>
+                                                                <input type="checkbox" id="data-size-p5" value="XXL" name="size-filter" data-size="(variant:product=XXL)"
+                                                                    onChange={(e) => addSizeFilter(e)}
+                                                                />
+                                                                <label htmlFor="data-size-p5">XXL</label>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -183,18 +225,18 @@ const Collections = () => {
                             <div className='wrap-collection-title row'>
                                 <div className=''>
                                     <div className="heading-collection row">
-                                        <div className="col-md-3 hidden-sm hidden-xs">
-                                            <div className="filterTagFullwidthButton-desktop">
-                                                <FontAwesomeIcon icon={faSliders} color='#666' onClick={() => setOpenFilterSidebar(!openFilterSidebar)} />
-                                                <span style={{ paddingLeft: '.5rem', color: '#666' }} onClick={() => setOpenFilterSidebar(!openFilterSidebar)}>{trans.collections.filter}</span>
+                                        <div className="col-lg-3 d-none d-lg-block">
+                                            <div className="filterTagFullwidthButton-desktop" onClick={() => setOpenFilterSidebar(!openFilterSidebar)} >
+                                                <FontAwesomeIcon icon={faSliders} color='#666' />
+                                                <span style={{ paddingLeft: '.5rem', color: '#666' }}>{trans.collections.filter}</span>
                                             </div>
                                         </div>
-                                        <div className="col-md-6 col-sm-12 col-xs-12">
-                                            <h1 className="title">
-                                                {trans.collections.all}
+                                        <div className="col-lg-6 col-sm-12 col-xs-12">
+                                            <h1 className="title" style={{ textTransform: `${searchParams.get('categoryCode') ? 'uppercase' : 'none'}` }}>
+                                                {searchParams.get('categoryCode') ? categories.find(item => item.categoryCode === searchParams.get('categoryCode') as string)?.categoryName : trans.collections.all}
                                             </h1>
                                         </div>
-                                        <div className="col-md-3 col-sm-12 col-xs-12">
+                                        <div className="col-lg-3 col-sm-12 col-xs-12">
                                             <div className="outer-sort-filter">
                                                 <div className="filterTagFullwidthButton-mobile">
                                                     <FontAwesomeIcon icon={faSliders} color='#666' onClick={() => setOpenFilterSidebar(!openFilterSidebar)} />

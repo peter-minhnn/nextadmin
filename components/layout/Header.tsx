@@ -1,17 +1,19 @@
 'use client'
-import useOutsideAlerter from '@/lib/hooks/useOutsideAlerter'
+import useOutsideAlerter from '@/lib/hooks/use-outside-alerter'
 import Link from 'next/link'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useForm, SubmitHandler } from "react-hook-form"
+// import { useForm, SubmitHandler } from "react-hook-form"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
-import useWindowResize from '@/lib/hooks/useWindowResize'
-import useTrans from '@/lib/hooks/useTrans'
-import useLanguage from '@/lib/hooks/useLanguages'
-import { useLocalStorage } from '@/lib/hooks/useLocalStorage'
+import { faChevronDown, faAngleLeft } from "@fortawesome/free-solid-svg-icons"
+import useWindowResize from '@/lib/hooks/use-window-resize'
+import useTrans from '@/lib/hooks/use-translation'
+import useLanguage from '@/lib/hooks/use-languages'
+import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 import { useWrapperContext } from '@/lib/context/WrapperContext'
 import Logo from '@/public/assets/images/logo.jpg';
-import Image from 'next/image'
+import Image from "next/legacy/image"
+import { routes } from '@/routes'
+import useCategories from '@/lib/hooks/use-categories'
 
 type Inputs = {
     email: string
@@ -30,12 +32,12 @@ export default function Header() {
     const [navChildOpen, setNavChildOpen] = useState<boolean>(false)
     const [navbar, setNavbar] = useState(false)
     const { isOutSide } = useOutsideAlerter(clickOutSideRef)
-    const { width, height } = useWindowResize(headerRef)
+    const { height } = useWindowResize(headerRef)
     const trans = useTrans()
     const { currentLang } = useLanguage()
     const { getItem, setItem: setLangLocalStorage } = useLocalStorage('lang')
     const context = useWrapperContext();
-
+    const [categories] = useCategories();
     // const {
     //     register,
     //     handleSubmit,
@@ -43,7 +45,7 @@ export default function Header() {
     //     formState: { errors },
     // } = useForm<Inputs>()
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+    // const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
 
     const handleScrollEvent = () => {
         if (window.scrollY >= 70) setNavbar(true);
@@ -112,6 +114,13 @@ export default function Header() {
         }
     })
 
+    useEffect(() => {
+        (mobileMenuOpen || showLoginPopup || showRecoverPopup || showCartPopup) && context.handleLockedScroll('locked-scroll');
+        return () => {
+            (!mobileMenuOpen || !showLoginPopup || !showRecoverPopup || !showCartPopup) && context.handleLockedScroll('');
+        }
+    }, [mobileMenuOpen, showLoginPopup, showRecoverPopup, showCartPopup])
+
     return (
         <header className={`main-header mainHeader_temp_2 ${(mobileMenuOpen || showLoginPopup || showRecoverPopup || showCartPopup) ? 'locked-scroll' : ''}`} style={{ minHeight: `${height > 0 ? height : 120}px` }}>
             <div ref={headerRef} className={`navigation-header ${navbar ? 'hSticky hSticky-down' : ''}`}>
@@ -137,7 +146,7 @@ export default function Header() {
                                                     <div className="navbar-level" data-level="1">
                                                         <ul className={`menuList-sub vertical-menu-list sub-child ${navChildOpen && 'mm-subopened'}`}>
                                                             <li className="active">
-                                                                <Link className="parent" href="/">{trans.menu.mainMenu}</Link>
+                                                                <Link className="parent" href={routes.home}>{trans.menu.mainMenu}</Link>
                                                             </li>
                                                             <li className="" data-menu-root="104326217">
                                                                 <Link href={'#'} className="parent" onClick={() => setNavChildOpen(true)}>{trans.menu.shop}
@@ -149,11 +158,11 @@ export default function Header() {
                                                                 </Link>
                                                             </li>
                                                             <li className="">
-                                                                <Link className="parent" href="/pages/lien-he">{trans.menu.contact}</Link>
+                                                                <Link className="parent" href={routes.contact}>{trans.menu.contact}</Link>
                                                             </li>
-                                                            {/* <li className="main_help">
+                                                            <li className="main_help">
                                                                 <div className="mobile_menu_section">
-                                                                    <p className="mobile_menu_section-title">Bạn cần hỗ trợ</p>
+                                                                    <p className="mobile_menu_section-title">{trans.menu.needHelp}</p>
                                                                     <div className="mobile_menu_help">
                                                                         <svg className="icon icon--bi-phone" viewBox="0 0 24 24">
                                                                             <g strokeWidth="2" fill="none" fillRule="evenodd" strokeLinecap="square">
@@ -161,7 +170,7 @@ export default function Header() {
                                                                                 <path d="M14 1c4.971 0 9 4.029 9 9m-9-5c2.761 0 5 2.239 5 5" stroke="#333333"></path>
                                                                             </g>
                                                                         </svg>
-                                                                        <Link href="tel:0933338913" rel="nofollow">0933338913</Link>
+                                                                        <Link href="tel:0933338913" rel="nofollow">0764849787</Link>
                                                                     </div>
                                                                     <div className="mobile_menu_help">
                                                                         <svg className="icon icon--bi-email" viewBox="0 0 22 22">
@@ -172,23 +181,30 @@ export default function Header() {
                                                                                 <path d="M8.25000033 5.50000033h5.49999997M8.25000033 9.166667h5.49999997" stroke="#333333" strokeWidth="2" strokeLinecap="square"></path>
                                                                             </g>
                                                                         </svg>
-                                                                        <Link href="mailto:ctstussy@gmail.com" rel="nofollow">ctstussy@gmail.com</Link>
+                                                                        <Link href="mailto:nnminh742@gmail.com" rel="nofollow">nnminh742@gmail.com</Link>
                                                                     </div>
                                                                 </div>
-                                                            </li> */}
+                                                            </li>
                                                         </ul>
                                                         <ul className={`menuList-sub sub-child-1 ${navChildOpen && 'mm-opened'}`} id="104326217">
-                                                            <li><Link href={'#'} onClick={() => setNavChildOpen(false)}><i className="fa fa-angle-left" aria-hidden="true"></i>{trans.back}</Link></li>
-                                                            <li><Link href="/collections/all"><b>{trans.menu.showAll}</b></Link></li>
-                                                            <li className="">
-                                                                <Link href="/collections/tee"><span>- </span>T-SHIRT</Link>
+                                                            <li>
+                                                                <Link href={'#'} onClick={() => setNavChildOpen(false)}>
+                                                                    <FontAwesomeIcon icon={faAngleLeft} width={15} height={15} size='sm' />
+                                                                    {trans.back}
+                                                                </Link>
                                                             </li>
-                                                            <li className="">
-                                                                <Link href="/collections/hoodie"><span>- </span>HOODIE</Link>
+                                                            <li>
+                                                                <Link href={routes.ecommerce.collections}>
+                                                                    <b style={{ fontWeight: 700 }}>{trans.menu.showAll}</b>
+                                                                </Link>
                                                             </li>
-                                                            <li className="">
-                                                                <Link href="/collections/accessories"><span>- </span>ACCESSORIES</Link>
-                                                            </li>
+                                                            {categories.map((item, idx) => (
+                                                                <li className="" key={idx}>
+                                                                    <Link href={routes.ecommerce.searchCollections(item.categoryCode)} title={item.categoryName}>
+                                                                        - {item.categoryName}
+                                                                    </Link>
+                                                                </li>
+                                                            ))}
                                                         </ul>
                                                     </div>
                                                 </nav>
@@ -199,10 +215,10 @@ export default function Header() {
                             </div>
                             <div className="col-md-4 header-wrap-logo header-mid">
                                 <div className="wrap-logo text-center" itemType="http://schema.org/Organization">
-                                    <Link href="https://www.betistore.com" itemProp="url">
-                                        <Image itemProp="logo"  alt="BETI" className="img-responsive logoimg lazyloaded" src={Logo} layout='responsive'/>
+                                    <Link href="/" itemProp="url">
+                                        <Image itemProp="logo" alt="BETI" className="img-responsive logoimg lazyloaded" src={Logo} width={150} height={50} />
                                     </Link>
-                                    <h1 style={{ display: 'none' }}><Link href="https://www.betistore.vn" itemProp="url">BETI</Link></h1>
+                                    {/* <h1 style={{ display: 'block' }}><Link href="https://www.betistore.vn" itemProp="url">BETI</Link></h1> */}
                                 </div>
                             </div>
                             <div ref={clickOutSideRef} className='col-md-4 header-wrap-icon'>
@@ -279,7 +295,7 @@ export default function Header() {
                                                                 <path fill="#fff" d="m32.3 11.8 4 11h11l-9.1 6.7 3.5 10.7-9.4-6.7-8.7 6.7 3.6-10.7-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9.4 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.7-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9.4 6.7 3.9 10.7-9.9-6.7-9 6.7 3.5-10.7-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.7-9.5-6.7-9.4 6.7 4-10.7-9.5-6.7h11.4zm-292 27.6 3.6 11H80l-9.5 6.7 4 10.6L65 61l-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.7 0 4 11h11l-9.1 6.7 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9.4 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7H191zm65 0 3.5 11h11.4l-9.4 6.7 3.9 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.8zM32.7 67l3.1 11h11.9l-9.5 6.7 3.5 10.6-9.4-6.7-8.7 6.7 3.6-10.6-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.6-9.4-6.7-9.1 6.7 3.5-10.6L212 78h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6L277 78h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7h11.4zm-292 27.5 3.6 11H80l-9.5 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.6h11.4zm64.7 0 4 11h11l-9.1 6.7L139 123l-9.4-6.7-9 6.7 3.5-10.7-9.5-6.6h11.8zm65 0 3.5 11h11.4l-9 6.7L204 123l-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.6H191zm65 0 3.5 11h11.4l-9.4 6.7L269 123l-9.5-6.7-9.4 6.7 4-10.7-9.5-6.6H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.7-9.5-6.7-9 6.7 3.5-10.7-9.4-6.6h11.8zM32.7 122.1l3.1 11h11.9l-9.5 6.7 3.5 10.7-9.4-6.7-8.7 6.7 3.6-10.7-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.7 3.5 10.7-9.4-6.7-9 6.7 3.5-10.7-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.7-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.7-9.5-6.7-9 6.7 3.5-10.7-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.7-9.5-6.7-9.4 6.7 4-10.7-9.5-6.7h11.4zm-292 27.6 3.6 11H80l-9.5 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.7 0 4 11h11l-9.1 6.7L139 178l-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7L204 178l-9.4-6.7-9.1 6.7 3.5-10.6-9.4-6.7H191zm65 0 3.5 11h11.4l-9.4 6.7L269 178l-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.8zM32.7 177.2l3.1 11h11.9l-9.5 6.8 3.5 10.6-9.4-6.7-8.7 6.7 3.6-10.6-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.8 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.8 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.8 3.5 10.6-9.4-6.7-9.1 6.7 3.5-10.6-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9 6.8 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.8 4 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7h11.4zm-292 27.6 3.6 11H80l-9.5 6.7 4 10.7-9.5-6.7-9.5 6.7 4-10.7-9.5-6.7h11.4zm64.7 0 4 11h11l-9.1 6.7 3.5 10.7-9.4-6.7-9 6.7 3.5-10.7-9.5-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.7-9.4-6.7-9.1 6.7 3.5-10.7-9.4-6.7H191zm65 0 3.5 11h11.4l-9.4 6.7 3.9 10.7-9.5-6.7-9.4 6.7 4-10.7-9.5-6.7H256zm64.5 0 4 11h10.6l-9 6.7 3.5 10.7-9.5-6.7-9 6.7 3.5-10.7-9.4-6.7h11.8zM32.7 232.4l3.1 11h11.9l-9.5 6.7 3.5 10.6-9.4-6.7-8.7 6.7 3.6-10.6-9.5-6.7h11.8zm64.6 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.4-6.7-9 6.7 3.5-10.6-9.5-6.7h11.4zm65 0 3.5 11h11.4l-9.4 6.7 4 10.6-9.5-6.7-9.5 6.7 4-10.6-9.5-6.7h11.4zm64.6 0 3.9 11h11l-9 6.7 3.5 10.6-9.4-6.7-9.1 6.7 3.5-10.6-9.4-6.7h11.8zm65 0 3.5 11h11.4l-9 6.7 3.5 10.6-9.5-6.7-9 6.7 3.5-10.6-9.4-6.7h11.4zm65 0 3.5 11h11.4l-9.5 6.7 4 10.6-9.5-6.7-9.4 6.7 4-10.6-9.5-6.7h11.4z" />
                                                             </g>
                                                         </svg>
-                                                        <span>English</span>
+                                                        <span style={{ color: `${currentLang === 'en' ? '#ffc107' : '#000'}` }}>English</span>
                                                     </div>
                                                 </li>
                                                 <li data-lang="no" onClick={() => handleChangeLanguage('vi')}>
@@ -295,7 +311,7 @@ export default function Header() {
                                                                 <path fill="#ff0" d="m661 527.5-124-92.6-123.3 93.5 45.9-152-123.2-93.8 152.4-1.3L536 129.8 584.3 281l152.4.2-122.5 94.7L661 527.5z" />
                                                             </g>
                                                         </svg>
-                                                        <span>Việt Nam</span>
+                                                        <span style={{ color: `${currentLang === 'vi' ? '#ffc107' : '#000'}` }}>Việt Nam</span>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -480,45 +496,37 @@ export default function Header() {
                     <div className="container">
                         <div className="header-navbar-menu">
                             <div className="wrap-logo wrap-logo-sticky">
-                                <a href="/">
-                                    <img src="//theme.hstatic.net/200000518745/1000870107/14/logo.png?v=99" alt="BETI" className="img-responsive logoimg lazyload" />
-                                </a>
+                                <Link href={routes.home}>
+                                    <Image itemProp="logo" alt="BETI" className="img-responsive logoimg lazyloaded" src={Logo} width={150} height={50} />
+                                </Link>
                             </div>
                             <div className="menu-desktop-sticky">
                                 <div id="nav-main-menu">
                                     <nav className="main-nav text-center">
                                         <ul className="clearfix">
                                             <li className="active">
-                                                <a href="/" title="MAIN MENU">
+                                                <Link href={routes.home} title="MAIN MENU">
                                                     {trans.menu.mainMenu}
-                                                </a>
+                                                </Link>
                                             </li>
                                             <li className="">
-                                                <a href="/collections/all" title="SHOP">
+                                                <Link href={routes.ecommerce.collections} title="SHOP">
                                                     {trans.menu.shop} <FontAwesomeIcon style={{ fontSize: "9px" }} icon={faChevronDown}></FontAwesomeIcon>
-                                                </a>
+                                                </Link>
                                                 <ul className="sub_menu">
-                                                    <li className="">
-                                                        <a href="/collections/tee" title="T-SHIRT">
-                                                            T-SHIRT
-                                                        </a>
-                                                    </li>
-                                                    <li className="">
-                                                        <a href="/collections/hoodie" title="HOODIE">
-                                                            HOODIE
-                                                        </a>
-                                                    </li>
-                                                    <li className="">
-                                                        <a href="/collections/accessories" title="ACCESSORIES">
-                                                            ACCESSORIES
-                                                        </a>
-                                                    </li>
+                                                    {categories.map((item, idx) => (
+                                                        <li className="" key={idx}>
+                                                            <Link href={routes.ecommerce.searchCollections(item.categoryCode)} title={item.categoryName}>
+                                                                {item.categoryName}
+                                                            </Link>
+                                                        </li>
+                                                    ))}
                                                 </ul>
                                             </li>
                                             <li className="">
-                                                <a href="/pages/lien-he" title="CONTACT">
+                                                <Link href={routes.contact} title="CONTACT">
                                                     {trans.menu.contact}
-                                                </a>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </nav>

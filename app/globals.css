@@ -500,10 +500,10 @@ HEADER
   -ms-align-items: center;
   align-items: center;
 }
-/* 
+
 .main-header .header-middle {
-  padding: 15px 0;
-} */
+  padding: 10px 0;
+}
 
 .main-header .flexContainer-header>div[class*='header-wrap-'] {
   padding: 0 15px;
@@ -998,6 +998,7 @@ HEADER
 
   .mainHeader_temp_2 .navigation-header:not(.hSticky-down) .wrap-logo img {
     margin: auto;
+    object-fit: cover;
   }
 
   /*--------------------- header template 03 ---------------------*/
@@ -1140,6 +1141,7 @@ HEADER
 
   .main-header .wrap-logo img {
     max-height: 50px;
+    object-fit: cover;
   }
 
   .main-header .header-middle {
@@ -1260,7 +1262,7 @@ HEADER
 .header_dropdown_content .box-triangle {
   position: absolute;
   right: 15px;
-  bottom: calc(100% - 2px);
+  bottom: calc(100% + 4px);
   margin: 0;
   width: 27px;
   height: 14px;
@@ -1769,6 +1771,7 @@ HEADER
   font-size: 14px;
   font-weight: 300;
   color: #333;
+  text-transform: uppercase;
 }
 
 #mb-menu .menuList-sub.sub-child-1 li a i,
@@ -1810,13 +1813,12 @@ HEADER
 }
 
 .header_dropdown_content.site_search .box-triangle {
-  /* right: 95px; */
-  right: 16px;
+  right: 82px;
 }
 
 @media screen and (min-width: 992px) {
   .header_dropdown_content {
-    top: calc(100% + 23px);
+    top: calc(100% + 15px);
     right: 0;
     left: auto;
     border-radius: 3px;
@@ -2047,6 +2049,7 @@ transform: scale(1, 1);
   display: block;
   font-size: 14px;
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 #nav-main-menu .main-nav .sub_menu .sub_menu {
@@ -2567,7 +2570,9 @@ INDEX
   overflow: hidden;
   /* height: 100%; */
   background: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 .pro-loop a {
@@ -2589,7 +2594,8 @@ INDEX
 }
 
 .pro-loop .product-img .product-sale,
-.pro-loop .product-img .sold-out {
+.pro-loop .product-img .sold-out,
+.pro-loop .product-img .product-sale-status {
   position: absolute;
   top: 10px;
   font-size: 12px;
@@ -2605,9 +2611,24 @@ INDEX
   left: 10px;
 }
 
-.pro-loop .product-img .sold-out {
+.pro-loop .product-img .product-sale-status {
   right: 10px;
+}
+
+.pro-loop .product-img .product-sale-status.comming-soon {
+  background: #cac2c2;
+}
+
+.pro-loop .product-img .product-sale-status.sold-out {
   background: #000;
+}
+
+.pro-loop .product-img .product-sale-status.available {
+  background: #42db4a;
+}
+
+.pro-loop .product-img .product-sale-status.hot-sale {
+  background: #ff0000;
 }
 
 .pro-loop .product-img .sold-out span {
@@ -3144,9 +3165,37 @@ PRODUCT DETAIL
   margin-right: 10px;
   background: #ededed;
   text-transform: uppercase;
-  font-weight: 600;
-  font-size: 12px;
+  font-weight: bold;
+  /* font-size: 12px; */
   color: #f94c43;
+  padding: 5px 10px;
+}
+
+.pro-sale.product-sale-status {
+  font-weight: bold;
+  margin-right: 10px;
+  padding: 5px 10px;
+}
+
+.pro-sale.product-sale-status.comming-soon {
+  background: #cac2c2;
+  color: #000;
+}
+
+.pro-sale.product-sale-status.sold-out {
+  color: #FFF;
+  background: #000;
+  opacity: .8;
+}
+
+.pro-sale.product-sale-status.available {
+  background: #42db4a;
+  color: #FFF;
+}
+
+.pro-sale.product-sale-status.hot-sale {
+  background: #ff0000;
+  color: #FFF;
 }
 
 .product-price del {
@@ -3785,18 +3834,29 @@ label[for="product-select-option-2"] {
   }
 }
 
+.swatch .swatch-element .unchecked {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #ccc;
+  display: inline-block;
+  content: "";
+  border-radius: 50%;
+  background: transparent;
+  color: #FFF;
+}
+
+/* 
 .swatch .swatch-element:not(.color) label:before {
   width: 17px;
   height: 17px;
   border: 1px solid #ccc;
-  /* display: inline-block; */
-  display: none;
+  display: inline-block;
   margin-right: 5px;
   content: "";
   border-radius: 50%;
   margin-bottom: -4px;
-}
-
+} */
+/* 
 .swatch .swatch-element:not(.color) label:after {
   content: "\f00c";
   font-family: 'FontAwesome' !important;
@@ -3810,7 +3870,7 @@ label[for="product-select-option-2"] {
   -webkit-transition: all 0.45s ease;
   -o-transition: all 0.45s ease;
   transition: all 0.45s ease;
-}
+} */
 
 .swatch .swatch-element:not(.color) label .sd:before {
   background: #000;
@@ -3868,7 +3928,7 @@ label[for="product-select-option-2"] {
   color: #d2dae2;
 }
 
-.variantColor span .xam {
+.variantColor span.xam {
   background: #d2dae2;
 }
 
@@ -4500,6 +4560,7 @@ COLLECTION
   padding: 5px 0;
   font-weight: 500;
   font-size: 14px;
+  text-transform: uppercase;
 }
 
 .menuList-links>li.has-submenu>a {
@@ -5573,6 +5634,7 @@ PAGINATION - 404 - SEARCH PAGE
 
 .breadcrumb-shop .breadcrumb-arrows li {
   font-size: 13px;
+  padding-left: 0;
 }
 
 .breadcrumb-shop .breadcrumb-arrows li a {
@@ -7015,7 +7077,7 @@ form.searchform input:focus {
   width: 22px;
   line-height: 15px;
   text-align: center;
-  margin: 0 3px 0 0;
+  margin: 0 5px 0 0;
 }
 
 .variantColor li img {
@@ -7092,6 +7154,7 @@ form.searchform input:focus {
 
 .filterTagFullwidthButton-mobile {
   display: none;
+  cursor: pointer;
 }
 
 .filterTagFullwidthButton-desktop {
@@ -7299,7 +7362,7 @@ body.open-filter #site-overlay {
   margin-right: 30px;
 }
 
-.proDetailInfo .velaProductNavTabs li a {
+.proDetailInfo .velaProductNavTabs li span {
   font-size: 14px;
   color: #000;
   position: relative;
@@ -7309,14 +7372,15 @@ body.open-filter #site-overlay {
   font-weight: 600;
   text-transform: uppercase;
   text-decoration: none;
+  cursor: pointer;
 }
 
-.proDetailInfo .velaProductNavTabs li.active a {
+.proDetailInfo .velaProductNavTabs li.active span {
   color: #888;
   border: none;
 }
 
-.proDetailInfo .velaProductNavTabs li a:before {
+.proDetailInfo .velaProductNavTabs li span:before {
   content: "";
   width: 100%;
   height: 1px;
@@ -7327,7 +7391,7 @@ body.open-filter #site-overlay {
   bottom: 0;
 }
 
-.proDetailInfo .velaProductNavTabs li.active a:before {
+.proDetailInfo .velaProductNavTabs li.active span:before {
   background-color: #888;
 }
 
@@ -8671,7 +8735,6 @@ RESPONSIVE
   }
 
   .filterTagFullwidthButton-mobile span {
-    font-size: 12px;
     font-weight: bold;
   }
 
@@ -8973,10 +9036,6 @@ RESPONSIVE
   /* product detail*/
   #owlProductRelated.owl-carousel .owl-stage {
     padding-left: 0 !important;
-  }
-
-  .productDetail-page {
-    margin-top: -20px;
   }
 
   .icon-pr-fix {
@@ -9426,4 +9485,7 @@ RESPONSIVE
   }
 }
 
-/*  */
+/* Policy Page */
+.pageAbout-us {
+  margin-top: 2.5rem;
+}

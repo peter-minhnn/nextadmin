@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocalStorage } from "./useLocalStorage";
+import { useLocalStorage } from "./use-local-storage";
 
 export default function useLanguage() {
     const { getItem: getLang, setItem: setLangLocalStorage } = useLocalStorage('lang');

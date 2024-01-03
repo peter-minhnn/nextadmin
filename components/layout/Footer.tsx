@@ -1,5 +1,5 @@
 'use client'
-import useTrans from '@/lib/hooks/useTrans';
+import useTrans from '@/lib/hooks/use-translation';
 import moment from 'moment';
 
 const Footer = () => {

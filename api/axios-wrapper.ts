@@ -1,4 +1,4 @@
-import { useLocalStorage } from "../lib/hooks/useLocalStorage";
+import { useLocalStorage } from "../lib/hooks/use-local-storage";
 import axios from '@/api/axios-config';
 
 const getHeaderOptions = (method: string = 'GET', isUseFormData: boolean = false) => {
