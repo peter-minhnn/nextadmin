@@ -16,7 +16,7 @@ const HomePage = () => {
   const { currentLang } = useLanguage()
 
   useEffect(() => {
-    context.contextValue({ path: '', pageTitle: trans.seoTitle.home, bodyClass: '' })
+    context.contextValue({ path: routes.home, pageTitle: trans.seoTitle.home, bodyClass: '' })
     context.updateBreadcrumbContext([]);
   }, [currentLang])
 

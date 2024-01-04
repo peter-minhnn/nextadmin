@@ -5,7 +5,7 @@ import useProducts from "@/lib/hooks/use-products";
 
 export default function FilterCollection() {
     const trans = useTrans();
-    const [products] = useProducts({ categoryCode: '' });
+    const { products } = useProducts({ categoryCode: '' });
 
     return (
         <section id="section-collection-home" className="section section-collection">

@@ -46,14 +46,24 @@ const Collections = () => {
         setFormData((prev) => {
             return {
                 ...prev,
-                sizes: formData.colors?.length ? [...formData.colors] : []
+                colors: formData.colors?.length ? [...formData.colors] : []
+            }
+        })
+    }
+
+    const addSortFilter = (e: any) => {
+        if (!formData.sortType) formData.sortType = '';
+        setFormData((prev) => {
+            return {
+                ...prev,
+                sortType: e.currentTarget.value
             }
         })
     }
 
     useEffect(() => {
         context.contextValue({
-            path: '',
+            path: routes.ecommerce.collections,
             pageTitle: trans.seoTitle.collection,
             bodyClass: 'collection'
         })
@@ -63,6 +73,13 @@ const Collections = () => {
             { title: trans.breadcrumbs.collection.category, path: routes.ecommerce.collections },
             { title: trans.breadcrumbs.collection.all, path: routes.ecommerce.collections },
         ])
+
+        setFormData((prev) => {
+            return {
+                ...prev,
+                sortType: 'price-ascending'
+            }
+        })
     }, [currentLang, context.language])
 
     useEffect(() => {
@@ -248,15 +265,15 @@ const Collections = () => {
                                                             <FontAwesomeIcon icon={faSortAlphaAsc} color='#666' />
                                                         </label>
                                                         <span className="custom-dropdown custom-dropdown--grey ">
-                                                            <select className="sort-by custom-dropdown__select boxstyle-mb">
-                                                                <option value="price-ascending" data-filter="&amp;sortby=(price:product=asc)">{trans.collections.price.asc}</option>
-                                                                <option value="price-descending" data-filter="&amp;sortby=(price:product=desc)">{trans.collections.price.dsc}</option>
-                                                                <option value="title-ascending" data-filter="&amp;sortby=(title:product=asc)">{trans.collections.name.az}</option>
-                                                                <option value="title-descending" data-filter="&amp;sortby=(price:product=desc)">{trans.collections.name.za}</option>
-                                                                <option value="created-ascending" data-filter="&amp;sortby=(updated_at:product=desc)">{trans.collections.oldest}</option>
-                                                                <option value="created-descending" data-filter="&amp;sortby=(updated_at:product=asc)">{trans.collections.newest}</option>
-                                                                <option value="best-selling" data-filter="&amp;sortby=(sold_quantity:product=desc)">{trans.collections.mostPopular}</option>
-                                                                <option value="quantity-descending">{trans.collections.inStock}</option>
+                                                            <select className="sort-by custom-dropdown__select boxstyle-mb" onChange={(e) => addSortFilter(e)}>
+                                                                <option value="price-ascending">{trans.collections.price.asc}</option>
+                                                                <option value="price-descending">{trans.collections.price.dsc}</option>
+                                                                <option value="title-ascending">{trans.collections.name.az}</option>
+                                                                <option value="title-descending">{trans.collections.name.za}</option>
+                                                                <option value="created-ascending">{trans.collections.oldest}</option>
+                                                                <option value="created-descending">{trans.collections.newest}</option>
+                                                                <option value="best-selling">{trans.collections.mostPopular}</option>
+                                                                {/* <option value="quantity-descending">{trans.collections.inStock}</option> */}
                                                             </select>
                                                         </span>
                                                     </div>

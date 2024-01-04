@@ -5,6 +5,7 @@ export type ProductSearch = {
     status?: string;
     colors?: string[];
     sizes?: string[];
+    sortType?: string;
 }
 
 export interface ProductItemType extends CommonColumns {

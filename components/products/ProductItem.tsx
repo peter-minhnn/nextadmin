@@ -62,7 +62,7 @@ const ProductItem = ({ product }: ProductItemProps) => {
                         </picture>
                     </Link>
                     <div className="productQuickView">
-                        <Link className="btnProductQuickview" href="#" title="Xem nhanh">
+                        <Link className="btnProductQuickview" href={routes.ecommerce.productDetail(product.productCode)} title={product.productName}>
                             <FontAwesomeIcon style={{ fontSize: "22px" }} icon={faSearchPlus}></FontAwesomeIcon>
                         </Link>
                     </div>

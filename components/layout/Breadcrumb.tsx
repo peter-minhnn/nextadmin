@@ -7,10 +7,10 @@ const BreadcrumbLayout = ({ breadcrumbArr }: { breadcrumbArr: BreadcrumbProps[] 
     const router = useRouter();
     return (
         <>
-            <div className="breadcrumb-shop clearfix">
+            <div className={`breadcrumb-shop clearfix`}>
                 <div className="container">
-                    <div>
-                        <Breadcrumb className='breadcrumb breadcrumb-arrows'>
+                    <div style={{ height: 40 }}>
+                        <Breadcrumb className={`breadcrumb breadcrumb-arrows`}>
                             {breadcrumbArr.length ?
                                 breadcrumbArr.map((el, i) => (
                                     <Breadcrumb.Item

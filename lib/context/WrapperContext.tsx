@@ -6,6 +6,7 @@ import Seo from "@/components/layout/Seo";
 import { ReactNode, createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 import { Quicksand } from 'next/font/google'
+import { routes } from "@/routes";
 
 export interface ContextProps {
     path?: string;
@@ -100,12 +101,15 @@ export function WrapperProvider({ children }: ProviderProps) {
                 <meta property="og:url" content="https://www.betistore.vn/products/8-ball-corp-hoodie" />
                 <meta property="og:site_name" content="BETI" />
                 <meta name="description" content="Mua ngay – Xem nhanh" />
+                <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+                <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+                <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+                {/* <link rel="manifest" href="site.webmanifest" /> */}
             </head>
             <body className={`main-body ${inter.className} ${bodyClass} ${lockedScroll}`} suppressHydrationWarning>
                 <Seo pageTitle={pageTitle} />
                 <Header />
                 <main className="mainContainer_theme">
-                    {breadcrumb.length ? <Breadcrumb breadcrumbArr={breadcrumb} /> : null}
                     {children}
                 </main>
                 <Footer />
