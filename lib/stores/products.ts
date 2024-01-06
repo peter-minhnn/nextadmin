@@ -7,6 +7,7 @@ export const initialFormData: ProductSearch = {
     status: '',
     sizes: [],
     colors: [],
+    sortType: 'price-ascending'
 };
 
 export const formSearchStoreAtom = atomWithStorage<ProductSearch>('product_search', initialFormData);

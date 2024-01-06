@@ -6,5 +6,6 @@ export const routes = {
         productDetail: (slug: string) => `/products/${slug}`,
     },
     returnPolicy: '/return-policy',
-    contact: '/contact'
+    contact: '/contact',
+    search: '/search'
 }

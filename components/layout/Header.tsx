@@ -14,13 +14,14 @@ import Logo from '@/public/assets/images/logo.jpg';
 import Image from "next/legacy/image"
 import { routes } from '@/routes'
 import useCategories from '@/lib/hooks/use-categories'
-
-type Inputs = {
-    email: string
-    password: string
-}
+import useProducts from '@/lib/hooks/use-products'
+import { useDebounce } from "@uidotdev/usehooks";
+import { ProductItemType } from '@/types/product-type'
+import { arrayBufferToBase64 } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 export default function Header() {
+    const router = useRouter();
     const clickOutSideRef = useRef<any>(null)
     // const accountPanelRef = useRef<any>(null)
     const headerRef = useRef<any>(null)
@@ -35,9 +36,14 @@ export default function Header() {
     const { height } = useWindowResize(headerRef)
     const trans = useTrans()
     const { currentLang } = useLanguage()
-    const { getItem, setItem: setLangLocalStorage } = useLocalStorage('lang')
+    const { setItem: setLangLocalStorage } = useLocalStorage('lang')
     const context = useWrapperContext();
     const [categories] = useCategories();
+    const { products } = useProducts({ categoryCode: '' });
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [results, setResults] = useState<ProductItemType[]>([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const debouncedSearchTerm = useDebounce(searchTerm, 300);
     // const {
     //     register,
     //     handleSubmit,
@@ -120,6 +126,22 @@ export default function Header() {
             (!mobileMenuOpen || !showLoginPopup || !showRecoverPopup || !showCartPopup) && context.handleLockedScroll('');
         }
     }, [mobileMenuOpen, showLoginPopup, showRecoverPopup, showCartPopup])
+
+    useEffect(() => {
+        const searchHN = async () => {
+            let results: ProductItemType[] = [];
+            setIsSearching(true);
+            if (debouncedSearchTerm) {
+                const data = products.filter(el => el.productName.toLocaleLowerCase().includes(debouncedSearchTerm.toLocaleLowerCase()));
+                results = data || [];
+                console.log('search result ', results);
+            }
+            setIsSearching(false);
+            setResults(results);
+        };
+
+        searchHN();
+    }, [debouncedSearchTerm]);
 
     return (
         <header className={`main-header mainHeader_temp_2 ${(mobileMenuOpen || showLoginPopup || showRecoverPopup || showCartPopup) ? 'locked-scroll' : ''}`} style={{ minHeight: `${height > 0 ? height : 120}px` }}>
@@ -254,15 +276,46 @@ export default function Header() {
                                                 <form action="/search" className="searchform searchform-categoris ultimate-search">
                                                     <div className="wpo-search-inner">
                                                         <input type="hidden" name="type" value="product" />
-                                                        <input required id="inputSearchAuto" name="q" autoComplete="off" className="searchinput input-search search-input" type="text" placeholder={trans.menu.searchPlaceHolder} />
+                                                        <input
+                                                            id="inputSearchAuto" name="q" autoComplete="off"
+                                                            className="searchinput input-search search-input" type="text" placeholder={trans.menu.searchPlaceHolder}
+                                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                                        />
                                                     </div>
                                                     <button type="submit" className="btn-search">
-                                                        <svg version="1.1" className="svg search" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 27" style={{ background: 'new 0 0 24 27' }} xmlSpace
+                                                        {isSearching && "..."}
+                                                        <svg version="1.1" className={`svg search ${isSearching && 'hidden'}`} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 27" style={{ background: 'new 0 0 24 27' }} xmlSpace
                                                             ="preserve"><path d="M10,2C4.5,2,0,6.5,0,12s4.5,10,10,10s10-4.5,10-10S15.5,2,10,2z M10,19c-3.9,0-7-3.1-7-7s3.1-7,7-7s7,3.1,7,7S13.9,19,10,19z"></path><rect x="17" y="17" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -9.2844 19.5856)" width="4" height="8"></rect></svg>
                                                     </button>
                                                 </form>
-                                                <div id="ajaxSearchResults" className="smart-search-wrapper ajaxSearchResults" style={{ display: 'none' }}>
-                                                    <div className="resultsContent"></div>
+                                                <div
+                                                    id="ajaxSearchResults"
+                                                    className={`smart-search-wrapper ajaxSearchResults`}
+                                                    style={{ display: `${showSearchPopup && debouncedSearchTerm ? 'block' : 'none'}` }}
+                                                >
+                                                    <div className="resultsContent">
+                                                        {!results.length && debouncedSearchTerm && (
+                                                            <p className={`dataEmpty`}>
+                                                                {trans.collections.searchProduct}
+                                                            </p>
+                                                        )}
+                                                        {results.map((el, index) => (
+                                                            <div className="item-ult" key={index} onClick={() => router.push(routes.ecommerce.productDetail(el.productCode))}>
+                                                                <div className="thumbs">
+                                                                    <a href={routes.ecommerce.productDetail(el.productCode)} title={el.productName}>
+                                                                        <img alt={el.productName} src={arrayBufferToBase64(el.frontImage.data, el.frontImageMimeType)} />
+                                                                    </a>
+                                                                </div>
+                                                                <div className="title">
+                                                                    <a title={el.productName} href={routes.ecommerce.productDetail(el.productCode)}>{el.productName}</a>
+                                                                    <p className="f-initial">
+                                                                        {el.salePrice.toLocaleString('en-US')}đ
+                                                                        <del className={`${el.costPrice === 0 && 'hidden'}`}>{el.costPrice.toLocaleString('en-Us')}đ</del>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

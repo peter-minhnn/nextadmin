@@ -26,8 +26,7 @@ export default function useProducts({ ...initialFormData }: ProductSearch) {
 
     const onSearchProducts = useCallback(async () => {
         if (!getProductAtom.length) return;
-        console.log(searchFormData)
-        console.log('getProductAtom ', getProductAtom)
+        
         let searchData: ProductItemType[] = [];
         let hashMapData: any[] = [];
         let _isSearched: boolean = false;
@@ -48,7 +47,13 @@ export default function useProducts({ ...initialFormData }: ProductSearch) {
         if (Array.isArray(searchFormData.colors) && searchFormData.colors.length) {
             if (!searchData.length) searchData = [...getProductAtom];
             searchData = searchData.filter(el => {
-                if (searchFormData.colors?.every(color => color.indexOf(el.colors) !== (-1))) return el;
+                if (!searchFormData.colors) return;
+                for (let index = 0; index < searchFormData.colors.length; index++) {
+                    const element = searchFormData.colors[index];
+                    if (element.indexOf(el.colors) === (-1)) continue;
+                    break;
+                }
+                return el;
             })
             _isSearched = true;
         }
@@ -66,15 +71,16 @@ export default function useProducts({ ...initialFormData }: ProductSearch) {
             _isSearched = true;
         }
 
-        console.log(searchData)
         if (!searchData.length && !_isSearched) hashMapData = reduceProducts(getProductAtom);
         else hashMapData = reduceProducts(searchData);
         setProducts([...hashMapData]);
-        setLoading(false);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000)
     }, [getProductAtom, initialFormData.categoryCode, JSON.stringify(searchFormData)])
 
     useEffect(() => {
-        onLoadProducts();
+        !getProductAtom.length && onLoadProducts();
     }, [])
 
     useEffect(() => {

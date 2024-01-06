@@ -5774,11 +5774,14 @@ input#go {
 .expanded-message h2 {
   font-weight: 600;
   font-size: 22px;
+  text-align: center;
 }
 
 .expanded-message .subtext {
   margin-bottom: 40px;
   display: block;
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
 .search-item {
@@ -9488,4 +9491,46 @@ RESPONSIVE
 /* Policy Page */
 .pageAbout-us {
   margin-top: 2.5rem;
+}
+
+/* Search Popip */
+.ajaxSearchResults {
+  webkit-animation: fadein .5s ease-in alternate;
+  -moz-animation: fadein .5s ease-in alternate;
+  animation: fadein .5s ease-in alternate;
+}
+
+.smart-search-wrapper .item-ult:hover {
+  cursor: pointer;
+  background-color: #ededed;
+}
+
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }

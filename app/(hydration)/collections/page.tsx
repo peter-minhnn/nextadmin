@@ -73,13 +73,6 @@ const Collections = () => {
             { title: trans.breadcrumbs.collection.category, path: routes.ecommerce.collections },
             { title: trans.breadcrumbs.collection.all, path: routes.ecommerce.collections },
         ])
-
-        setFormData((prev) => {
-            return {
-                ...prev,
-                sortType: 'price-ascending'
-            }
-        })
     }, [currentLang, context.language])
 
     useEffect(() => {
