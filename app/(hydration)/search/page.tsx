@@ -88,7 +88,7 @@ const SearchProduct = () => {
                                         </div>
                                     </div>
                                     <div className={`${!result.length && 'hidden'}`} style={{ marginTop: '2rem' }}>
-                                        <p className={`subtext-result ${(!result.length) && 'hidden'}`}>Kết quả tìm kiếm cho  <strong>"{searchText}"</strong>.</p>
+                                        <p className={`subtext-result ${(!result.length) && 'hidden'}`}>{trans.search.searchResult} <strong>"{searchText}"</strong>.</p>
                                         <div className={`results content-product-list`}>
                                             <div className={`search-list-results row`}>
                                                 {result.map((product, index) => (
