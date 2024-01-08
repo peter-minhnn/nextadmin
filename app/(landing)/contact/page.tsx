@@ -27,7 +27,6 @@ const Contact = () => {
     } = useForm<Inputs>();
 
     const onSubmit = async (data: Inputs) => {
-        console.log(data)
         const response = await sendMessage(data);
         if (response.code === 'error' || (response.code === 'success' && response.data.code === (-1))) {
             toast.error(trans.errors.sendContactFailed)

@@ -15,7 +15,6 @@ const LoginPage = () => {
             setItem(response.data.data.token);
             router.push('/user');
         }
-        console.log(response)
     }
 
     return (
