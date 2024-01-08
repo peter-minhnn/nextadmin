@@ -30,10 +30,10 @@ const Contact = () => {
         console.log(data)
         const response = await sendMessage(data);
         if (response.code === 'error' || (response.code === 'success' && response.data.code === (-1))) {
-            toast.error('Gửi yêu cầu không thành công')
+            toast.error(trans.errors.sendContactFailed)
             return;
         }
-        toast.success('Gửi yêu cầu thành công');
+        toast.success(trans.success.sendContactSuccess);
         reset();
     };
 
