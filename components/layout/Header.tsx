@@ -134,7 +134,6 @@ export default function Header() {
             if (debouncedSearchTerm) {
                 const data = products.filter(el => el.productName.toLocaleLowerCase().includes(debouncedSearchTerm.toLocaleLowerCase()));
                 results = data || [];
-                console.log('search result ', results);
             }
             setIsSearching(false);
             setResults(results);
