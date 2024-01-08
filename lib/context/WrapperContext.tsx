@@ -1,12 +1,12 @@
 'use client'
-import Breadcrumb from "@/components/layout/Breadcrumb";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import Seo from "@/components/layout/Seo";
 import { ReactNode, createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
 import { Quicksand } from 'next/font/google'
-import { routes } from "@/routes";
+import { useResetAtom } from "jotai/utils";
+import { formSearchStoreAtom } from "@/lib/stores/products";
 
 export interface ContextProps {
     path?: string;
@@ -51,6 +51,7 @@ export function WrapperProvider({ children }: ProviderProps) {
     const [bodyClass, setBodyClass] = useState<string>('');
     const [lockedScroll, setLockedScroll] = useState<string>('');
     const [breadcrumb, setBreadcrumb] = useState<BreadcrumbProps[]>([]);
+    const resetLocation = useResetAtom(formSearchStoreAtom);
 
     const contextValue = useCallback((params: ContextProps) => {
         params.path && setPath(params.path)
@@ -61,7 +62,7 @@ export function WrapperProvider({ children }: ProviderProps) {
 
     const updateBreadcrumbContext = useCallback((data: BreadcrumbProps[] = []) => {
         setBreadcrumb([...data])
-    }, [breadcrumb])
+    }, [])
 
     const setLoading = useCallback((loading: boolean = false) => {
         loading && ref.current && ref.current.continuousStart();
@@ -73,6 +74,8 @@ export function WrapperProvider({ children }: ProviderProps) {
     }, []);
 
     useEffect(() => { }, [bodyClass])
+
+    useEffect(() => { resetLocation(); }, [])
 
     return (
         <WrapperContext.Provider

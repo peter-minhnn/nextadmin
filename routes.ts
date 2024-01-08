@@ -7,5 +7,6 @@ export const routes = {
     },
     returnPolicy: '/return-policy',
     contact: '/contact',
-    search: '/search'
+    search: '/search',
+    searchFilter: (text: string) => `/search?q=${text}`
 }

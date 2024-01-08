@@ -16,8 +16,9 @@ const SearchProduct = () => {
     const { currentLang } = useLanguage();
     const [searchText, setSearchText] = useState<string>('');
     const { products } = useProducts({ categoryCode: '' });
-    const [result, setResult] = useState<ProductItemType[]>([]);
+    const [results, setResults] = useState<ProductItemType[]>([]);
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+    const searchParams = useSearchParams();
 
     const submitHandler = (e: any) => {
         e.preventDefault();
@@ -27,12 +28,12 @@ const SearchProduct = () => {
         }
         setIsSubmitted(true);
         const data = products.filter(el => el.productName.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()))
-        setResult(data || []);
+        setResults(data || []);
     }
 
     const hiddenNotFound = () => {
-        if (!isSubmitted && !result.length) return true;
-        if (isSubmitted && result.length) return true;
+        if (!isSubmitted && !results.length) return true;
+        if (isSubmitted && results.length) return true;
         return false;
     }
 
@@ -49,6 +50,24 @@ const SearchProduct = () => {
         ])
     }, [currentLang, context.language])
 
+    useEffect(() => {
+        if(searchParams.get('q')) {
+            setSearchText(searchParams.get('q') as string);
+            setIsSubmitted(true);
+            const data = products.filter(el => el.productName.toLocaleLowerCase().includes(searchParams.get('q')?.toString().toLocaleLowerCase() as string))
+            setResults(data || []);
+        };
+    }, [products])
+
+    // useEffect(() => {
+    //     if (searchText && searchParams.get('q')) {
+    //         console.log(isSubmitted)
+    //         const data = products.filter(el => el.productName.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()))
+    //         setResults(data || []);
+    //     }
+    //     return () => setIsSubmitted(false)
+    // }, [searchText, products, isSubmitted])
+
     return (
         <>
             <div className="searchPage" id="layout-search">
@@ -59,7 +78,7 @@ const SearchProduct = () => {
                                 <h1>{trans.seoTitle.search}</h1>
                                 <p className={`subtxt ${hiddenNotFound() && 'hidden'}`}>
                                     {trans.search.yes}
-                                    <span>{result.length} {trans.search.product}</span>
+                                    <span>{results.length} {trans.search.product}</span>
                                     {trans.search.forSeaching}
                                 </p>
                             </div>
@@ -87,11 +106,11 @@ const SearchProduct = () => {
                                             </form>
                                         </div>
                                     </div>
-                                    <div className={`${!result.length && 'hidden'}`} style={{ marginTop: '2rem' }}>
-                                        <p className={`subtext-result ${(!result.length) && 'hidden'}`}>{trans.search.searchResult} <strong>"{searchText}"</strong>.</p>
+                                    <div className={`${!results.length && 'hidden'}`} style={{ marginTop: '2rem' }}>
+                                        <p className={`subtext-result ${(!results.length) && 'hidden'}`}>{trans.search.searchResult} <strong>"{searchText}"</strong>.</p>
                                         <div className={`results content-product-list`}>
-                                            <div className={`search-list-results row`}>
-                                                {result.map((product, index) => (
+                                            <div className={`search-list-results w-100 row`}>
+                                                {results.map((product, index) => (
                                                     <ProductItem product={product} key={index} />
                                                 ))}
                                             </div>

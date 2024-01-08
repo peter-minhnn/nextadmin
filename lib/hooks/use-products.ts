@@ -76,7 +76,7 @@ export default function useProducts({ ...initialFormData }: ProductSearch) {
         setProducts([...hashMapData]);
         setTimeout(() => {
             setLoading(false);
-        }, 1000)
+        }, 1500)
     }, [getProductAtom, initialFormData.categoryCode, JSON.stringify(searchFormData)])
 
     useEffect(() => {

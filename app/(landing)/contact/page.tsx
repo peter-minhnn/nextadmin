@@ -1,14 +1,41 @@
 'use client'
+import { sendMessage } from "@/lib/actions/contact.action";
 import { useWrapperContext } from "@/lib/context/WrapperContext";
 import useLanguage from "@/lib/hooks/use-languages";
 import useTrans from "@/lib/hooks/use-translation";
 import { routes } from "@/routes";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+
+export type Inputs = {
+    name: string;
+    email: string;
+    phone: string;
+    content: string;
+}
 
 const Contact = () => {
     const context = useWrapperContext();
     const trans = useTrans();
     const { currentLang } = useLanguage();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors, isDirty, isValid },
+    } = useForm<Inputs>();
+
+    const onSubmit = async (data: Inputs) => {
+        console.log(data)
+        const response = await sendMessage(data);
+        if (response.code === 'error' || (response.code === 'success' && response.data.code === (-1))) {
+            toast.error('Gửi yêu cầu không thành công')
+            return;
+        }
+        toast.success('Gửi yêu cầu thành công');
+        reset();
+    };
 
     useEffect(() => {
         context.contextValue({
@@ -50,31 +77,97 @@ const Contact = () => {
                         <div className="box-send-contact">
                             <h2>{trans.contact.sendUsQuestion}</h2>
                             <div id="col-left contactFormWrapper">
-                                <form className="contact-form">
+                                <form className="contact-form" onSubmit={handleSubmit(onSubmit)}>
                                     <div className="contact-form">
                                         <div className="row">
                                             <div className="col-sm-12 col-xs-12">
                                                 <div className="input-group">
-                                                    <input required type="text" name="contact[name]" className="form-control" placeholder={trans.contact.yourName} aria-describedby="basic-addon1" />
+                                                    <input type="text"
+                                                        {...register('name', { required: true })}
+                                                        aria-invalid={errors.name ? "true" : "false"}
+                                                        className={`form-control ${errors.name ? 'border border-danger' : ''}`}
+                                                        placeholder={trans.contact.yourName}
+                                                        aria-describedby="basic-addon1"
+                                                    />
+                                                    {errors.name && errors.name.type === "required" && (
+                                                        <span className="text-danger">{trans.errors.emptyName}</span>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-sm-6 col-xs-12">
                                                 <div className="input-group">
-                                                    <input required type="text" name="contact[email]" className="form-control" placeholder={trans.contact.yourEmail} aria-describedby="basic-addon1" />
+                                                    <input type="text"
+                                                        {...register('email', {
+                                                            required: true,
+                                                            pattern: {
+                                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                                message: trans.errors.invalidEmail
+                                                            }
+                                                        })}
+                                                        aria-invalid={errors.email ? "true" : "false"}
+                                                        className={`form-control ${errors.email ? 'border border-danger' : ''}`}
+                                                        placeholder={trans.contact.yourEmail} aria-describedby="basic-addon1"
+                                                    />
+                                                    {errors.email && errors.email.type === "required" && (
+                                                        <span className="text-danger">{trans.errors.emptyEmail}</span>
+                                                    )}
+                                                    {errors.email && errors.email.type === "pattern" && (
+                                                        <span className="text-danger">{trans.errors.invalidEmail}</span>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-sm-6 col-xs-12">
                                                 <div className="input-group">
-                                                    <input pattern="[0-9]{10,12}" required type="text" name="contact[phone]" className="form-control" placeholder={trans.contact.yourPhone} aria-describedby="basic-addon1" />
+                                                    <input type="number"
+                                                        {...register('phone', {
+                                                            required: {
+                                                                value: true,
+                                                                message: trans.errors.emptyPhone
+                                                            },
+                                                            maxLength: {
+                                                                value: 10,
+                                                                message: trans.errors.invalidMaxlengthPhone,
+                                                            },
+                                                        })}
+                                                        aria-invalid={errors.phone ? "true" : "false"}
+                                                        className={`form-control ${errors.phone ? 'border border-danger' : ''}`}
+                                                        placeholder={trans.contact.yourPhone}
+                                                        aria-describedby="basic-addon1"
+                                                    />
+
+                                                    {errors.phone && errors.phone.type === "required" && (
+                                                        <span className="text-danger">{trans.errors.emptyPhone}</span>
+                                                    )}
+                                                    {errors.phone && errors.phone.type === "pattern" && (
+                                                        <span className="text-danger">{trans.errors.invalidPhone}</span>
+                                                    )}
+                                                    {errors.phone && errors.phone.type === "maxLength" && (
+                                                        <span className="text-danger">{trans.errors.invalidMaxlengthPhone}</span>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-sm-12 col-xs-12">
                                                 <div className="input-group">
-                                                    <textarea required name="contact[body]" placeholder={trans.contact.content}></textarea>
+                                                    <textarea
+                                                        {...register('content', { required: true })}
+                                                        className={`${errors.content ? 'border border-danger' : ''}`}
+                                                        aria-invalid={errors.content ? "true" : "false"}
+                                                        placeholder={trans.contact.content}>
+                                                    </textarea>
+                                                    {errors.content && errors.content.type === "required" && (
+                                                        <span className="text-danger">{trans.errors.emptyContent}</span>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-xs-12">
-                                                <button className="button dark">{trans.contact.send}</button>
+                                                <button type="submit" className="button dark"
+                                                    style={{
+                                                        opacity: `${(!isDirty || !isValid) ? 0.5 : 1}`,
+                                                        cursor: `${(!isDirty || !isValid) ? 'not-allowed' : 'pointer'}`
+                                                    }}
+                                                    disabled={!isDirty || !isValid}>
+                                                    {trans.contact.send}
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

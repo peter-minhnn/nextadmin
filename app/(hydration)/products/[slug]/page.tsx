@@ -10,6 +10,9 @@ import { getProductItem } from "@/lib/actions/product.action";
 import { Colors, ProductItemType, ProductStatus, ProductStatusClass } from "@/types/product-type";
 import { arrayBufferToBase64 } from "@/lib/utils";
 import { routes } from "@/routes";
+import ProductDetailPlaceHolder from "@/components/products/ProductDetailPlaceHolder";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 class Inputs {
     size: string = 'M';
@@ -38,6 +41,8 @@ const ProductDetail = ({ params }: ProductDetailType) => {
     const [productDetail, setProductDetail] = useState<ProductItemType[]>([]);
     const [product, setProduct] = useState<ProductItemType | null>(null);
     const [images, setImages] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const router = useRouter();
 
     const handleSelectedColor = useCallback(() => {
         watch('color') === 'den' && setSelectedColor(trans.colors.den)
@@ -49,6 +54,7 @@ const ProductDetail = ({ params }: ProductDetailType) => {
         const response = await getProductItem({ slug: params.slug });
         if (response.code === 'error' || (response.code === 'success' && response.data.code === (-1))
             || (response.code === 'success' && !response.data.data)) {
+            setLoading(false);
             return;
         }
         const data = !Array.isArray(response.data.data) ? [response.data.data] : [...response.data.data];
@@ -105,7 +111,18 @@ const ProductDetail = ({ params }: ProductDetailType) => {
         getColors();
     }, [selectedSize])
 
-    if (!product) return <>Loading...</>;
+    useEffect(() => {
+        if (!loading && !product) {
+            toast.error(trans.errors.emptyProductDetail)
+            router.push(routes.ecommerce.collections);
+        }
+        if (product && Object.keys(product).length) {
+            setTimeout(() => { setLoading(false) }, 1000)
+        }
+    }, [product, loading])
+
+    if (loading) return <ProductDetailPlaceHolder />;
+    if (!product) return <ProductDetailPlaceHolder />;
 
     return (
         <div id='product' className="productDetail-page">
