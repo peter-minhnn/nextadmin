@@ -317,7 +317,7 @@ export default function Header() {
                                                                 </div>
                                                             )
                                                         })}
-                                                        <div className={`resultsMore ${results.length && results.length < 5 && 'hidden'}`}>
+                                                        <div className={`resultsMore ${((results.length && results.length < 5) || !results.length) && 'hidden'}`}>
                                                             <Link href={'#'}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
@@ -659,7 +659,7 @@ export default function Header() {
                                         </div>
                                     </div>
                                 ))}
-                                <div className={`resultsMore ${results.length && results.length < 5 && 'hidden'}`}>
+                                <div className={`resultsMore ${((results.length && results.length < 5) || !results.length) && 'hidden'}`}>
                                     <Link
                                         href={'#'}
                                         onClick={(e) => {
