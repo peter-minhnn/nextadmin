@@ -11,7 +11,14 @@ const nextConfig = {
             bodySizeLimit: '2mb',
         },
     },
-    images: ['ibb.co'],
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'ibb.co',
+              }
+        ]
+    },
     // i18n: {
     //     locales: ['en', 'vi'],
     //     defaultLocale: 'en'
