@@ -3418,7 +3418,7 @@ button.add-cart-bottom[disabled] {
 }
 
 .productDetail-page {
-  height: 100ch;
+  min-height: 100ch;
 }
 
 .productDetail-page .slide_product .owl-dots {
@@ -7236,7 +7236,7 @@ form.searchform input:focus {
 }
 
 .collection-page {
-  height: 100ch;
+  min-height: 100ch;
 }
 
 .wrap-filter {
