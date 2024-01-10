@@ -7,6 +7,7 @@ import LoadingBar from "react-top-loading-bar";
 import { Quicksand } from 'next/font/google'
 import { useResetAtom } from "jotai/utils";
 import { formSearchStoreAtom } from "@/lib/stores/products";
+import Logo from '@/public/assets/images/logo.jpg';
 
 export interface ContextProps {
     path?: string;
@@ -97,11 +98,11 @@ export function WrapperProvider({ children }: ProviderProps) {
                 <meta httpEquiv="x-dns-prefetch-control" content="on" />
                 <meta property="og:type" content="product" />
                 <meta property="og:title" content="BETI STORE" />
-                <meta property="og:image" content="http://product.hstatic.net/200000518745/product/z4458353944460_a3a32e53db88f893113f6833fc75be65_e28d5f1418c242efa7c5fa3348499238_grande.jpg" />
-                <meta property="og:image:secure_url" content="https://product.hstatic.net/200000518745/product/z4458353944460_a3a32e53db88f893113f6833fc75be65_e28d5f1418c242efa7c5fa3348499238_grande.jpg" />
+                <meta property="og:image" content="https://ibb.co/sCv3L4g" />
+                <meta property="og:image:secure_url" content="https://ibb.co/sCv3L4g" />
                 <meta property="og:price:amount" content="1550000" />
                 <meta property="og:price:currency" content="VND" />
-                <meta property="og:url" content="https://www.betistore.vn/products/8-ball-corp-hoodie" />
+                <meta property="og:url" content="https://www.betistore.vn/collections" />
                 <meta property="og:site_name" content="BETI" />
                 <meta name="description" content="Mua ngay – Xem nhanh" />
                 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

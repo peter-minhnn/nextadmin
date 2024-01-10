@@ -11,6 +11,7 @@ const nextConfig = {
             bodySizeLimit: '2mb',
         },
     },
+    images: ['ibb.co'],
     // i18n: {
     //     locales: ['en', 'vi'],
     //     defaultLocale: 'en'
