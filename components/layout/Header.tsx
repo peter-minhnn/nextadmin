@@ -245,7 +245,9 @@ export default function Header() {
                             <div ref={clickOutSideRef} className='col-md-4 header-wrap-icon'>
                                 <div className={`header-icon header-action-search ${showSearchPopup && 'show-action'}`}>
                                     <Link id="site-search-handle" href="#" title="Search" className="header-action-toggle" arial-label="Search header"
-                                        onClick={() => {
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
                                             setShowSearchPopup(!showSearchPopup)
                                             setShowLoginPopup(false)
                                             setShowCartPopup(false)
