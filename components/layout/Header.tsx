@@ -303,7 +303,13 @@ export default function Header() {
                                                         )}
                                                         {results.map((el, index) => {
                                                             return index <= 5 && (
-                                                                <div className="item-ult" key={index} onClick={() => router.push(routes.ecommerce.productDetail(el.productCode))}>
+                                                                <div className="item-ult" key={index} onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    e.stopPropagation();
+                                                                    setShowSearchPopup(false);
+                                                                    setSearchTerm('');
+                                                                    router.push(routes.ecommerce.productDetail(el.productCode))
+                                                                }}>
                                                                     <div className="thumbs">
                                                                         <a href={routes.ecommerce.productDetail(el.productCode)} title={el.productName}>
                                                                             <img alt={el.productName} src={arrayBufferToBase64(el.frontImage.data, el.frontImageMimeType)} />
