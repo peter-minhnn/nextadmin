@@ -167,7 +167,7 @@ export default function Header() {
                                                     <div className="navbar-level" data-level="1">
                                                         <ul className={`menuList-sub vertical-menu-list sub-child ${navChildOpen && 'mm-subopened'}`}>
                                                             <li className="active">
-                                                                <Link className="parent" href={routes.home}>{trans.menu.mainMenu}</Link>
+                                                                <Link className="parent" href={routes.home} onClick={() => setMobileMenuOpen(false)}>{trans.menu.mainMenu}</Link>
                                                             </li>
                                                             <li className="" data-menu-root="104326217">
                                                                 <Link href={'#'} className="parent" onClick={() => setNavChildOpen(true)}>{trans.menu.shop}
@@ -179,7 +179,7 @@ export default function Header() {
                                                                 </Link>
                                                             </li>
                                                             <li className="">
-                                                                <Link className="parent" href={routes.contact}>{trans.menu.contact}</Link>
+                                                                <Link className="parent" href={routes.contact} onClick={() => setMobileMenuOpen(false)}>{trans.menu.contact}</Link>
                                                             </li>
                                                             <li className="main_help">
                                                                 <div className="mobile_menu_section">

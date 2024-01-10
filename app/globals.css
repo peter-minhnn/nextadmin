@@ -7235,6 +7235,10 @@ form.searchform input:focus {
   transform: rotate(45deg);
 }
 
+.collection-page {
+  height: 100ch;
+}
+
 .wrap-filter {
   opacity: 0;
   visibility: hidden;
