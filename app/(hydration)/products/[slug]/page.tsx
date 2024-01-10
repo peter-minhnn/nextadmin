@@ -13,6 +13,8 @@ import { routes } from "@/routes";
 import ProductDetailPlaceHolder from "@/components/products/ProductDetailPlaceHolder";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import useWindowResize from "@/lib/hooks/use-window-resize";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 class Inputs {
     size: string = 'M';
@@ -43,6 +45,9 @@ const ProductDetail = ({ params }: ProductDetailType) => {
     const [images, setImages] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
+    const { width } = useWindowResize();
+    const { width: windowWidth } = useWindowSize();
+    const [selectedPosition, setSelectedPosition] = useState<any>('left')
 
     const handleSelectedColor = useCallback(() => {
         watch('color') === 'den' && setSelectedColor(trans.colors.den)
@@ -112,6 +117,17 @@ const ProductDetail = ({ params }: ProductDetailType) => {
     }, [selectedSize])
 
     useEffect(() => {
+        if (width <= 500) setSelectedPosition('bottom');
+        else setSelectedPosition('left');
+    }, [width])
+
+    useEffect(() => {
+        if (!windowWidth) setSelectedPosition('left');
+        if (windowWidth && windowWidth <= 500) setSelectedPosition('bottom');
+        else setSelectedPosition('left');
+    }, [windowWidth])
+
+    useEffect(() => {
         if (!loading && !product) {
             toast.error(trans.errors.emptyProductDetail)
             router.push(routes.ecommerce.collections);
@@ -131,7 +147,7 @@ const ProductDetail = ({ params }: ProductDetailType) => {
                     <div className="col-md-12 col-sm-12 col-xs-12">
                         <div className="row product-detail-main pr_style_03">
                             <div className="col-md-6 col-sm-12 col-xs-12 product-content-img n_padding">
-                                <ImageGallery items={images} showFullscreenButton thumbnailPosition={'left'} lazyLoad showPlayButton={false} />
+                                <ImageGallery items={images} showFullscreenButton thumbnailPosition={selectedPosition} lazyLoad showPlayButton={false} />
                             </div>
                             <div className="col-md-6 col-sm-12 col-xs-12 product-content-desc">
                                 <div className="product-title">

@@ -417,6 +417,9 @@ button:focus {
 .fade-box img.lazyloading,
 .fade-box img.lazyloaded {
   opacity: 1;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 }
 
 img.owl-lazy:not([src]) {
@@ -3414,6 +3417,10 @@ button.add-cart-bottom[disabled] {
   text-align: center;
 }
 
+.productDetail-page {
+  height: 100ch;
+}
+
 .productDetail-page .slide_product .owl-dots {
   text-align: center;
   margin: 10px 0;
@@ -5699,6 +5706,10 @@ PAGINATION - 404 - SEARCH PAGE
   font-size: 16px;
   margin: 30px 0 0;
   display: block;
+}
+
+.searchPage {
+  height: 100ch;
 }
 
 .searchPage .heading-page {
@@ -8771,12 +8782,12 @@ RESPONSIVE
 
   .list-productRelated .pro-loop:nth-child(odd),
   .search-list-results .pro-loop:nth-child(odd) {
-    padding-right: 7.5px;
+    /* padding-right: 7.5px; */
   }
 
   .list-productRelated .pro-loop:nth-child(even),
   .search-list-results .pro-loop:nth-child(even) {
-    padding-left: 7.5px;
+    /* padding-left: 7.5px; */
   }
 
 }
@@ -9356,7 +9367,7 @@ RESPONSIVE
   }
 
   .product-detail-main .n_padding {
-    padding: 0;
+    padding: 5px;
   }
 
   .left-content-quickview {

@@ -109,7 +109,7 @@ const SearchProduct = () => {
                                     <div className={`${!results.length && 'hidden'}`} style={{ marginTop: '2rem' }}>
                                         <p className={`subtext-result ${(!results.length) && 'hidden'}`}>{trans.search.searchResult} <strong>"{searchText}"</strong>.</p>
                                         <div className={`results content-product-list`}>
-                                            <div className={`search-list-results w-100 row`}>
+                                            <div className={`search-list-results row`}>
                                                 {results.map((product, index) => (
                                                     <ProductItem product={product} key={index} />
                                                 ))}
