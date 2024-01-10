@@ -8,6 +8,8 @@ import { routes } from '@/routes';
 import { useWindowSize } from '@uidotdev/usehooks'
 import Link from 'next/link';
 import { useEffect } from 'react';
+import MainBanner from '@/public/assets/images/banner.jpg';
+import Image from 'next/legacy/image';
 
 const HomePage = () => {
   const size = useWindowSize()
@@ -28,7 +30,7 @@ const HomePage = () => {
             <div className="owl-item active" style={{ width: `${size}px` }}>
               <div className="item">
                 <Link href={routes.ecommerce.collections} aria-label="TẤT CẢ SẢN PHẨM">
-                  <img title="TẤT CẢ SẢN PHẨM" alt="TẤT CẢ SẢN PHẨM" src="//theme.hstatic.net/200000518745/1000870107/14/slideshow_1.jpg?v=99" />
+                  <Image title="TẤT CẢ SẢN PHẨM" alt="TẤT CẢ SẢN PHẨM" src={MainBanner} />
                 </Link>
               </div>
             </div>
