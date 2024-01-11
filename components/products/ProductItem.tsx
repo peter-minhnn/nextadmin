@@ -7,12 +7,13 @@ import { routes } from "@/routes";
 
 type ProductItemProps = {
     product: ProductItemType;
+    screenType?: string;
 }
 
-const ProductItem = ({ product }: ProductItemProps) => {
+const ProductItem = ({ product, screenType }: ProductItemProps) => {
 
     return (
-        <div className="col-md-3 col-sm-6 col-xs-6 pro-loop animated zoomIn" key={`${product.id}${product.rowNumber}`}>
+        <div className={`${!screenType && 'col-md-3 col-sm-6 col-xs-6'} pro-loop animated zoomIn`} key={`${product.id}${product.rowNumber}`}>
             <div className="product-block product-resize site-animation fixheight" style={{ height: '355px' }}>
                 <div className="product-img">
                     <div className={`product-sale ${(product.discountPercentage === 0 || product.status === '1') && 'hidden'}`}>

@@ -42,9 +42,11 @@ const Products = () => {
         <>
             {createNoDataElement}
             <div className={`content-product-list product-list filter clearfix ${!products.length && 'hidden'}`}>
-                {products.map((product, index) => (
-                    <ProductItem product={product} key={index} />
-                ))}
+                {products.map((product, index) => {
+                    return index <= 8 && (
+                        <ProductItem product={product} key={index} />
+                    )
+                })}
             </div>
         </>
     )

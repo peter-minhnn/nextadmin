@@ -417,7 +417,7 @@ button:focus {
 .fade-box img.lazyloading,
 .fade-box img.lazyloaded {
   opacity: 1;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   object-fit: cover;
 }
@@ -3068,7 +3068,7 @@ PRODUCT DETAIL
 }
 
 .product-detail-main {
-  margin-bottom: 40px;
+  margin-bottom: 10rem;
 }
 
 .product-title {
@@ -5709,7 +5709,7 @@ PAGINATION - 404 - SEARCH PAGE
 }
 
 .searchPage {
-  height: 100ch;
+  min-height: 100ch;
 }
 
 .searchPage .heading-page {
@@ -8784,16 +8784,9 @@ RESPONSIVE
     margin: 0 -10px;
   }
 
-  .list-productRelated .pro-loop:nth-child(odd),
-  .search-list-results .pro-loop:nth-child(odd) {
-    /* padding-right: 7.5px; */
+  .list-productRelated .pro-loop {
+    padding: 0 15px 0 0;
   }
-
-  .list-productRelated .pro-loop:nth-child(even),
-  .search-list-results .pro-loop:nth-child(even) {
-    /* padding-left: 7.5px; */
-  }
-
 }
 
 @media(max-width:991px) and (min-width:768px) {
@@ -9505,7 +9498,10 @@ RESPONSIVE
 
 /* Policy Page */
 .pageAbout-us {
-  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100ch;
 }
 
 /* Search Popip */

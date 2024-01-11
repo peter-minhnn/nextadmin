@@ -15,6 +15,10 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import useWindowResize from "@/lib/hooks/use-window-resize";
 import { useWindowSize } from "@uidotdev/usehooks";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper/modules';
+import useProducts from "@/lib/hooks/use-products";
+import ProductItem from "@/components/products/ProductItem";
 
 class Inputs {
     size: string = 'M';
@@ -48,6 +52,10 @@ const ProductDetail = ({ params }: ProductDetailType) => {
     const { width } = useWindowResize();
     const { width: windowWidth } = useWindowSize();
     const [selectedPosition, setSelectedPosition] = useState<any>('left')
+    const { products } = useProducts({
+        categoryCode: product?.categoryCode
+    });
+    const [recents, setRecents] = useState<ProductItemType[]>([]);
 
     const handleSelectedColor = useCallback(() => {
         watch('color') === 'den' && setSelectedColor(trans.colors.den)
@@ -133,6 +141,8 @@ const ProductDetail = ({ params }: ProductDetailType) => {
             router.push(routes.ecommerce.collections);
         }
         if (product && Object.keys(product).length) {
+            const filterRecentData = products.filter(el => el.productCode !== product.productCode);
+            setRecents(filterRecentData);
             setTimeout(() => { setLoading(false) }, 1000)
         }
     }, [product, loading])
@@ -314,6 +324,44 @@ const ProductDetail = ({ params }: ProductDetailType) => {
                                         </div>
                                     </section>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="list-productRelated clearfix">
+                            <div className="heading-title text-center">
+                                <h2>Sản phẩm liên quan</h2>
+                            </div>
+                            <div id="owlProductRelated" className={`${!recents.length && 'hidden'}`}>
+                                <Swiper
+                                    slidesPerView={3}
+                                    spaceBetween={10}
+                                    pagination={{
+                                        clickable: true,
+                                    }}
+                                    breakpoints={{
+                                        '@0.00': {
+                                            slidesPerView: 1,
+                                            spaceBetween: 10,
+                                        },
+                                        '@0.75': {
+                                            slidesPerView: 2,
+                                            spaceBetween: 20,
+                                        },
+                                        '@1.00': {
+                                            slidesPerView: 3,
+                                            spaceBetween: 40,
+                                        },
+                                        '@1.50': {
+                                            slidesPerView: 4,
+                                            spaceBetween: 50,
+                                        },
+                                    }}
+                                    modules={[Navigation]}
+                                    className="mySwiper"
+                                >
+                                    {recents.map((el, index) => (
+                                        <SwiperSlide key={index}><ProductItem product={el} key={index} screenType="recent"/></SwiperSlide>
+                                    ))}
+                                </Swiper>
                             </div>
                         </div>
                     </div>
