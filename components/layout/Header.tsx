@@ -43,7 +43,7 @@ export default function Header() {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [results, setResults] = useState<ProductItemType[]>([]);
     const [isSearching, setIsSearching] = useState(false);
-    const debouncedSearchTerm = useDebounce(searchTerm, 300);
+    const debouncedSearchTerm = useDebounce(searchTerm, 1000);
     // const {
     //     register,
     //     handleSubmit,
@@ -325,7 +325,7 @@ export default function Header() {
                                                                 </div>
                                                             )
                                                         })}
-                                                        <div className={`resultsMore ${((results.length && results.length < 5) || !results.length) && 'hidden'}`}>
+                                                        <div className={`resultsMore ${((results.length && results.length < 5) || !results.length || ((results.length - 5) < 1)) && 'hidden'}`}>
                                                             <Link href={'#'}
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
@@ -667,7 +667,7 @@ export default function Header() {
                                         </div>
                                     </div>
                                 ))}
-                                <div className={`resultsMore ${((results.length && results.length < 5) || !results.length) && 'hidden'}`}>
+                                <div className={`resultsMore ${((results.length && results.length < 5) || !results.length  || ((results.length - 5) < 1)) && 'hidden'}`}>
                                     <Link
                                         href={'#'}
                                         onClick={(e) => {
@@ -678,7 +678,7 @@ export default function Header() {
                                             router.push(routes.searchFilter(debouncedSearchTerm))
                                         }}
                                     >
-                                        {trans.search.seeMore} {products.length - results.length} {trans.search.product}
+                                        {trans.search.seeMore} {results.length - 5} {trans.search.product}
                                     </Link>
                                 </div>
                             </div>
