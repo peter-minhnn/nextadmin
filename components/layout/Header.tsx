@@ -17,7 +17,7 @@ import useCategories from '@/lib/hooks/use-categories'
 import useProducts from '@/lib/hooks/use-products'
 import { useDebounce } from "@uidotdev/usehooks";
 import { ProductItemType } from '@/types/product-type'
-import { arrayBufferToBase64 } from '@/lib/utils'
+import { arrayBufferToBase64, stringToSlug } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
 export default function Header() {
@@ -132,7 +132,7 @@ export default function Header() {
             let results: ProductItemType[] = [];
             setIsSearching(true);
             if (debouncedSearchTerm) {
-                const data = products.filter(el => el.productName.toLocaleLowerCase().includes(debouncedSearchTerm.toLocaleLowerCase()));
+                const data = products.filter(el => stringToSlug(el.productName).toLocaleLowerCase().includes(stringToSlug(debouncedSearchTerm).toLocaleLowerCase()));
                 results = data || [];
             }
             setIsSearching(false);
@@ -335,7 +335,7 @@ export default function Header() {
                                                                     router.push(routes.searchFilter(debouncedSearchTerm))
                                                                 }}
                                                             >
-                                                                {trans.search.seeMore} {products.length - results.length} {trans.search.product}
+                                                                {trans.search.seeMore} {results.length - 5} {trans.search.product}
                                                             </Link>
                                                         </div>
                                                     </div>
