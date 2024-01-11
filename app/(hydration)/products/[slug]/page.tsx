@@ -1,7 +1,7 @@
 'use client'
 import { useWrapperContext } from "@/lib/context/WrapperContext";
 import useTrans from "@/lib/hooks/use-translation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import ImageGallery from "react-image-gallery";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 import useWindowResize from "@/lib/hooks/use-window-resize";
 import { useWindowSize } from "@uidotdev/usehooks";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import useProducts from "@/lib/hooks/use-products";
 import ProductItem from "@/components/products/ProductItem";
 
@@ -111,6 +111,14 @@ const ProductDetail = ({ params }: ProductDetailType) => {
             setValue('color', data[0]);
         }
     }, [selectedSize])
+
+    const generateSlideItem = useMemo(() => {
+        return recents.map((el, index) => (
+            <SwiperSlide key={index} data-hash={index}>
+                <ProductItem product={el} key={index} screenType="recent" />
+            </SwiperSlide>
+        ))
+    }, [recents])
 
     useEffect(() => {
         handleSelectedColor();
@@ -326,16 +334,20 @@ const ProductDetail = ({ params }: ProductDetailType) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="list-productRelated clearfix">
+                        <div className={`list-productRelated clearfix ${!recents.length && 'hidden'}`}>
                             <div className="heading-title text-center">
-                                <h2>Sản phẩm liên quan</h2>
+                                <h2>{trans.collections.related}</h2>
                             </div>
-                            <div id="owlProductRelated" className={`${!recents.length && 'hidden'}`}>
+                            <div id="owlProductRelated">
                                 <Swiper
-                                    slidesPerView={3}
+                                    slidesPerView={1}
                                     spaceBetween={10}
                                     pagination={{
                                         clickable: true,
+                                    }}
+                                    autoplay={{
+                                        delay: 2500,
+                                        disableOnInteraction: false,
                                     }}
                                     breakpoints={{
                                         '@0.00': {
@@ -355,12 +367,10 @@ const ProductDetail = ({ params }: ProductDetailType) => {
                                             spaceBetween: 50,
                                         },
                                     }}
-                                    modules={[Navigation]}
+                                    modules={[Autoplay]}
                                     className="mySwiper"
                                 >
-                                    {recents.map((el, index) => (
-                                        <SwiperSlide key={index}><ProductItem product={el} key={index} screenType="recent"/></SwiperSlide>
-                                    ))}
+                                    {generateSlideItem}
                                 </Swiper>
                             </div>
                         </div>
