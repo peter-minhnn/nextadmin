@@ -99,7 +99,7 @@ html,
 body {
   border: 0;
   background-color: #fff;
-  font-size: 14px !important;
+  font-size: 16px;
 }
 
 html {
@@ -6710,7 +6710,7 @@ form.searchform input.searchinput {
   padding: 5px 55px 5px 15px;
   height: 45px;
   box-shadow: none;
-  font-size: 15px;
+  /* font-size: 15px; */
   font-weight: 500;
   -webkit-appearance: none;
   appearance: none;
