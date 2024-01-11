@@ -43,7 +43,7 @@ export default function Header() {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [results, setResults] = useState<ProductItemType[]>([]);
     const [isSearching, setIsSearching] = useState(false);
-    const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
     // const {
     //     register,
     //     handleSubmit,
@@ -281,7 +281,7 @@ export default function Header() {
                                                             id="inputSearchAuto" name="q" autoComplete="off"
                                                             className="searchinput input-search search-input" type="text" placeholder={trans.menu.searchPlaceHolder}
                                                             onChange={(e) => setSearchTerm(e.target.value)}
-                                                            value={debouncedSearchTerm} defaultValue={undefined}
+                                                            value={searchTerm} defaultValue={undefined}
                                                         />
                                                     </div>
                                                     <button type="submit" className="btn-search">
@@ -622,7 +622,7 @@ export default function Header() {
                                     type="text"
                                     placeholder={trans.menu.searchPlaceHolder}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    value={debouncedSearchTerm}
+                                    value={searchTerm}
                                     defaultValue={undefined}
                                 />
                             </div>
