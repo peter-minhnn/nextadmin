@@ -4,6 +4,7 @@ import { ProductItemType, ProductStatus, ProductStatusClass } from "@/types/prod
 import Link from "next/link";
 import { arrayBufferToBase64 } from "@/lib/utils";
 import { routes } from "@/routes";
+import { useWrapperContext } from "@/lib/context/WrapperContext";
 
 type ProductItemProps = {
     product: ProductItemType;
@@ -11,6 +12,7 @@ type ProductItemProps = {
 }
 
 const ProductItem = ({ product, screenType }: ProductItemProps) => {
+    const context = useWrapperContext();
 
     return (
         <div className={`${!screenType && 'col-md-3 col-sm-6 col-xs-6'} pro-loop animated zoomIn`} key={`${product.id}${product.rowNumber}`}>
@@ -22,7 +24,13 @@ const ProductItem = ({ product, screenType }: ProductItemProps) => {
                     <div className={`product-sale-status ${!product.status && 'hidden'} ${ProductStatusClass[Number(product.status)]}`}>
                         <span>{ProductStatus[Number(product.status)]}</span>
                     </div>
-                    <Link href={routes.ecommerce.productDetail(product.productCode)} title={product.productName} className="image-resize fade-box" style={{ height: '268px' }}>
+                    <Link
+                        href={routes.ecommerce.productDetail(product.productCode)}
+                        title={product.productName}
+                        className="image-resize fade-box"
+                        style={{ height: '268px' }}
+                        onClick={() => context.setLoading(true)}
+                    >
                         <picture>
                             <source
                                 media="(max-width: 480px)"
@@ -63,7 +71,12 @@ const ProductItem = ({ product, screenType }: ProductItemProps) => {
                         </picture>
                     </Link>
                     <div className="productQuickView">
-                        <Link className="btnProductQuickview" href={routes.ecommerce.productDetail(product.productCode)} title={product.productName}>
+                        <Link
+                            className="btnProductQuickview"
+                            href={routes.ecommerce.productDetail(product.productCode)}
+                            title={product.productName}
+                            onClick={() => context.setLoading(true)}
+                        >
                             <FontAwesomeIcon style={{ fontSize: "22px" }} icon={faSearchPlus}></FontAwesomeIcon>
                         </Link>
                     </div>
@@ -79,7 +92,11 @@ const ProductItem = ({ product, screenType }: ProductItemProps) => {
                 <div className="product-detail clearfix">
                     <div className="box-pro-detail">
                         <h3 className="pro-name">
-                            <Link href="/products/8ball-corp-tee-1" title={product.productName}>
+                            <Link
+                                href={routes.ecommerce.productDetail(product.productCode)}
+                                title={product.productName}
+                                onClick={() => context.setLoading(true)}
+                            >
                                 {product.productName}
                             </Link>
                         </h3>
@@ -105,7 +122,7 @@ const ProductItem = ({ product, screenType }: ProductItemProps) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

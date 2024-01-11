@@ -56,6 +56,7 @@ const SearchProduct = () => {
             setIsSubmitted(true);
             const data = products.filter(el => el.productName.toLocaleLowerCase().includes(searchParams.get('q')?.toString().toLocaleLowerCase() as string))
             setResults(data || []);
+            context.setLoading(false);
         };
     }, [products])
 

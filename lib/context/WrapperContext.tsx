@@ -7,7 +7,7 @@ import LoadingBar from "react-top-loading-bar";
 import { Quicksand } from 'next/font/google'
 import { useResetAtom } from "jotai/utils";
 import { formSearchStoreAtom } from "@/lib/stores/products";
-import Logo from '@/public/assets/images/logo.jpg';
+import dynamic from "next/dynamic";
 
 export interface ContextProps {
     path?: string;
@@ -35,6 +35,10 @@ type ContextTypes = {
 }
 
 const inter = Quicksand({ subsets: ['latin', 'vietnamese'] })
+
+// const NextProgress = dynamic(() => import('@/components/next-progress'), {
+//     ssr: false,
+// });
 
 export const WrapperContext = createContext<ContextTypes | null>(null);
 

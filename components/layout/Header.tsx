@@ -215,13 +215,30 @@ export default function Header() {
                                                                 </Link>
                                                             </li>
                                                             <li>
-                                                                <Link href={routes.ecommerce.collections} onClick={() => setMobileMenuOpen(false)}>
+                                                                <Link
+                                                                    href={'#'}
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        setMobileMenuOpen(false);
+                                                                        context.setLoading(true);
+                                                                        router.push(routes.ecommerce.collections);
+                                                                    }}
+                                                                >
                                                                     <b style={{ fontWeight: 700 }}>{trans.menu.showAll}</b>
                                                                 </Link>
                                                             </li>
                                                             {categories.map((item, idx) => (
                                                                 <li className="" key={idx}>
-                                                                    <Link href={routes.ecommerce.searchCollections(item.categoryCode)} onClick={() => setMobileMenuOpen(false)} title={item.categoryName}>
+                                                                    <Link
+                                                                        href={'#'}
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            setMobileMenuOpen(false);
+                                                                            context.setLoading(true);
+                                                                            router.push(routes.ecommerce.searchCollections(item.categoryCode));
+                                                                        }}
+                                                                        title={item.categoryName}
+                                                                    >
                                                                         - {item.categoryName}
                                                                     </Link>
                                                                 </li>
@@ -236,7 +253,7 @@ export default function Header() {
                             </div>
                             <div className="col-md-4 header-wrap-logo header-mid">
                                 <div className="wrap-logo text-center" itemType="http://schema.org/Organization">
-                                    <Link href="/" itemProp="url">
+                                    <Link href={routes.home} itemProp="url">
                                         <Image itemProp="logo" alt="BETI" className="img-responsive logoimg lazyloaded" src={Logo} width={150} height={50} />
                                     </Link>
                                     {/* <h1 style={{ display: 'block' }}><Link href="https://www.betistore.vn" itemProp="url">BETI</Link></h1> */}
@@ -274,9 +291,8 @@ export default function Header() {
                                         <div className="site-nav-container">
                                             <p className="titlebox">{trans.menu.search}</p>
                                             <div className="search-box wpo-wrapper-search">
-                                                <form action="/search" className="searchform searchform-categoris ultimate-search">
+                                                <form className="searchform searchform-categoris ultimate-search">
                                                     <div className="wpo-search-inner">
-                                                        <input type="hidden" name="type" value="product" />
                                                         <input
                                                             id="inputSearchAuto" name="q" autoComplete="off"
                                                             className="searchinput input-search search-input" type="text" placeholder={trans.menu.searchPlaceHolder}
@@ -303,20 +319,38 @@ export default function Header() {
                                                         )}
                                                         {results.map((el, index) => {
                                                             return index <= 5 && (
-                                                                <div className="item-ult" key={index} onClick={(e) => {
-                                                                    e.preventDefault();
-                                                                    e.stopPropagation();
-                                                                    setShowSearchPopup(false);
-                                                                    setSearchTerm('');
-                                                                    router.push(routes.ecommerce.productDetail(el.productCode))
-                                                                }}>
+                                                                <div className="item-ult" key={index}>
                                                                     <div className="thumbs">
-                                                                        <a href={routes.ecommerce.productDetail(el.productCode)} title={el.productName}>
+                                                                        <Link
+                                                                            href={'#'}
+                                                                            title={el.productName}
+                                                                            onClick={(e) => {
+                                                                                e.preventDefault();
+                                                                                e.stopPropagation();
+                                                                                setShowSearchPopup(false);
+                                                                                setSearchTerm('');
+                                                                                context.setLoading(true);
+                                                                                router.push(routes.ecommerce.productDetail(el.productCode))
+                                                                            }}
+                                                                        >
                                                                             <img alt={el.productName} src={arrayBufferToBase64(el.frontImage.data, el.frontImageMimeType)} />
-                                                                        </a>
+                                                                        </Link>
                                                                     </div>
                                                                     <div className="title">
-                                                                        <a title={el.productName} href={routes.ecommerce.productDetail(el.productCode)}>{el.productName}</a>
+                                                                        <Link
+                                                                            title={el.productName}
+                                                                            href={'#'}
+                                                                            onClick={(e) => {
+                                                                                e.preventDefault();
+                                                                                e.stopPropagation();
+                                                                                setShowSearchPopup(false);
+                                                                                setSearchTerm('');
+                                                                                context.setLoading(true);
+                                                                                router.push(routes.ecommerce.productDetail(el.productCode))
+                                                                            }}
+                                                                        >
+                                                                            {el.productName}
+                                                                        </Link>
                                                                         <p className="f-initial">
                                                                             {el.salePrice.toLocaleString('en-US')}₫
                                                                             <del className={`${el.costPrice === 0 && 'hidden'}`}>{el.costPrice.toLocaleString('en-Us')}₫</del>
@@ -332,6 +366,7 @@ export default function Header() {
                                                                     e.stopPropagation();
                                                                     setShowSearchPopup(false);
                                                                     setSearchTerm('');
+                                                                    context.setLoading(true);
                                                                     router.push(routes.searchFilter(debouncedSearchTerm))
                                                                 }}
                                                             >
@@ -592,7 +627,11 @@ export default function Header() {
                                                 <ul className="sub_menu">
                                                     {categories.map((item, idx) => (
                                                         <li className="" key={idx}>
-                                                            <Link href={routes.ecommerce.searchCollections(item.categoryCode)} title={item.categoryName}>
+                                                            <Link
+                                                                href={routes.ecommerce.searchCollections(item.categoryCode)}
+                                                                title={item.categoryName}
+                                                                onClick={() => context.setLoading(true)}
+                                                            >
                                                                 {item.categoryName}
                                                             </Link>
                                                         </li>
@@ -652,14 +691,38 @@ export default function Header() {
                                     </p>
                                 )}
                                 {results.map((el, index) => (
-                                    <div className="item-ult" key={index} onClick={() => router.push(routes.ecommerce.productDetail(el.productCode))}>
+                                    <div className="item-ult" key={index}>
                                         <div className="thumbs">
-                                            <a href={routes.ecommerce.productDetail(el.productCode)} title={el.productName}>
+                                            <Link
+                                                href={'#'}
+                                                title={el.productName}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    setShowSearchPopup(false);
+                                                    setSearchTerm('');
+                                                    context.setLoading(true);
+                                                    router.push(routes.ecommerce.productDetail(el.productCode))
+                                                }}
+                                            >
                                                 <img alt={el.productName} src={arrayBufferToBase64(el.frontImage.data, el.frontImageMimeType)} />
-                                            </a>
+                                            </Link>
                                         </div>
                                         <div className="title">
-                                            <a title={el.productName} href={routes.ecommerce.productDetail(el.productCode)}>{el.productName}</a>
+                                            <Link
+                                                title={el.productName}
+                                                href={'#'}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    setShowSearchPopup(false);
+                                                    setSearchTerm('');
+                                                    context.setLoading(true);
+                                                    router.push(routes.ecommerce.productDetail(el.productCode))
+                                                }}
+                                            >
+                                                {el.productName}
+                                            </Link>
                                             <p className="f-initial">
                                                 {el.salePrice.toLocaleString('en-US')}₫
                                                 <del className={`${el.costPrice === 0 && 'hidden'}`}>{el.costPrice.toLocaleString('en-Us')}₫</del>
@@ -667,7 +730,7 @@ export default function Header() {
                                         </div>
                                     </div>
                                 ))}
-                                <div className={`resultsMore ${((results.length && results.length < 5) || !results.length  || ((results.length - 5) < 1)) && 'hidden'}`}>
+                                <div className={`resultsMore ${((results.length && results.length < 5) || !results.length || ((results.length - 5) < 1)) && 'hidden'}`}>
                                     <Link
                                         href={'#'}
                                         onClick={(e) => {
@@ -675,6 +738,7 @@ export default function Header() {
                                             e.stopPropagation();
                                             setShowSearchPopup(false);
                                             setSearchTerm('');
+                                            context.setLoading(true);
                                             router.push(routes.searchFilter(debouncedSearchTerm))
                                         }}
                                     >

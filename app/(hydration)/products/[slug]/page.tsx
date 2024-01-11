@@ -64,6 +64,7 @@ const ProductDetail = ({ params }: ProductDetailType) => {
     }, [watch('color'), selectedColor])
 
     const getDetail = async () => {
+        context.setLoading(true);
         const response = await getProductItem({ slug: params.slug });
         if (response.code === 'error' || (response.code === 'success' && response.data.code === (-1))
             || (response.code === 'success' && !response.data.data)) {
@@ -147,11 +148,15 @@ const ProductDetail = ({ params }: ProductDetailType) => {
         if (!loading && !product) {
             toast.error(trans.errors.emptyProductDetail)
             router.push(routes.ecommerce.collections);
+            context.setLoading(false);
         }
         if (product && Object.keys(product).length) {
             const filterRecentData = products.filter(el => el.productCode !== product.productCode);
             setRecents(filterRecentData);
-            setTimeout(() => { setLoading(false) }, 1000)
+            setTimeout(() => {
+                setLoading(false);
+                context.setLoading(false);
+            }, 1000)
         }
     }, [product, loading])
 

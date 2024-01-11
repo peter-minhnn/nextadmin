@@ -73,6 +73,7 @@ const Collections = () => {
             { title: trans.breadcrumbs.collection.category, path: routes.ecommerce.collections },
             { title: trans.breadcrumbs.collection.all, path: routes.ecommerce.collections },
         ])
+        context.setLoading(false);
     }, [currentLang, context.language])
 
     useEffect(() => {
