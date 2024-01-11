@@ -346,7 +346,7 @@ const ProductDetail = ({ params }: ProductDetailType) => {
                                         clickable: true,
                                     }}
                                     autoplay={{
-                                        delay: 2500,
+                                        delay: 3500,
                                         disableOnInteraction: false,
                                     }}
                                     breakpoints={{
