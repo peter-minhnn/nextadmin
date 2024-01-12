@@ -4,6 +4,7 @@ import { useWrapperContext } from "@/lib/context/WrapperContext"
 import useLanguage from "@/lib/hooks/use-languages";
 import useProducts from "@/lib/hooks/use-products";
 import useTrans from "@/lib/hooks/use-translation";
+import { stringToSlug } from "@/lib/utils";
 import { routes } from "@/routes";
 import { ProductItemType } from "@/types/product-type";
 import { useSearchParams } from "next/navigation";
@@ -54,20 +55,11 @@ const SearchProduct = () => {
         if(searchParams.get('q')) {
             setSearchText(searchParams.get('q') as string);
             setIsSubmitted(true);
-            const data = products.filter(el => el.productName.toLocaleLowerCase().includes(searchParams.get('q')?.toString().toLocaleLowerCase() as string))
+            const data = products.filter(el => stringToSlug(el.productName).toLocaleLowerCase().includes(stringToSlug(searchParams.get('q') as string).toLocaleLowerCase() as string))
             setResults(data || []);
             context.setLoading(false);
         };
     }, [products])
-
-    // useEffect(() => {
-    //     if (searchText && searchParams.get('q')) {
-    //         console.log(isSubmitted)
-    //         const data = products.filter(el => el.productName.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()))
-    //         setResults(data || []);
-    //     }
-    //     return () => setIsSubmitted(false)
-    // }, [searchText, products, isSubmitted])
 
     return (
         <>

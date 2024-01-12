@@ -6326,6 +6326,7 @@ span .action_link {
   -webkit-box-shadow: none;
   box-shadow: none;
   border-color: #ebebeb;
+  font-size: 16px;
 }
 
 .icon-user:after {

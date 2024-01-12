@@ -1,6 +1,8 @@
 'use client'
 import useTrans from '@/lib/hooks/use-translation';
+import { routes } from '@/routes';
 import moment from 'moment';
+import Link from 'next/link';
 
 const Footer = () => {
     const trans = useTrans();
@@ -29,13 +31,19 @@ const Footer = () => {
                                     <div className="footer-content toggle-footer">
                                         <ul>
                                             <li className="item">
-                                                <a href="/search" title="Tìm kiếm">{trans.footer.search}</a>
+                                                <Link href={routes.search} title={trans.footer.search}>
+                                                    {trans.footer.search}
+                                                </Link>
                                             </li>
                                             <li className="item">
-                                                <a href="/return-policy" title="Chính sách đổi trả">{trans.footer.returnPolicy}</a>
+                                                <Link href={routes.returnPolicy} title={trans.footer.returnPolicy}>
+                                                    {trans.footer.returnPolicy}
+                                                </Link>
                                             </li>
                                             <li className="item">
-                                                <a href="/pages/lien-he" title="Liên hệ">{trans.footer.contact}</a>
+                                                <Link href={routes.contact} title={trans.footer.contact}>
+                                                    {trans.footer.contact}
+                                                </Link>
                                             </li>
                                         </ul>
                                     </div>
