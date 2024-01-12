@@ -2545,12 +2545,12 @@ INDEX
 
   #collection-two-slider .owl-nav button.owl-prev {
     left: 0;
-    background-image: url(//theme.hstatic.net/1000409858/1000625732/14/arrow-left.png?v=152);
+    /* background-image: url(//theme.hstatic.net/1000409858/1000625732/14/arrow-left.png?v=152); */
   }
 
   #collection-two-slider .owl-nav button.owl-next {
     right: 0;
-    background-image: url(//theme.hstatic.net/1000409858/1000625732/14/arrow-right.png?v=152);
+    /* background-image: url(//theme.hstatic.net/1000409858/1000625732/14/arrow-right.png?v=152); */
   }
 
   #collection-two-slider .owl-nav button.owl-prev.disabled+.owl-next {
@@ -3675,7 +3675,7 @@ button.add-cart-bottom[disabled] {
   margin: auto;
   width: 50%;
   height: 50%;
-  background: url(//theme.hstatic.net/200000518745/1000870107/14/sold_out.png?v=99) no-repeat;
+  /* background: url(//theme.hstatic.net/200000518745/1000870107/14/sold_out.png?v=99) no-repeat; */
   background-size: contain;
 }
 
@@ -3724,7 +3724,7 @@ button.add-cart-bottom[disabled] {
   margin: auto;
   width: 50%;
   height: 50%;
-  background: url(//theme.hstatic.net/200000518745/1000870107/14/sold_out.png?v=99) no-repeat;
+  /* background: url(//theme.hstatic.net/200000518745/1000870107/14/sold_out.png?v=99) no-repeat; */
   background-size: contain;
 }
 
@@ -5750,7 +5750,7 @@ input#go {
   width: 55px;
   height: 55px;
   float: right;
-  background: url(//theme.hstatic.net/200000518745/1000870107/14/iconsearch.png?v=99) #252a2b center no-repeat;
+  /* background: url(//theme.hstatic.net/200000518745/1000870107/14/iconsearch.png?v=99) #252a2b center no-repeat; */
   margin: 0px;
   position: relative;
   top: 0;
@@ -6329,18 +6329,6 @@ span .action_link {
   font-size: 16px;
 }
 
-.icon-user:after {
-  content: url(//hstatic.net/0/0/global/design/theme-default/userico.png);
-}
-
-.icon-envelope:after {
-  content: url(//hstatic.net/0/0/global/design/theme-default/email.png);
-}
-
-.icon-shield:after {
-  content: url(//hstatic.net/0/0/global/design/theme-default/pass.png);
-}
-
 .layout-info-account .action_bottom .btn {
   height: 35px;
   line-height: 35px;
@@ -6541,7 +6529,7 @@ FOOTER
 
 .top-footer .area_newsletter .title_newsletter {
   background-repeat: no-repeat;
-  background-image: url(//theme.hstatic.net/200000518745/1000870107/14/icon_footer.png?v=99);
+  /* background-image: url(//theme.hstatic.net/200000518745/1000870107/14/icon_footer.png?v=99); */
   ackground-position: 0;
   background-size: 20px;
   padding-left: 35px;
