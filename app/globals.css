@@ -8129,6 +8129,7 @@ body.open-filter #site-overlay {
   background: #fbfbfb;
   color: #252a2b;
   width: 100%;
+  font-size: 16px;
 }
 
 .modal-contactform .content_popupform .input-group textarea {
