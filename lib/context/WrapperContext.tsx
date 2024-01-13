@@ -78,7 +78,7 @@ export function WrapperProvider({ children }: ProviderProps) {
         setLockedScroll(className);
     }, []);
 
-    useEffect(() => { }, [bodyClass])
+    // useEffect(() => { }, [bodyClass])
 
     useEffect(() => { resetLocation(); }, [])
 

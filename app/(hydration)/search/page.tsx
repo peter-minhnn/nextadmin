@@ -28,7 +28,7 @@ const SearchProduct = () => {
             return;
         }
         setIsSubmitted(true);
-        const data = products.filter(el => el.productName.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()))
+        const data = products.filter(el => stringToSlug(el.productName).toLocaleLowerCase().includes(stringToSlug(searchText).toLocaleLowerCase()))
         setResults(data || []);
     }
 
