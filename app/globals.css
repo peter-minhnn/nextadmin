@@ -4938,7 +4938,6 @@ border-left: none;
 
 .group_filter_tags .filter_tags .filter_tags_remove {
   display: inline-block;
-  vertical-align: middle;
   height: 17px;
   width: 15px;
   cursor: pointer;

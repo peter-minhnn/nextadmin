@@ -156,7 +156,7 @@ const ProductDetail = ({ params }: ProductDetailType) => {
             setTimeout(() => {
                 setLoading(false);
                 context.setLoading(false);
-            }, 1000)
+            }, 6000)
         }
     }, [product, loading])
 

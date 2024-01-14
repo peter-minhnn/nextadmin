@@ -4,10 +4,8 @@ import Header from "@/components/layout/Header";
 import Seo from "@/components/layout/Seo";
 import { ReactNode, createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import LoadingBar from "react-top-loading-bar";
-import { Quicksand } from 'next/font/google'
 import { useResetAtom } from "jotai/utils";
 import { formSearchStoreAtom } from "@/lib/stores/products";
-import dynamic from "next/dynamic";
 
 export interface ContextProps {
     path?: string;
@@ -33,8 +31,6 @@ type ContextTypes = {
     breadcrumb: BreadcrumbProps[];
     language?: string;
 }
-
-const inter = Quicksand({ subsets: ['latin', 'vietnamese'] })
 
 // const NextProgress = dynamic(() => import('@/components/next-progress'), {
 //     ssr: false,
@@ -81,7 +77,7 @@ export function WrapperProvider({ children }: ProviderProps) {
     // useEffect(() => { }, [bodyClass])
 
     useEffect(() => { resetLocation(); }, [])
-
+    
     return (
         <WrapperContext.Provider
             value={{
@@ -93,28 +89,7 @@ export function WrapperProvider({ children }: ProviderProps) {
                 language
             }}
         >
-            <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=0" />
-                <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-                <link rel="shortcut icon" href="./favicon.co" type="image/png" />
-                <meta name="keywords" content="BETI" />
-                <meta name="robots" content="index,follow,noodp" />
-                <meta httpEquiv="x-dns-prefetch-control" content="on" />
-                <meta property="og:type" content="product" />
-                <meta property="og:title" content="BETI STORE" />
-                <meta property="og:image" content="https://ibb.co/sCv3L4g" />
-                <meta property="og:image:secure_url" content="https://ibb.co/sCv3L4g" />
-                <meta property="og:price:amount" content="1550000" />
-                <meta property="og:price:currency" content="VND" />
-                <meta property="og:url" content="https://www.betistore.vn/collections" />
-                <meta property="og:site_name" content="BETI" />
-                <meta name="description" content="Mua ngay – Xem nhanh" />
-                <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-                <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-                <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-                {/* <link rel="manifest" href="site.webmanifest" /> */}
-            </head>
-            <body className={`main-body ${inter.className} ${bodyClass} ${lockedScroll}`} suppressHydrationWarning>
+            <div className={`${bodyClass} ${lockedScroll}`}>
                 <Seo pageTitle={pageTitle} />
                 <Header />
                 <main className="mainContainer_theme">
@@ -122,7 +97,7 @@ export function WrapperProvider({ children }: ProviderProps) {
                 </main>
                 <Footer />
                 <LoadingBar color={'#2998ff'} ref={ref} />
-            </body>
+            </div>
         </WrapperContext.Provider>
     )
 }
