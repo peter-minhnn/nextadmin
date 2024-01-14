@@ -25,7 +25,6 @@ export default function useProducts({ ...initialFormData }: ProductSearch) {
     }
 
     const onSearchProducts = useCallback(async () => {
-        console.log(searchFormData)
         if (!getProductAtom.length) return;
         
         let searchData: ProductItemType[] = [];
@@ -85,7 +84,6 @@ export default function useProducts({ ...initialFormData }: ProductSearch) {
     }, [])
 
     useEffect(() => {
-        console.log('onSearchProducts')
         getProductAtom.length && onSearchProducts();
     }, [getProductAtom, initialFormData.categoryCode, JSON.stringify(searchFormData)])
 
