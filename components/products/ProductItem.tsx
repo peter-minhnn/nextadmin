@@ -5,6 +5,7 @@ import Link from "next/link";
 import { arrayBufferToBase64 } from "@/lib/utils";
 import { routes } from "@/routes";
 import { useWrapperContext } from "@/lib/context/WrapperContext";
+import Image from "next/legacy/image";
 
 type ProductItemProps = {
     product: ProductItemType;
@@ -32,7 +33,7 @@ const ProductItem = ({ product, screenType }: ProductItemProps) => {
                         onClick={() => context.setLoading(true)}
                     >
                         <picture>
-                            <source
+                            {/* <source
                                 media="(max-width: 480px)"
                                 src={arrayBufferToBase64(product.frontImage.data, product.frontImageMimeType)}
                             />
@@ -43,15 +44,17 @@ const ProductItem = ({ product, screenType }: ProductItemProps) => {
                             <source
                                 media="(min-width: 768px)"
                                 src={arrayBufferToBase64(product.frontImage, product.frontImageMimeType)}
-                            />
-                            <img
+                            /> */}
+                            <Image
                                 className="img-loop ls-is-cached lazyloaded"
                                 alt={product.productName}
                                 src={arrayBufferToBase64(product.frontImage.data, product.frontImageMimeType)}
+                                layout='fill'
+                                decoding="async"
                             />
                         </picture>
                         <picture>
-                            <source
+                            {/* <source
                                 media="(max-width: 480px)"
                                 src={arrayBufferToBase64(product.backImage.data, product.backImageMimeType)}
                             />
@@ -62,11 +65,13 @@ const ProductItem = ({ product, screenType }: ProductItemProps) => {
                             <source
                                 media="(min-width: 768px)"
                                 src={arrayBufferToBase64(product.backImage.data, product.backImageMimeType)}
-                            />
-                            <img
+                            /> */}
+                            <Image
                                 className="img-loop img-hover ls-is-cached lazyloaded"
                                 alt={product.productName}
                                 src={arrayBufferToBase64(product.backImage.data, product.backImageMimeType)}
+                                layout='fill'
+                                decoding="async"
                             />
                         </picture>
                     </Link>
